@@ -8,14 +8,14 @@
 using namespace std;
 
 
-HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> headers){
-			_request = request;
-			_asset = asset;
-			_headers = headers;	
-};	
+
 static HTTPRequest::HTTPRequest* HTTPMessageFactoryparseMessage(string raw){
 			cout << raw << endl;
 			return NULL;
 }
 
-
+HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> headers){
+			_request = request;
+			_asset = asset;
+			_headers = headers;	
+};	
