@@ -7,11 +7,13 @@
 
 #define get string("GET")
 #define post string("POST")
-
+#define errString string("\0");
 
 using namespace std;
+
 vector<string> splitRaw(string raw);
 requestType getType(string requestHead);
+string getAsset(string requestHead);
 
 HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> headers){
 			_request = request;
@@ -21,9 +23,30 @@ HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> heade
 HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	vector<string> lines;
 	requestType rtype;
-	lines = splitRaw(raw);
-	rtype = getType(lines[0]);
-	cout << "HELLO" << endl;
+	string asset;
+	
+	lines = splitRaw(raw,string("\015\012");
+	
+	
+}
+
+string getAsset(string requestHead){
+	string assetRoot = string("/");
+	size_t pos;
+	string res;
+	if((pos = requestHead.find(assetRoot)) != string::npos){
+		if(requestHead.at(pos - 1) != ' '){
+			return errString;
+		}
+	}
+	else{
+		return errString;
+	}
+	while(requestHead.at(pos) != ' ' && requestHead.at(pos) != '\0'){
+		res += requestHead.at(pos);
+		pos++;
+	}
+	return res;
 }
 
 requestType getType(string requestHead){
