@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <regex>
 #include <vector>
-
+#include <iostream>
 using namespace std;
 enum requestType { GET, POST };
 enum responseCode {a };
