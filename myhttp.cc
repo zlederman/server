@@ -12,6 +12,8 @@
 
 using namespace std;
 vector<string> splitRaw(string raw);
+requestType getType(string requestHead);
+
 HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> headers){
 			_request = request;
 			_asset = asset;
