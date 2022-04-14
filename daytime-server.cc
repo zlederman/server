@@ -138,7 +138,7 @@ processTimeRequest( int fd )
   //
     
   while (( n = read( fd, &newChar, sizeof(newChar) ) ) > 0 ) {
-		if(oldChar == "\012" && newChar == "\015"){
+		if(oldChar == '\012' && newChar == '\015'){
 			break;
 		}
     raw_req += newChar;
