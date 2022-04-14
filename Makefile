@@ -4,7 +4,7 @@ NETLIBS= -lnsl
 all: git-commit myhttpd daytime-server use-dlopen hello.so
 
 daytime-server : daytime-server.o
-	$(CXX) -o $@ $@.o $(NETLIBS)
+	$(CXX) -o -g $@ $@.o $(NETLIBS)
 
 myhttpd : myhttpd.o
 	$(CXX) -o $@ $@.o $(NETLIBS)
