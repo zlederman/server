@@ -120,7 +120,8 @@ void
 processTimeRequest( int fd )
 {
   // Buffer used to store the name received from the client
-  string delimiter = ("\012"); 
+  HTTPRequest* req;
+	string delimiter = ("\012"); 
 	string raw_req;
   // Send prompt
   const char * prompt = "\nType your name:";
@@ -153,7 +154,7 @@ processTimeRequest( int fd )
     raw_req += newChar;
 		oldChar = newChar;
   }
-	httpFactory->parseMessage(raw_req);
+	req = httpFactory->parseMessage(raw_req);
   // Add null character at the end of the string
 
 
