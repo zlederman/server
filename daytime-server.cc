@@ -46,7 +46,7 @@ int
 main( int argc, char ** argv )
 {
 	
-HTTPMessageFactory* httpFactory = new HTTPMessageFactory();
+
 				// Print usage if not enough arguments
   if ( argc < 2 ) {
     fprintf( stderr, "%s", usage );
@@ -120,7 +120,9 @@ void
 processTimeRequest( int fd )
 {
   // Buffer used to store the name received from the client
-  const int MaxName = 1024;
+  
+HTTPMessageFactory* httpFactory = new HTTPMessageFactory();
+	const int MaxName = 1024;
   char name[ MaxName + 1 ];
   int nameLength = 0;
   int n;
