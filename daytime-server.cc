@@ -125,7 +125,7 @@ processTimeRequest( int fd )
   // Send prompt
   const char * prompt = "\nType your name:";
   write( fd, prompt, strlen( prompt ) );
-
+	int n;
   // Currently character read
   unsigned char newChar;
 
@@ -140,8 +140,6 @@ processTimeRequest( int fd )
   while (( n = read( fd, &newChar, sizeof(newChar) ) ) > 0 ) {
 
     raw_req += newChar;
-    nameLength++;
-    lastChar = newChar;
   }
 	httpFactory->parseMessage(raw_req);
   // Add null character at the end of the string
@@ -156,8 +154,6 @@ processTimeRequest( int fd )
   const char * hi = "\nHi ";
   const char * timeIs = " the time is:\n";
   write( fd, hi, strlen( hi ) );
-  write( fd, name, strlen( name ) );
-  write( fd, timeIs, strlen( timeIs ) );
   
   // Send the time of day 
   write(fd, timeString, strlen(timeString));
