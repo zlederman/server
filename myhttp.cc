@@ -29,6 +29,7 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	rtype = getType(lines[0]);
 	asset = getAsset(lines[0]);
 	lines.pop_back();
+	lines.remove(lines.front());
 	return new HTTPRequest(rtype,asset, lines);	
 }
 
