@@ -25,9 +25,10 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	requestType rtype;
 	string asset;
 	
-	lines = splitRaw(raw,string("\015\012");
-	
-	
+	lines = splitRaw(raw);
+	rtype = getType(lines[0]);
+	asset = getAsset(lines[0]);
+	cout << "HELLO" << endl;	
 }
 
 string getAsset(string requestHead){
