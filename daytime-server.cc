@@ -34,7 +34,7 @@ const char * usage =
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
-
+#include <myhttp.hh>
 int QueueLength = 5;
 
 // Processes time request
