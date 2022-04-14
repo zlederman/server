@@ -121,10 +121,6 @@ processTimeRequest( int fd )
 {
   // Buffer used to store the name received from the client
   
-	const int MaxName = 1024;
-  char name[ MaxName + 1 ];
-  int nameLength = 0;
-  int n;
 	string raw_req;
   // Send prompt
   const char * prompt = "\nType your name:";
@@ -134,7 +130,6 @@ processTimeRequest( int fd )
   unsigned char newChar;
 
   // Last character read
-  unsigned char lastChar = 0;
 
   //
   // The client should send <name><cr><lf>
@@ -142,14 +137,7 @@ processTimeRequest( int fd )
   // <CR><LF> is found.
   //
     
-  while ( nameLength < MaxName &&
-	  ( n = read( fd, &newChar, sizeof(newChar) ) ) > 0 ) {
-
-    if ( lastChar == '\015' && newChar == '\012' ) {
-      // Discard previous <CR> from name
-      nameLength--;
-      break;
-    }
+  while (( n = read( fd, &newChar, sizeof(newChar) ) ) > 0 ) {
 
     raw_req += newChar;
     nameLength++;

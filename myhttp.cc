@@ -13,7 +13,8 @@ HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> heade
 			_headers = headers;	
 };
 HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
-			cout << raw << endl;
-			return NULL;
+	string delimeter = std::string("\015\012");
+
+
 }
 
