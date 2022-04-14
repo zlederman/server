@@ -5,9 +5,8 @@
 #include <iostream>
 #include "myhttp.hh"
 
-#define get string("get")
-#define post string("post")
-#define err string("err")
+#define get string("GET")
+#define post string("POST")
 
 
 using namespace std;
