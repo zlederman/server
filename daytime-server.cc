@@ -38,7 +38,7 @@ const char * usage =
 
 using namespace std;
 int QueueLength = 5;
-
+HTTPMessageFactory* httpFactory = new HTTPMessageFactory();
 // Processes time request
 void processTimeRequest( int socket );
 
@@ -121,7 +121,6 @@ processTimeRequest( int fd )
 {
   // Buffer used to store the name received from the client
   
-HTTPMessageFactory* httpFactory = new HTTPMessageFactory();
 	const int MaxName = 1024;
   char name[ MaxName + 1 ];
   int nameLength = 0;
