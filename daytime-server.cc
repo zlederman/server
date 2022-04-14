@@ -120,15 +120,15 @@ void
 processTimeRequest( int fd )
 {
   // Buffer used to store the name received from the client
-  
+  string delimiter = ("\012"); 
 	string raw_req;
   // Send prompt
   const char * prompt = "\nType your name:";
   write( fd, prompt, strlen( prompt ) );
 	int n;
   // Currently character read
-  unsigned char newChar;
-
+  unsigned char newChar;	
+	unsigned char oldChar;
   // Last character read
 
   //
@@ -138,8 +138,11 @@ processTimeRequest( int fd )
   //
     
   while (( n = read( fd, &newChar, sizeof(newChar) ) ) > 0 ) {
-
+		if(oldChar == "\012" && newChar == "\015"){
+			break;
+		}
     raw_req += newChar;
+		oldChar = newChar;
   }
 	httpFactory->parseMessage(raw_req);
   // Add null character at the end of the string
