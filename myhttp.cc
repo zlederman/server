@@ -14,7 +14,7 @@ HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> heade
 };
 HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	vector<string> lines;
-	lines = splitRaw(raw):
+	lines = splitRaw(raw);
 	cout << "HEllo"<< endl;
 }
 
