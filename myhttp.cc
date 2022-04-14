@@ -3,6 +3,7 @@
 #include <regex>
 #include <vector>
 #include <iostream>
+#include <myhttp.h>
 using namespace std;
 class HTTPRequest {
 	public:
