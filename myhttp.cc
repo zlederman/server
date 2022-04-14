@@ -28,8 +28,10 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	lines = splitRaw(raw);
 	rtype = getType(lines[0]);
 	asset = getAsset(lines[0]);
-	cout << "HELLO" << endl;	
+	lines.pop_back();
+	return new HTTPRequest(rtype,asset, lines);	
 }
+
 
 string getAsset(string requestHead){
 	string assetRoot = string("/");
