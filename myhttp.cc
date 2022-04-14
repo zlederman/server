@@ -5,7 +5,9 @@
 #include <iostream>
 #include "myhttp.hh"
 using namespace std;
-
+#define get string("get");
+#define post string("post");
+#define err string("err");
 vector<string> splitRaw(string raw);
 HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> headers){
 			_request = request;
@@ -14,11 +16,21 @@ HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> heade
 };
 HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	vector<string> lines;
+	requestType rtype;
 	lines = splitRaw(raw);
-	cout << "HEllo"<< endl;
+	rtype = getType(lines[0]);
+	cout << "HELLO" << endl;
 }
 
-
+requestType getType(string requestHead){
+	if(requestHead.find(get) != string::npos){
+		return GET;
+	}
+	if(requestHead.find(post) != string::npos){
+		return POST;
+	}
+	return ERR;
+}
 vector<string> splitRaw(string raw){
 	
 	vector<string> tokens;
