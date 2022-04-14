@@ -9,7 +9,11 @@ enum responseCode {a };
 
 class HTTPMessageFactory {
 	public: 
-		static HTTPRequest parseMessage(string raw);
+		static HTTPRequest parseMessage(string raw){
+			cout<< raw << endl;
+			return NULL;
+
+		}
 
 };
 
@@ -28,7 +32,4 @@ class HTTPRequest {
 
 };
 
-static HTTPRequest HTTPMessageFactory::parseMessage(string raw){
-			cout << raw << endl;	
-			return NULL;
-}
+
