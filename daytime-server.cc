@@ -41,11 +41,13 @@ int QueueLength = 5;
 
 // Processes time request
 void processTimeRequest( int socket );
-HTTPMessageFactory* httpFactory = new HTTPMessageFactory();
+
 int
 main( int argc, char ** argv )
 {
-  // Print usage if not enough arguments
+	
+HTTPMessageFactory* httpFactory = new HTTPMessageFactory();
+				// Print usage if not enough arguments
   if ( argc < 2 ) {
     fprintf( stderr, "%s", usage );
     exit( -1 );
