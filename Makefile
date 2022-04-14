@@ -1,7 +1,7 @@
 CXX = g++ -g -fPIC
 NETLIBS= -lnsl
 
-all: git-commit myhttpd myhttp daytime-server use-dlopen hello.so
+all: git-commit myhttpd daytime-server use-dlopen hello.so
 
 myhttp.o: myhttp.cc myhttp.hh
 	$(CXX)  -c myhttp.cc $(NETLIBS)
