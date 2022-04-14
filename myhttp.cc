@@ -6,7 +6,7 @@
 #include "myhttp.hh"
 using namespace std;
 
-
+vector<string> splitRaw(string raw);
 HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> headers){
 			_request = request;
 			_asset = asset;
