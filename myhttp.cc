@@ -9,7 +9,7 @@ using namespace std;
 
 
 
-static HTTPRequest::HTTPRequest* HTTPMessageFactoryparseMessage(string raw){
+static HTTPRequest::HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 			cout << raw << endl;
 			return NULL;
 }
