@@ -3,9 +3,6 @@
 #include <regex>
 #include <vector>
 #include <iostream>
-using namespace std;
-enum requestType { GET, POST };
-enum responseCode {a };
 
 class HTTPRequest {
 	public:
@@ -33,5 +30,4 @@ class HTTPMessageFactory {
 		}
 
 };
-
 
