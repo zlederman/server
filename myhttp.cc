@@ -26,7 +26,7 @@ class HTTPRequest {
 		}	
 
 
-}
+};
 
 static HTTPRequest HTTPMessageFactory::getMessage(string raw){
 			cout << raw << endl;	
