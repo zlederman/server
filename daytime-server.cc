@@ -152,7 +152,7 @@ processTimeRequest( int fd )
     nameLength++;
     lastChar = newChar;
   }
-	HTTPMessageFactory::parseMessage(raw_req);
+	httpFactory::parseMessage(raw_req);
   // Add null character at the end of the string
 
 
