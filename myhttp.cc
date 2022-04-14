@@ -13,7 +13,7 @@ HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> heade
 			_asset = asset;
 			_headers = headers;	
 };	
-static HTTPRequest* HTTPMessageFactoryparseMessage(string raw){
+static HTTPRequest::HTTPRequest* HTTPMessageFactoryparseMessage(string raw){
 			cout << raw << endl;
 			return NULL;
 }
