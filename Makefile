@@ -6,8 +6,8 @@ all: git-commit myhttpd myhttp daytime-server use-dlopen hello.so
 myhttp.o: myhttp.cc myhttp.hh
 	$(CXX)  -c myhttp.cc $(NETLIBS)
 
-daytime-server : daytime-server.o
-	$(CXX) -o $@ $@.o $(NETLIBS)
+daytime-server : daytime-server.o myhttp.o
+	$(CXX) -o myhttp.o $@ $@.o $(NETLIBS)
 
 myhttpd : myhttpd.o
 	$(CXX) -o $@ $@.o $(NETLIBS)
