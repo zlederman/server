@@ -4,10 +4,13 @@
 #include <vector>
 #include <iostream>
 #include "myhttp.hh"
+
+#define get string("get")
+#define post string("post")
+#define err string("err")
+
+
 using namespace std;
-#define get string("get");
-#define post string("post");
-#define err string("err");
 vector<string> splitRaw(string raw);
 HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> headers){
 			_request = request;
