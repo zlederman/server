@@ -7,16 +7,6 @@ using namespace std;
 enum requestType { GET, POST };
 enum responseCode {a };
 
-class HTTPMessageFactory {
-	public: 
-		static HTTPRequest parseMessage(string raw){
-			cout<< raw << endl;
-			return NULL;
-
-		}
-
-};
-
 class HTTPRequest {
 	public:
 		requestType _request;
@@ -29,6 +19,18 @@ class HTTPRequest {
 			_headers = headers;	
 		};	
 
+
+};
+
+
+
+class HTTPMessageFactory {
+	public: 
+		static HTTPRequest parseMessage(string raw){
+			cout<< raw << endl;
+			return NULL;
+
+		}
 
 };
 
