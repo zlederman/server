@@ -6,11 +6,13 @@
 using namespace std;
 enum requestType { GET, POST };
 enum responseCode {a };
+
 class HTTPMessageFactory {
 	public: 
 		static HTTPRequest parseMessage(string raw);
 
 };
+
 class HTTPRequest {
 	public:
 		requestType _request;
@@ -28,5 +30,5 @@ class HTTPRequest {
 
 static HTTPRequest HTTPMessageFactory::getMessage(string raw){
 			cout << raw << endl;	
-			return;
+			return NULL;
 }
