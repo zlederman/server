@@ -7,7 +7,7 @@ myhttp.o: myhttp.cc myhttp.hh
 	$(CXX)  -c myhttp.cc $(NETLIBS)
 
 daytime-server : daytime-server.o myhttp.o
-	$(CXX) -o myhttp.o $@ $@.o $(NETLIBS)
+	$(CXX) -o$@ $@.o myhttp.o $(NETLIBS)
 
 myhttpd : myhttpd.o
 	$(CXX) -o $@ $@.o $(NETLIBS)
