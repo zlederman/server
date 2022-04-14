@@ -3,7 +3,7 @@
 #include <regex>
 #include <vector>
 #include <iostream>
-
+using namespace std;
 class HTTPRequest {
 	public:
 		requestType _request;
