@@ -1,18 +1,32 @@
 #include <string>
 #include <stdio.h>
 #include <regex>
+#include <vector>
 
 using namespace std;
-enum messageType { GET, POST };
+enum requestType { GET, POST };
 enum responseCode {a };
 class HTTPMessageFactory {
 	public: 
-		static HTTPMessage getMessage(string raw);
+		static HTTPRequest parseMessage(string raw);
 
 };
+class HTTPRequest {
+	public:
+		requestType _request;
+		string _asset;
+		vector<string> _headers;
+		
+		HTTPRequest(requestType request, string asset, vector<string> headers){
+			_request = request;
+			_asset = asset;
+			_headers = headers;	
+		}	
 
 
-static HTTPMessage HTTPMessageFactory::getMessage(string raw){
+}
+
+static HTTPRequest HTTPMessageFactory::getMessage(string raw){
 			cout << raw << endl;	
 			return;
 }
