@@ -13,8 +13,22 @@ HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> heade
 			_headers = headers;	
 };
 HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
-	string delimeter = std::string("\015\012");
-
-
+	vector<string> lines;
+	lines = splitRaw(raw):
+	cout << "HEllo"<< endl;
 }
 
+
+vector<string> splitRaw(string raw){
+	
+	vector<string tokens;
+	string delimeter = std::string("\015\012");
+	size_t pos = 0;
+	std::string token;
+	while((pos = raw.find(delimeter)) != string::npos){
+		token = raw.substr(0,pos);
+		raw.erase(0,pos + delimeter.length());
+		tokens.push_back(token);
+	}	
+	return tokens;
+}
