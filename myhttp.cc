@@ -26,7 +26,7 @@ class HTTPRequest {
 
 class HTTPMessageFactory {
 	public: 
-		static * HTTPRequest parseMessage(string raw){
+		static HTTPRequest* parseMessage(string raw){
 			std::cout << raw << std::endl;
 			return NULL;
 
