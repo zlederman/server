@@ -23,7 +23,7 @@ class HTTPRequest {
 			_request = request;
 			_asset = asset;
 			_headers = headers;	
-		}	
+		};	
 
 
 };
