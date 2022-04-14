@@ -11,8 +11,8 @@ HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> heade
 			_request = request;
 			_asset = asset;
 			_headers = headers;	
-};	
-static HTTPRequest HTTPMessageFactory::parseMessage(string raw){
+};
+HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 			cout << raw << endl;
 			return NULL;
 }
