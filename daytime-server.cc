@@ -34,7 +34,9 @@ const char * usage =
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
-#include <myhttp.hh>
+#include "myhttp.hh"
+
+using namespace std;
 int QueueLength = 5;
 
 // Processes time request
@@ -120,7 +122,7 @@ processTimeRequest( int fd )
   char name[ MaxName + 1 ];
   int nameLength = 0;
   int n;
-
+	string raw_req;
   // Send prompt
   const char * prompt = "\nType your name:";
   write( fd, prompt, strlen( prompt ) );
@@ -146,16 +148,13 @@ processTimeRequest( int fd )
       break;
     }
 
-    name[ nameLength ] = newChar;
+    raw_req += newChar;
     nameLength++;
-
     lastChar = newChar;
   }
-
+	HTTPMessageFactory::parseMessage(raw_req);
   // Add null character at the end of the string
-  name[ nameLength ] = 0;
 
-  printf( "name=%s\n", name );
 
   // Get time of day
   time_t now;
