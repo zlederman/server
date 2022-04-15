@@ -58,7 +58,7 @@ main( int argc, char ** argv )
     fprintf( stderr, "%s", usage );
     exit( -1 );
   }
-  PASS = "cGFzc3dvcmQ6dXNlcm5hbWUK";
+  PASS = "cGFzc3dvcmQ6dXNlcm5hbWU=";
   // Get the port from the arguments
   int port = atoi( argv[1] );
   
