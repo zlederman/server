@@ -39,7 +39,7 @@ const char * usage =
 using namespace std;
 int QueueLength = 5;
 HTTPMessageFactory* httpFactory = new HTTPMessageFactory();
-
+string PASS;
 // Processes time request
 void processClient( int socket );
 HTTPRequest* buildHTTPRequest(int fd);
@@ -55,7 +55,7 @@ main( int argc, char ** argv )
     fprintf( stderr, "%s", usage );
     exit( -1 );
   }
-  
+  PASS = "YOLO";
   // Get the port from the arguments
   int port = atoi( argv[1] );
   
@@ -118,9 +118,19 @@ main( int argc, char ** argv )
   
 }
 bool authenticate(HTTPRequest* httpReq){
-	for(string &headers: httpReq->_headers){
-		
+	string authHeader = string("Authorization");
+	string header = httpReq->findHeader(authHeader);
+	string delim = string(": Basic ");
+	string pass;
+	int idx = header.find(delim);
+	if(header == errString || idx == string::npos){
+		return false;
+	}	
+	pass = header.substr(idx,header.length() - idx);
+	if(pass != PASS){
+		return false;
 	}
+	return true;
 }
 string readRaw(int slaveFd){
 	int n;
