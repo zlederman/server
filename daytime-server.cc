@@ -41,7 +41,7 @@ int QueueLength = 5;
 HTTPMessageFactory* httpFactory = new HTTPMessageFactory();
 
 // Processes time request
-void processTimeRequest( int socket );
+void processHTTPRequest( int socket );
 
 int
 main( int argc, char ** argv )
