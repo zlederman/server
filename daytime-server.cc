@@ -39,6 +39,7 @@ const char * usage =
 using namespace std;
 int QueueLength = 5;
 HTTPMessageFactory* httpFactory = new HTTPMessageFactory();
+
 // Processes time request
 void processTimeRequest( int socket );
 
@@ -108,7 +109,7 @@ main( int argc, char ** argv )
     }
 
     // Process request.
-    processTimeRequest( slaveSocket );
+    processHTTPRequest( slaveSocket );
 
     // Close socket
     close( slaveSocket );
@@ -116,49 +117,44 @@ main( int argc, char ** argv )
   
 }
 
-void
-processTimeRequest( int fd )
-{
-  // Buffer used to store the name received from the client
-  HTTPRequest* req;
-	string delimiter = ("\012"); 
-	string raw_req;
-  // Send prompt
-  const char * prompt = "\nType your name:";
-  write( fd, prompt, strlen( prompt ) );
+string readRaw(int slaveFd){
 	int n;
-  // Currently character read
-  unsigned char newChar;	
+	string raw;
+	unsigned char newChar;	
 	unsigned char oldChar;
-  // Last character read
 
-  //
-  // The client should send <name><cr><lf>
-  // Read the name of the client character by character until a
-  // <CR><LF> is found.
-  //
-    
-  while (( n = read( fd, &newChar, sizeof(newChar) ) ) > 0 ) {
+
+	while (( n = read( fd, &newChar, sizeof(newChar) ) ) > 0 ) {
 		if(oldChar == '\012' && newChar == '\015'){
 			
-			raw_req += newChar;
+			raw += newChar;
 			//catches double carriage return
 			if((n = read(fd,&newChar, sizeof(newChar))) > 0) {
 				if(newChar == '\012'){
-					raw_req += newChar;
+					raw += newChar;
 					break;		
 				}
 			}
 
 		}
-    raw_req += newChar;
+    raw+= newChar;
 		oldChar = newChar;
   }
-	req = httpFactory->parseMessage(raw_req);
-  // Add null character at the end of the string
+	return raw;
+}
 
 
-  // Get time of day
+void
+processHTTPRequest( int fd )
+{
+  HTTPRequest* req;
+	string delimiter = ("\012"); 
+	string raw_req;
+  
+	raw_req = readRaw(fd);  
+  req = httpFactory->parseMessage(raw_req);
+	
+
   time_t now;
   time(&now);
   char	*timeString = ctime(&now);
