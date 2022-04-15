@@ -17,11 +17,12 @@ requestType getType(string requestHead);
 string getAsset(string requestHead);
 
 const string HTTPMessageFactory::version = "HTTP/1.0";
+
 HTTPResponse::HTTPResponse(int statusCode){
-	_status = statuses.at(statusCode);
+	_status = HTTPMessageFactory::statuses.at(statusCode);
 }
 
-HTTPMessageFactory::statuses = {
+const map<int,string> HTTPMessageFactory::statuses = {
 	{200, string("200 OK")},
 	{401, string("401 Unauthorized")}
 };
