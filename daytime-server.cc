@@ -178,6 +178,7 @@ HTTPResponse* initGetResponse(HTTPRequest* request){
 void processClient(int fd){
 	HTTPRequest* httpReq;
   HTTPResponse* httpRes;
+	string raw_response;
 				//get http request object
 	httpReq = buildHTTPRequest(fd);
 	switch(httpReq->_request){
@@ -193,7 +194,8 @@ void processClient(int fd){
 	if(httpRes->_status == string("401 Unauthorized")){
 		httpRes->_headers.push_back(authHeader);
 	}
-	write(fd,httpRes->toString().c_str(),strlen(httpRes->toString().c_str()));
+	raw_response = httpRes->toString();
+	write(fd,raw_response.c_str(),raw_response.length());
 	//interpret http object
 	// build response
 	// send response
