@@ -129,7 +129,7 @@ string readRaw(int slaveFd){
 			
 			raw += newChar;
 			//catches double carriage return
-			if((n = read(fd,&newChar, sizeof(newChar))) > 0) {
+			if((n = read(slaveFd,&newChar, sizeof(newChar))) > 0) {
 				if(newChar == '\012'){
 					raw += newChar;
 					break;		
