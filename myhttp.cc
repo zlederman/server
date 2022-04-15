@@ -31,7 +31,7 @@ string HTTPResponse::toString(){
 	response += _status;
 	response += " \r\n";
 
-	for(auto string header: _headers) {
+	for(&string header: _headers) {
 		response += header;
 		response += "\r\n";
 	}
