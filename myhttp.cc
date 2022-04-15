@@ -21,7 +21,7 @@ HTTPResponse::HTTPResponse(int statusCode){
 	_status = statuses.at(statusCode);
 }
 
-HTTPResponse::insertHeader(string header){
+void HTTPResponse::insertHeader(string header){
 	_headers.push_back(header);
 }
 
