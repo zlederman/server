@@ -36,7 +36,9 @@ const char * usage =
 #include <time.h>
 #include "myhttp.hh"
 
+#define errString string("\0");
 using namespace std;
+
 int QueueLength = 5;
 HTTPMessageFactory* httpFactory = new HTTPMessageFactory();
 string PASS;
