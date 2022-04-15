@@ -62,6 +62,9 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	return new HTTPRequest(rtype, asset, headers);	
 }
 
+HTTPResponse* HTTPMessageFactory::initResponse(int statusCode){
+	return new HTTPResponse(statusCode);
+}
 
 string getAsset(string requestHead){
 	string assetRoot = string("/");
@@ -104,3 +107,7 @@ vector<string> splitRaw(string raw){
 	}	
 	return tokens;
 }
+
+
+
+
