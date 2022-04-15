@@ -24,7 +24,7 @@ HTTPResponse::HTTPResponse(int statusCode){
 map<int, string> statuses = {
 	{200, string("200 OK")},
 	{401, string("401 Unauthorized")}
-}
+};
 void HTTPResponse::insertHeader(string header){
 	_headers.push_back(header);
 }
