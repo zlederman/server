@@ -173,7 +173,7 @@ HTTPResponse* initGetResponse(HTTPRequest* request){
 	if(request->_asset == string("/")){
 		responseCode = 200;
 	}
-	return new HTTPResponse(reponseCode);
+	return httpFactory.initResponse(responseCode);
 }
 void processClient(int fd){
 	HTTPRequest* httpReq;
@@ -190,7 +190,7 @@ void processClient(int fd){
 			//handle unknown request type
 			break;
 	}
-	if(httpRes->status == string("401 Unauthorized")){
+	if(httpRes->_status == string("401 Unauthorized")){
 		httpRes->_headers.push_back(authHeader);
 	}
 	write(fd,httpRes->toString().c_str(),strlen(httpRes->toString().c_str()));
