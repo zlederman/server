@@ -21,7 +21,7 @@ HTTPResponse::HTTPResponse(int statusCode){
 	_status = statuses.at(statusCode);
 }
 
-map<int, string> statuses = {
+HTTPMessageFactory::statuses = {
 	{200, string("200 OK")},
 	{401, string("401 Unauthorized")}
 };
