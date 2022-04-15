@@ -3,7 +3,7 @@
 #include <regex>
 #include <vector>
 #include <iostream>
-#include <unordered_map>
+#include <map>
 #include "myhttp.hh"
 
 #define get string("GET")
@@ -21,7 +21,7 @@ HTTPResponse::HTTPResponse(int statusCode){
 	_status = statuses.at(statusCode);
 }
 
-statuses = {
+map<int, string> statuses = {
 	{200, string("200 OK")},
 	{401, string("401 Unauthorized")}
 }
