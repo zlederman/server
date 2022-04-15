@@ -124,7 +124,7 @@ string readRaw(int slaveFd){
 	unsigned char oldChar;
 
 
-	while (( n = read( fd, &newChar, sizeof(newChar) ) ) > 0 ) {
+	while (( n = read( slaveFd, &newChar, sizeof(newChar) ) ) > 0 ) {
 		if(oldChar == '\012' && newChar == '\015'){
 			
 			raw += newChar;
