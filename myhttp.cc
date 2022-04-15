@@ -16,7 +16,7 @@ vector<string> splitRaw(string raw);
 requestType getType(string requestHead);
 string getAsset(string requestHead);
 
-
+const string HTTPMessageFactory::version = "HTTP/1.0";
 HTTPResponse::HTTPResponse(int statusCode){
 	_status = statuses.at(statusCode);
 }
