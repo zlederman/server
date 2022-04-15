@@ -212,21 +212,5 @@ buildHTTPRequest( int fd )
 	raw_req = readRaw(fd);  
   req = httpFactory->parseMessage(raw_req);
 	
-
-  time_t now;
-  time(&now);
-  char	*timeString = ctime(&now);
-
-  // Send name and greetings
-  const char * hi = "\nHi ";
-  const char * timeIs = " the time is:\n";
-  write( fd, hi, strlen( hi ) );
-  
-  // Send the time of day 
-  write(fd, timeString, strlen(timeString));
-
-  // Send last newline
-  const char * newline="\n";
-  write(fd, newline, strlen(newline));
 	return req;  
 }
