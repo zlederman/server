@@ -25,12 +25,16 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	vector<string> lines;
 	requestType rtype;
 	string asset;
-	
+	vector<string> headers;
 	lines = splitRaw(raw);
 	rtype = getType(lines[0]);
 	asset = getAsset(lines[0]);
 	lines.pop_back();
-	return new HTTPRequest(rtype,asset, lines);	
+
+	for(size_t i = 1; i < lines.size(); i++){
+		headers.push_back(lines.at(i));
+	}
+	return new HTTPRequest(rtype, asset, headers);	
 }
 
 
