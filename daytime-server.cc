@@ -119,12 +119,13 @@ main( int argc, char ** argv )
   }
   
 }
-bool authenticate(HTTPRequest* httpReq){
+bool authenticate(HTTPRequest* httpReq){	
+	string pass;
 	string authHeader = string("Authorization");
 	string header = httpReq->findHeader(authHeader);
 	string delim = string(": Basic ");
-	string pass;
-	int idx = header.find(delim);
+
+	size_t idx = header.find(delim);
 	if(header == errString || idx == string::npos){
 		return false;
 	}	
@@ -134,6 +135,7 @@ bool authenticate(HTTPRequest* httpReq){
 	}
 	return true;
 }
+
 string readRaw(int slaveFd){
 	int n;
 	string raw;
