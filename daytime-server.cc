@@ -109,7 +109,7 @@ main( int argc, char ** argv )
     }
 
     // Process request.
-    processHTTPRequest( slaveSocket );
+    processClient( slaveSocket );
 
     // Close socket
     close( slaveSocket );
@@ -144,8 +144,30 @@ string readRaw(int slaveFd){
 }
 
 
-void
-processHTTPRequest( int fd )
+
+
+void processClient(int fd){
+	HTTPRequest* httpReq;
+//	HTTPResponse* httpRes;
+				//get http request object
+	httpReq = buildHTTPRequest(fd);
+	switch(httpReq->_request){
+		case GET:
+			break;
+		case POST:
+			break;
+		default:
+			//handle unknown request type
+			break;
+	}
+	//interpret http object
+	// build response
+	// send response
+
+}
+
+HTTPRequest*
+buildHTTPRequest( int fd )
 {
   HTTPRequest* req;
 	string delimiter = ("\012"); 
