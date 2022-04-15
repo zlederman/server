@@ -168,11 +168,13 @@ HTTPResponse* initGetResponse(HTTPRequest* request){
 	//check if authed
 	if(!authenticate(request)){
 		responseCode = 401;
+		return httpFactory->initResponse(responseCode);
 	}
 	//check if directory is valid
 	if(request->_asset == string("/")){
 		responseCode = 200;
 	}
+
 	return httpFactory->initResponse(responseCode);
 }
 void processClient(int fd){

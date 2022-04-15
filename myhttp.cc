@@ -33,6 +33,7 @@ void HTTPResponse::insertHeader(string header){
 string HTTPResponse::toString(){
 	string response;
 	response += HTTPMessageFactory::version;
+	response += " ";
 	response += _status;
 	response += " \r\n";
 
