@@ -17,7 +17,7 @@ requestType getType(string requestHead);
 string getAsset(string requestHead);
 
 const string HTTPMessageFactory::version = "HTTP/1.0";
-authHeader = string("WWW-Authenticate: Basic realm=\"ANTON\"");
+string authHeader = string("WWW-Authenticate: Basic realm=\"ANTON\"");
 HTTPResponse::HTTPResponse(int statusCode){
 	_status = HTTPMessageFactory::statuses.at(statusCode);
 }
