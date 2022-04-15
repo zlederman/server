@@ -43,6 +43,7 @@ HTTPMessageFactory* httpFactory = new HTTPMessageFactory();
 // Processes time request
 void processClient( int socket );
 HTTPRequest* buildHTTPRequest(int fd);
+
 int
 main( int argc, char ** argv )
 {
@@ -192,5 +193,5 @@ buildHTTPRequest( int fd )
   // Send last newline
   const char * newline="\n";
   write(fd, newline, strlen(newline));
-  
+	return req;  
 }
