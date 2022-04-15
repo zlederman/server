@@ -147,7 +147,7 @@ HTTPResponse* initGetResponse(HTTPRequest* request){
 	int responseCode = 0;
 	//check if authed
 	//check if directory is valid
-	if(request->asset == string("/")){
+	if(request->_asset == string("/")){
 		responseCode = 200;
 	}
 	return new HTTPResponse(200);
