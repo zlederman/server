@@ -126,7 +126,7 @@ bool authenticate(HTTPRequest* httpReq){
 	string delim = string(": Basic ");
 
 	size_t idx = header.find(delim);
-	if(header == string("\0"); || idx == string::npos){
+	if(header == string("\0") || idx == string::npos){
 		return false;
 	}	
 	pass = header.substr(idx,header.length() - idx);
