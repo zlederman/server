@@ -145,8 +145,6 @@ string readRaw(int slaveFd){
 }
 
 
-
-
 void processClient(int fd){
 	HTTPRequest* httpReq;
 //	HTTPResponse* httpRes;

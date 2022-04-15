@@ -16,6 +16,31 @@ vector<string> splitRaw(string raw);
 requestType getType(string requestHead);
 string getAsset(string requestHead);
 
+
+HTTPResponse::HTTPResponse(int statusCode){
+	_status = statuses.at(statusCode);
+}
+
+HTTPResponse::insertHeader(string header){
+	_headers.push_back(header);
+}
+
+string HTTPResponse::toString(){
+	string response;
+	response += HTTPMessageFactory.version;
+	response += _status;
+	response += " \r\n";
+
+	for(auto string header: _headers) {
+		response += header;
+		response += "\r\n";
+	}
+	response += "\r\n";
+	response += _body;
+	
+	return response;
+
+}
 HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> headers){
 			_request = request;
 			_asset = asset;
