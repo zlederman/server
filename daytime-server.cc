@@ -108,7 +108,6 @@ main( int argc, char ** argv )
       perror( "accept" );
       exit( -1 );
     }
-
     // Process request.
     processClient( slaveSocket );
 
@@ -144,14 +143,23 @@ string readRaw(int slaveFd){
 	return raw;
 }
 
-
+HTTPResponse* initGetResponse(HTTPRequest* request){
+	int * responseCode = 0;
+	//check if authed
+	//check if directory is valid
+	if(request->asset == string("/")){
+		responseCode = 200;
+	}
+	return new HTTPResponse(200);
+}
 void processClient(int fd){
 	HTTPRequest* httpReq;
-//	HTTPResponse* httpRes;
+  HTTPResponse* httpRes;
 				//get http request object
 	httpReq = buildHTTPRequest(fd);
 	switch(httpReq->_request){
 		case GET:
+			httpRes = initGetResponse(httpReq);
 			break;
 		case POST:
 			break;
