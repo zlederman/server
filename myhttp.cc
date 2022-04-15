@@ -51,6 +51,15 @@ HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> heade
 			_asset = asset;
 			_headers = headers;	
 };
+
+string HTTPRequest::findHeader(string headerName) {
+	for(string& header : _headers){
+		if(header.find(headerName) != string::npos){
+			return header;
+		}
+	}
+	return errString;
+}
 HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	vector<string> lines;
 	requestType rtype;

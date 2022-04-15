@@ -43,6 +43,7 @@ HTTPMessageFactory* httpFactory = new HTTPMessageFactory();
 // Processes time request
 void processClient( int socket );
 HTTPRequest* buildHTTPRequest(int fd);
+bool authenticate(HTTPRequest* httpReq);
 
 int
 main( int argc, char ** argv )
@@ -116,7 +117,11 @@ main( int argc, char ** argv )
   }
   
 }
-
+bool authenticate(HTTPRequest* httpReq){
+	for(string &headers: httpReq->_headers){
+		
+	}
+}
 string readRaw(int slaveFd){
 	int n;
 	string raw;
