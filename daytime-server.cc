@@ -192,7 +192,7 @@ void processClient(int fd){
 			break;
 	}
 	if(httpRes->_status == string("401 Unauthorized")){
-		httpRes->_headers.push_back(authHeader);
+		httpRes->_headers.push_back(HTTPMessageFactory::authHeader);
 	}
 	raw_response = httpRes->toString();
 	write(fd,raw_response.c_str(),raw_response.length());
