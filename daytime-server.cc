@@ -144,7 +144,7 @@ string readRaw(int slaveFd){
 }
 
 HTTPResponse* initGetResponse(HTTPRequest* request){
-	int * responseCode = 0;
+	int responseCode = 0;
 	//check if authed
 	//check if directory is valid
 	if(request->asset == string("/")){
