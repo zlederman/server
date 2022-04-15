@@ -173,7 +173,7 @@ HTTPResponse* initGetResponse(HTTPRequest* request){
 	if(request->_asset == string("/")){
 		responseCode = 200;
 	}
-	return httpFactory.initResponse(responseCode);
+	return httpFactory->initResponse(responseCode);
 }
 void processClient(int fd){
 	HTTPRequest* httpReq;
