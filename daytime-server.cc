@@ -167,6 +167,7 @@ string readRaw(int slaveFd){
     raw += newChar;
 		oldChar = newChar;
   }
+
 	return raw;
 }
 
@@ -244,5 +245,6 @@ buildHTTPRequest( int fd )
 	raw_req = readRaw(fd);  
   
 	req = httpFactory->parseMessage(raw_req);
+	log(raw_req);
 	return req;  
 }
