@@ -38,7 +38,7 @@ const char * usage =
 
 
 #define errString string("\0");
-#define rootDir "http-root-dir";
+#define rootDir "http-root-dir/";
 #define index "index.html";
 using namespace std;
 
@@ -189,7 +189,8 @@ string getData(string asset){
 	string data;
 	FILE* f;
 	if(asset == "/"){
-		asset = rootDir + index;
+		asset = rootDir;
+		asset += index;
 	}
 	f = fopen(asset.c_str(),"r");
 	fseek(f, 0, SEEK_END);
