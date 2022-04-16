@@ -245,6 +245,6 @@ buildHTTPRequest( int fd )
 	raw_req = readRaw(fd);  
   
 	req = httpFactory->parseMessage(raw_req);
-	log(raw_req);
+	log(req->_request + req->_asset);
 	return req;  
 }
