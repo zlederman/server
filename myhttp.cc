@@ -60,7 +60,7 @@ HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> heade
 
 string HTTPRequest::toString(){
 	string res;
-	swtich(_request){
+	switch(_request){
 		case GET:
 			res += get;
 			break;
