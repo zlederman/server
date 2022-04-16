@@ -60,7 +60,7 @@ main( int argc, char ** argv )
     fprintf( stderr, "%s", usage );
     exit( -1 );
   }
-  PASS = "cGFzc3dvcmQ6dXNlcm5hbWU=";
+  PASS = ":Basic cGFzc3dvcmQ6dXNlcm5hbWU=";
   // Get the port from the arguments
   int port = atoi( argv[1] );
   
@@ -136,7 +136,7 @@ bool authenticate(HTTPRequest* httpReq){
 	if(header == string("\0") || idx == string::npos){
 		return false;
 	}	
-	pass = header.substr(idx + delim.length() ,header.length() - idx);
+	pass = header.substr(idx ,header.length() - idx);
 	if(pass != PASS){
 		return false;
 	}
