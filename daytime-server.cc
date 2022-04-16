@@ -188,7 +188,7 @@ string getData(string asset){
 	string data;
 	FILE* f;
 
-	f = fopen(asset->c_str(),"r");
+	f = fopen(asset.c_str(),"r");
 	fseek(f, 0, SEEK_END);
 	size_t size = ftell(f);
 
