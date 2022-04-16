@@ -63,6 +63,7 @@ string HTTPRequest::toString(){
 	res += _request;
 	res += " ";
  	res += _asset;	
+	return res;
 }
 
 string HTTPRequest::findHeader(string headerName) {
