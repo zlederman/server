@@ -226,8 +226,8 @@ void processClient(int fd){
 	if(httpRes->_status == string("200 OK")){
 		httpRes->_headers.push_back(HTTPMessageFactory::contentTypeHTML);
 		httpRes->_body = getData(httpReq->_asset);
-
 	}
+	log(httpRes->_status);
 	raw_response = httpRes->toString();
 	write(fd,raw_response.c_str(),raw_response.length());
 	//interpret http object
