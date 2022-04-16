@@ -184,7 +184,20 @@ HTTPResponse* initGetResponse(HTTPRequest* request){
 	return httpFactory->initResponse(responseCode);
 }
 
+string getData(string asset){
+	string data;
+	FILE* f;
 
+	f = fopen(asset,"r");
+	fseek(f, 0, SEEK_END);
+	size_t size = ftell(f);
+
+	char* where = new char[size];
+	rewind(f);
+	fread(where,sizeof(char),size,f);
+	return string(where);
+
+}
 void processClient(int fd){
 
 	HTTPRequest* httpReq;
@@ -206,7 +219,9 @@ void processClient(int fd){
 		httpRes->_headers.push_back(HTTPMessageFactory::authHeader);
 	}
 	if(httpRes->_status == string("200 OK")){
-		httpRes->_headers.push_back(
+		httpRes->_headers.push_back(HTTPMessageFactory::contentTypeHTML);
+		httpRes->_body = getData(httpReq->_asset);
+
 	}
 	raw_response = httpRes->toString();
 	write(fd,raw_response.c_str(),raw_response.length());
