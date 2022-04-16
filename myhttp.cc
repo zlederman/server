@@ -68,7 +68,7 @@ string HTTPRequest::toString(){
 			res += post;
 			break;
 		default:
-			res += err;
+			res += "ERROR INVALID REQ";
 			return;
 	}
 	res += " ";
