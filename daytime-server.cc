@@ -38,6 +38,7 @@ const char * usage =
 
 
 #define errString string("\0");
+
 using namespace std;
 
 int QueueLength = 5;
@@ -47,6 +48,7 @@ string PASS;
 void processClient( int socket );
 HTTPRequest* buildHTTPRequest(int fd);
 bool authenticate(HTTPRequest* httpReq);
+void log(string status);
 
 int
 main( int argc, char ** argv )
@@ -120,6 +122,10 @@ main( int argc, char ** argv )
   }
   
 }
+
+void log(string status){
+	cout << "[ INFO ]" << status << endl; 
+}
 bool authenticate(HTTPRequest* httpReq){	
 	string pass;
 	string authHeader = string("Authorization");
@@ -157,7 +163,7 @@ string readRaw(int slaveFd){
 			}
 
 		}
-    raw+= newChar;
+    raw += newChar;
 		oldChar = newChar;
   }
 	return raw;
@@ -177,7 +183,9 @@ HTTPResponse* initGetResponse(HTTPRequest* request){
 
 	return httpFactory->initResponse(responseCode);
 }
+
 void processClient(int fd){
+
 	HTTPRequest* httpReq;
   HTTPResponse* httpRes;
 	string raw_response;
@@ -208,7 +216,6 @@ HTTPRequest*
 buildHTTPRequest( int fd )
 {
   HTTPRequest* req;
-	string delimiter = ("\012"); 
 	string raw_req;
   
 	raw_req = readRaw(fd);  

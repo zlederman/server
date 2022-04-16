@@ -18,7 +18,8 @@ string getAsset(string requestHead);
 
 const string HTTPMessageFactory::version = "HTTP/1.0";
 const string HTTPMessageFactory::authHeader = string("WWW-Authenticate: Basic realm=\"ANTON\"");
-HTTPResponse::HTTPResponse(int statusCode){
+
+HTTPResponse::HTTPResponse(int statusCode) {
 	_status = HTTPMessageFactory::statuses.at(statusCode);
 }
 
@@ -26,6 +27,8 @@ const map<int,string> HTTPMessageFactory::statuses = {
 	{200, string("200 OK")},
 	{401, string("401 Unauthorized")}
 };
+
+
 void HTTPResponse::insertHeader(string header){
 	_headers.push_back(header);
 }
