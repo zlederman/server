@@ -192,7 +192,7 @@ string getData(string asset){
 	fseek(f, 0, SEEK_END);
 	size_t size = ftell(f);
 
-	char* where[size];
+	char where[size];
 	rewind(f);
 	fread(where,sizeof(char),size,f);
 	return string(where);
