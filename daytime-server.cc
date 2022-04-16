@@ -184,6 +184,7 @@ HTTPResponse* initGetResponse(HTTPRequest* request){
 	return httpFactory->initResponse(responseCode);
 }
 
+
 void processClient(int fd){
 
 	HTTPRequest* httpReq;
@@ -203,6 +204,9 @@ void processClient(int fd){
 	}
 	if(httpRes->_status == string("401 Unauthorized")){
 		httpRes->_headers.push_back(HTTPMessageFactory::authHeader);
+	}
+	if(httpRes->_status == string("200 OK")){
+		httpRes->_headers.push_back(
 	}
 	raw_response = httpRes->toString();
 	write(fd,raw_response.c_str(),raw_response.length());

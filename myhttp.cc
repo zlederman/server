@@ -18,6 +18,7 @@ string getAsset(string requestHead);
 
 const string HTTPMessageFactory::version = "HTTP/1.0";
 const string HTTPMessageFactory::authHeader = string("WWW-Authenticate: Basic realm=\"ANTON\"");
+const string HTTPMessageFactory::contentTypeHTML = string("Content-type: text/html");
 
 HTTPResponse::HTTPResponse(int statusCode) {
 	_status = HTTPMessageFactory::statuses.at(statusCode);
