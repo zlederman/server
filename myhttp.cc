@@ -69,7 +69,7 @@ string HTTPRequest::toString(){
 			break;
 		default:
 			res += "ERROR INVALID REQ";
-			return;
+			return res;
 	}
 	res += " ";
  	res += _asset;	
