@@ -60,7 +60,7 @@ main( int argc, char ** argv )
     fprintf( stderr, "%s", usage );
     exit( -1 );
   }
-  PASS = ":Basic cGFzc3dvcmQ6dXNlcm5hbWU=";
+  PASS = ": Basic cGFzc3dvcmQ6dXNlcm5hbWU=";
   // Get the port from the arguments
   int port = atoi( argv[1] );
   
