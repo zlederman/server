@@ -219,7 +219,7 @@ buildHTTPRequest( int fd )
 	string raw_req;
   
 	raw_req = readRaw(fd);  
-  req = httpFactory->parseMessage(raw_req);
-	
+  
+	req = httpFactory->parseMessage(raw_req);
 	return req;  
 }
