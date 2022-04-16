@@ -171,7 +171,7 @@ string readRaw(int slaveFd){
 }
 
 HTTPResponse* initGetResponse(HTTPRequest* request){
-	int responseCode = 0;
+	int responseCode = 400;
 	//check if authed
 	if(!authenticate(request)){
 		responseCode = 401;
