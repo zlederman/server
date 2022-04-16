@@ -38,7 +38,8 @@ const char * usage =
 
 
 #define errString string("\0");
-
+#define rootDir "http-root-dir";
+#define index "index.html";
 using namespace std;
 
 int QueueLength = 5;
@@ -187,7 +188,9 @@ HTTPResponse* initGetResponse(HTTPRequest* request){
 string getData(string asset){
 	string data;
 	FILE* f;
-
+	if(asset == "/"){
+		asset = rootDir + index;
+	}
 	f = fopen(asset.c_str(),"r");
 	fseek(f, 0, SEEK_END);
 	size_t size = ftell(f);
