@@ -58,6 +58,13 @@ HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> heade
 			_headers = headers;	
 };
 
+string HTTPRequest::toString(){
+	string res;
+	res += _request;
+	res += " ";
+ 	res += _asset;	
+}
+
 string HTTPRequest::findHeader(string headerName) {
 	for(string& header : _headers){
 		if(header.find(headerName) != string::npos){
