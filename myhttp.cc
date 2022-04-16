@@ -60,7 +60,17 @@ HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> heade
 
 string HTTPRequest::toString(){
 	string res;
-	res += _request;
+	swtich(_request){
+		case GET:
+			res += get;
+			break;
+		case POST:
+			res += post;
+			break;
+		default:
+			res += err;
+			return;
+	}
 	res += " ";
  	res += _asset;	
 	return res;
