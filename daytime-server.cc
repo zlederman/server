@@ -136,7 +136,7 @@ bool authenticate(HTTPRequest* httpReq){
 	if(header == string("\0") || idx == string::npos){
 		return false;
 	}	
-	pass = header.substr(idx,header.length() - idx);
+	pass = header.substr(idx + delim.length() ,header.length() - idx);
 	if(pass != PASS){
 		return false;
 	}
