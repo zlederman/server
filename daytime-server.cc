@@ -125,7 +125,7 @@ main( int argc, char ** argv )
 }
 
 void log(string status){
-	cout << "[ INFO ] " << status << endl; 
+	cout << "\033[1;32m[ INFO ]\033[0m " << status << endl; 
 }
 bool authenticate(HTTPRequest* httpReq){	
 	string pass;
