@@ -183,12 +183,12 @@ HTTPResponse* initGetResponse(HTTPRequest* request){
 		return httpFactory->initResponse(responseCode);
 	}
 	//check if directory is valid
-	if(request->_asset == string("/")){
+	//if(request->_asset == string("/")){
 		responseCode = 200;
 	}
-	else{
-		responseCode = 404;
-	}
+//	else{
+	//	responseCode = 404;
+//	}
 
 	return httpFactory->initResponse(responseCode);
 }
