@@ -199,7 +199,7 @@ string getData(string asset){
 	FILE* f;
 	name = rootDir;
 	if(asset == "/"){
-		namr += index;
+		name += index;
 	}
 	f = fopen(name.c_str(),"r");
 	fseek(f, 0, SEEK_END);
