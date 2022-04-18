@@ -201,6 +201,9 @@ string getData(string asset){
 	if(asset == "/"){
 		name += index;
 	}
+	else{
+		name += asset;
+	}
 	f = fopen(name.c_str(),"r");
 	fseek(f, 0, SEEK_END);
 	size_t size = ftell(f);
