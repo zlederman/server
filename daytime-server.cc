@@ -40,16 +40,22 @@ const char * usage =
 #define errString string("\0");
 #define rootDir "http-root-dir/";
 #define index "index.html";
+
 using namespace std;
 
 int QueueLength = 5;
 HTTPMessageFactory* httpFactory = new HTTPMessageFactory();
-string PASS;
+
+string PASS = ": Basic cGFzc3dvcmQ6dXNlcm5hbWU=";
 // Processes time request
 void processClient( int socket );
 HTTPRequest* buildHTTPRequest(int fd);
 bool authenticate(HTTPRequest* httpReq);
 void log(string status);
+
+void log(string status){
+	cout << "\033[1;32m[ INFO ]\033[0m " << status << endl; 
+}
 
 int
 main( int argc, char ** argv )
@@ -61,7 +67,7 @@ main( int argc, char ** argv )
     fprintf( stderr, "%s", usage );
     exit( -1 );
   }
-  PASS = ": Basic cGFzc3dvcmQ6dXNlcm5hbWU=";
+
   // Get the port from the arguments
   int port = atoi( argv[1] );
   
@@ -124,9 +130,7 @@ main( int argc, char ** argv )
   
 }
 
-void log(string status){
-	cout << "\033[1;32m[ INFO ]\033[0m " << status << endl; 
-}
+
 bool authenticate(HTTPRequest* httpReq){	
 	string pass;
 	string authHeader = string("Authorization");
@@ -182,18 +186,22 @@ HTTPResponse* initGetResponse(HTTPRequest* request){
 	if(request->_asset == string("/")){
 		responseCode = 200;
 	}
+	else{
+		responseCode = 404;
+	}
 
 	return httpFactory->initResponse(responseCode);
 }
 
 string getData(string asset){
 	string data;
+	string name;
 	FILE* f;
+	name = rootDir;
 	if(asset == "/"){
-		asset = rootDir;
-		asset += index;
+		namr += index;
 	}
-	f = fopen(asset.c_str(),"r");
+	f = fopen(name.c_str(),"r");
 	fseek(f, 0, SEEK_END);
 	size_t size = ftell(f);
 
