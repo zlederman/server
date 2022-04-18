@@ -27,7 +27,8 @@ HTTPResponse::HTTPResponse(int statusCode) {
 const map<int,string> HTTPMessageFactory::statuses = {
 	{200, string("200 OK")},
 	{401, string("401 Unauthorized")},
-	{400, string("400 Bad Request")}
+	{400, string("400 Bad Request")},
+	{404, string("404 Not Found")}
 };
 
 
