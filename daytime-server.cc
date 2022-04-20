@@ -285,7 +285,8 @@ string getData(string asset){
 	char where[size];
 	rewind(f);
 	fread(where,sizeof(char),size,f);
-	return string(where);
+	data = string(where);
+	return data;
 
 }
 void processClient(int fd){
