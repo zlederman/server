@@ -58,6 +58,7 @@ void log(string status);
 bool validate(string path);
 int initIncoming(int masterSocket);
 string getIP(struct in_addr ip_struct);
+void iterativeServer(int masterSocket);
 void forkServer(int masterSocket);
 void log(string status){
 	cout << "\033[1;32m[ INFO ]\033[0m " << status << endl; 
