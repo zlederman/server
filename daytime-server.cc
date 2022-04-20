@@ -113,7 +113,7 @@ main( int argc, char ** argv )
     perror("listen");
     exit( -1 );
   }
-	iterativeServer(int serverSocket);
+	iterativeServer(serverSocket);
 	//forkServer(masterSocket);	 
   
 }
