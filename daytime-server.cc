@@ -231,6 +231,7 @@ string getDirectory(string path){
 bool validate(string path){
 	DIR* dir;
 	string directory;
+	directory += rootDir;
 	directory = getDirectory(path);
 	// check if path goes into parent
 
