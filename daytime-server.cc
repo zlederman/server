@@ -285,7 +285,7 @@ string getData(string asset){
 	char where[size];
 	rewind(f);
 	fread(where,sizeof(char),size,f);
-	data = string(where);
+	data = string(where).substring(0,size);
 	return data;
 
 }
