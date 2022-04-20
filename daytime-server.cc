@@ -143,13 +143,22 @@ void forkServer(int serverSocket) {
 	}
 }
 
+string getIP(struct in_addr){
+	string res;
+	res += in_addr.s_b1;
+	res += in_addr.s_b2;
+	res += in_addr.s_b3;
+	res += in_addr.s_b4;
+	return res;
+}
+
 int initIncoming(int masterSocket) {
 	struct sockaddr_in clientIPAddress;
 	int alen = sizeof(clientIPAddress);
 	int slaveSocket = accept( masterSocket,
 									(struct sockaddr *)&clientIPAddress,
 									(socklen_t*)&alen);
-	log(to_string(clientIPAddress.sin_addr));
+	log(getIP(clientIPAddress.in_addr));
 	if(slaveSocket < 0){
 		perror("accept");
 		exit(-1);
