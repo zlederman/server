@@ -35,6 +35,8 @@ const char * usage =
 #include <stdio.h>
 #include <time.h>
 #include <sys/wait.h>
+#include <dirent.h>
+#include <errno.h>
 #include "myhttp.hh"
 
 
@@ -53,6 +55,7 @@ void processClient( int socket );
 HTTPRequest* buildHTTPRequest(int fd);
 bool authenticate(HTTPRequest* httpReq);
 void log(string status);
+bool validate(string path);
 int initIncoming(int masterSocket);
 string getIP(struct in_addr ip_struct);
 void forkServer(int masterSocket);
@@ -124,6 +127,7 @@ void iterativeServer(int serverSocket) {
 		close(clientSocket);
 	}
 }
+
 void forkServer(int serverSocket) {
 	int clientSocket;
 	int ret;
@@ -147,7 +151,7 @@ void forkServer(int serverSocket) {
 string getIP(struct in_addr ip_struct){
 	string res;
 	uint32_t ip_num = ip_struct.s_addr;
-	res += "Client IP Address: ";
+	res += "Client IP ";
 	res += to_string(ip_num & (0xFF));
 	res += ".";	
 	res += to_string((ip_num & (0xFF << 8)) >> 8);
@@ -216,6 +220,32 @@ string readRaw(int slaveFd){
 	return raw;
 }
 
+string getDirectory(string path){
+	for(int i = path.length(); i >= 0; i--){
+		if(path.at(i) == '/'){
+			return path.substr(0,i);
+		}
+	}
+	return string("/");
+}
+bool validate(string path){
+	DIR* dir;
+	string directory;
+	directory = getDirectory(path);
+	// check if path goes into parent
+
+	// check if directory or file exists
+	dir = opendir(directory);
+	if(dir) {
+		closedir(dir);
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+
 HTTPResponse* initGetResponse(HTTPRequest* request){
 	int responseCode = 400;
 	//check if authed
@@ -224,7 +254,7 @@ HTTPResponse* initGetResponse(HTTPRequest* request){
 		return httpFactory->initResponse(responseCode);
 	}
 	//check if directory is valid
-	if(request->_asset == string("/")){
+	if(validate(request->_asset)){
 		responseCode = 200;
 	}
 	else{
