@@ -30,6 +30,7 @@ const char * usage =
 #include <netinet/in.h>
 #include <netdb.h>
 #include <unistd.h>
+#include <signal.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -64,6 +65,24 @@ void log(string status){
 	cout << "\033[1;32m[ INFO ]\033[0m " << status << endl; 
 }
 
+
+extern "C" void reap(int sig){
+	int status;
+	string logStr;
+	int res = waitpid(-1,&status,WHNOHANG);
+	if(res >0){
+		logStr += to_string(res);
+		logStr += " exited.";
+	}
+
+}
+
+extern "C" void quit(int sig){
+	waitpid(-1,NULL,WHNOHANG);
+	exit(0);
+}
+
+
 int
 main( int argc, char ** argv )
 {
@@ -74,7 +93,15 @@ main( int argc, char ** argv )
     fprintf( stderr, "%s", usage );
     exit( -1 );
   }
-
+	
+	struct sigaction sa_ctrlc;
+	sa_ctrlc.sa_handler = quit;
+	sigemptyset(&sa_ctrlc.sa_mask);
+	sa_ctrlc.sa_flags = SA_RESTART;
+	if(sigaction(SIGINT,&sa_ctrlc,NULL)){
+		perror("sigaction");
+		exit(2);
+	}
   // Get the port from the arguments
   int port = atoi( argv[1] );
   
