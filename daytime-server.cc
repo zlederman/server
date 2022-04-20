@@ -54,6 +54,7 @@ HTTPRequest* buildHTTPRequest(int fd);
 bool authenticate(HTTPRequest* httpReq);
 void log(string status);
 int initIncoming(int masterSocket);
+string getIP(struct in_addr ip_struct);
 void forkServer(int masterSocket);
 void log(string status){
 	cout << "\033[1;32m[ INFO ]\033[0m " << status << endl; 
@@ -143,9 +144,9 @@ void forkServer(int serverSocket) {
 	}
 }
 
-string getIP(struct in_addr){
+string getIP(struct in_addr ip_struct){
 	string res;
-	res += string::to_string(in_addr.s_addr);
+	res += to_string(ip_struct.s_addr);
 	return res;
 }
 
