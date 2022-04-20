@@ -93,7 +93,8 @@ main( int argc, char ** argv )
     fprintf( stderr, "%s", usage );
     exit( -1 );
   }
-	
+	//registering sig int handler
+	//used for quiting server
 	struct sigaction sa_ctrlc;
 	sa_ctrlc.sa_handler = quit;
 	sigemptyset(&sa_ctrlc.sa_mask);
@@ -259,6 +260,9 @@ string getDirectory(string path){
 bool validate(string path){
 	DIR* dir;
 	string directory;
+	if(path.find("..")){
+		return false;
+	}
 	path.erase(path.begin());
 	directory += rootDir;
 	directory += getDirectory(path);
