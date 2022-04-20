@@ -234,7 +234,7 @@ bool validate(string path){
 	string directory;
 	path.erase(path.begin());
 	directory += rootDir;
-	directory = getDirectory(path);
+	directory += getDirectory(path);
 	// check if path goes into parent
 
 	// check if directory or file exists
