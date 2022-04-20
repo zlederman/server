@@ -145,7 +145,7 @@ void forkServer(int serverSocket) {
 
 string getIP(struct in_addr){
 	string res;
-	res += to_string(in_addr.s_addr);
+	res += string::to_string(in_addr.s_addr);
 	return res;
 }
 
