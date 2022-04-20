@@ -52,7 +52,8 @@ void processClient( int socket );
 HTTPRequest* buildHTTPRequest(int fd);
 bool authenticate(HTTPRequest* httpReq);
 void log(string status);
-
+int initIncoming(int masterSocket);
+void forkServer(int masterSocket);
 void log(string status){
 	cout << "\033[1;32m[ INFO ]\033[0m " << status << endl; 
 }
