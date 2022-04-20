@@ -235,7 +235,7 @@ bool validate(string path){
 	// check if path goes into parent
 
 	// check if directory or file exists
-	dir = opendir(directory->c_str());
+	dir = opendir(directory.c_str());
 	if(dir) {
 		closedir(dir);
 		return true;
