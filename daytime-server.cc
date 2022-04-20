@@ -221,7 +221,7 @@ string readRaw(int slaveFd){
 }
 
 string getDirectory(string path){
-	for(int i = path.length(); i >= 0; i--){
+	for(int i = path.length() - 1; i >= 0; i--){
 		if(path.at(i) == '/'){
 			return path.substr(0,i);
 		}
