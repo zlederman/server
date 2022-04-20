@@ -108,28 +108,51 @@ main( int argc, char ** argv )
     exit( -1 );
   }
 
-  while ( 1 ) {
-
-    // Accept incoming connections
-    struct sockaddr_in clientIPAddress;
-    int alen = sizeof( clientIPAddress );
-    int slaveSocket = accept( masterSocket,
-			      (struct sockaddr *)&clientIPAddress,
-			      (socklen_t*)&alen);
-
-    if ( slaveSocket < 0 ) {
-      perror( "accept" );
-      exit( -1 );
-    }
-    // Process request.
-    processClient( slaveSocket );
-
-    // Close socket
-    close( slaveSocket );
-  }
+	forkServer(masterSocket);	 
   
 }
 
+
+void iterativeServer(int serverSocket) {
+	int clientSocket;
+	while(1) {
+		clientSocket = initIncoming(masterSocket);
+		processClient(clientSocket);
+		close(clientSocket);
+	}
+}
+void forkServer(int serverSocket) {
+	int clientSocket;
+	int ret;
+	while(1) {
+		clientSocket = initIncoming(masterSocket);
+		ret = fork();
+
+		if(ret == 0){
+			processClient(clientSocket);
+			exit(0);
+		}
+		if(ret < 0){
+			perror("fork");
+			exit(-1);
+		}
+		close(clientSocket);
+		waitpid(ret,0,0);
+	}
+}
+
+int initIncoming(int masterSocket) {
+	struct sockaddr_in clientIPAddress;
+	int alen = sizeof(clientIPAddress);
+	int slaveSocket = accept( masterSocket,
+									(struct sockaddr *)&clientIPAddress,
+									(socklen_t*)&alen);
+	if(slaveSocket < 0){
+		perror("accept");
+		exit(-1);
+	}
+	return slaveSocket;
+}
 
 bool authenticate(HTTPRequest* httpReq){	
 	string pass;
@@ -183,12 +206,12 @@ HTTPResponse* initGetResponse(HTTPRequest* request){
 		return httpFactory->initResponse(responseCode);
 	}
 	//check if directory is valid
-	//if(request->_asset == string("/")){
+	if(request->_asset == string("/")){
 		responseCode = 200;
 	}
-//	else{
-	//	responseCode = 404;
-//	}
+	else{
+		responseCode = 404;
+	}
 
 	return httpFactory->initResponse(responseCode);
 }
