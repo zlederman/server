@@ -117,7 +117,7 @@ main( int argc, char ** argv )
 void iterativeServer(int serverSocket) {
 	int clientSocket;
 	while(1) {
-		clientSocket = initIncoming(masterSocket);
+		clientSocket = initIncoming(serverSocket);
 		processClient(clientSocket);
 		close(clientSocket);
 	}
@@ -126,7 +126,7 @@ void forkServer(int serverSocket) {
 	int clientSocket;
 	int ret;
 	while(1) {
-		clientSocket = initIncoming(masterSocket);
+		clientSocket = initIncoming(serverSocket);
 		ret = fork();
 
 		if(ret == 0){
