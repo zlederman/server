@@ -140,7 +140,7 @@ void forkServer(int serverSocket) {
 			exit(-1);
 		}
 		close(clientSocket);
-		waitpid(ret,0,0);
+		while(waitpid(0,0,0)>0);
 	}
 }
 
