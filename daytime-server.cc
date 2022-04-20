@@ -147,13 +147,14 @@ void forkServer(int serverSocket) {
 string getIP(struct in_addr ip_struct){
 	string res;
 	uint32_t ip_num = ip_struct.s_addr;
-	res += to_string((ip_num & (0xFF << 24)) >> 24);
+	res += "Client IP Address: ";
+	res += to_string(ip_num & (0xFF));
+	res += ".";	
+	res += to_string((ip_num & (0xFF << 8)) >> 8);
 	res += ".";
 	res += to_string((ip_num & (0xFF << 16)) >> 16);
 	res += ".";
-	res += to_string((ip_num & (0xFF << 8)) >> 8);
-	res += ".";
-	res += to_string(ip_num & (0xFF));
+	res += to_string((ip_num & (0xFF << 24)) >> 24);
 	return res;
 }
 
