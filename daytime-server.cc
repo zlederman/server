@@ -145,10 +145,7 @@ void forkServer(int serverSocket) {
 
 string getIP(struct in_addr){
 	string res;
-	res += in_addr->s_b1;
-	res += in_addr.s_b2;
-	res += in_addr.s_b3;
-	res += in_addr.s_b4;
+	res += to_string(in_addr.s_addr);
 	return res;
 }
 
