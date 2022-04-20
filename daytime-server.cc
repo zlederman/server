@@ -69,7 +69,7 @@ void log(string status){
 extern "C" void reap(int sig){
 	int status;
 	string logStr;
-	int res = waitpid(-1,&status,WHNOHANG);
+	int res = waitpid(-1,&status,WNOHANG);
 	if(res >0){
 		logStr += to_string(res);
 		logStr += " exited.";
@@ -78,7 +78,7 @@ extern "C" void reap(int sig){
 }
 
 extern "C" void quit(int sig){
-	waitpid(-1,NULL,WHNOHANG);
+	waitpid(-1,NULL,WNOHANG);
 	exit(0);
 }
 
@@ -141,8 +141,8 @@ main( int argc, char ** argv )
     perror("listen");
     exit( -1 );
   }
-	iterativeServer(masterSocket);
-	//forkServer(masterSocket);	 
+	//iterativeServer(miasterSocket);
+	forkServer(masterSocket);	 
   
 }
 
