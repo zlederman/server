@@ -34,6 +34,7 @@ const char * usage =
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
+#include <sys/wait.h>
 #include "myhttp.hh"
 
 
