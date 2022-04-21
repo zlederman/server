@@ -40,7 +40,7 @@ void HTTPResponse::insertHeader(string header){
 	_headers.push_back(header);
 }
 
-int HTTPResponse::loadRaw(int contentLength, char* raw){
+int HTTPResponse::loadRaw(int contentLength, char* raw, char* body){
 	string response;
 	int responseLen;
 	response += HTTPMessageFactory::version;
@@ -54,7 +54,7 @@ int HTTPResponse::loadRaw(int contentLength, char* raw){
 	}
 	response += "\r\n";
 	memcpy(raw,response.c_str(),response.length());
-	memcpy(raw + response.length(), _body, contentLength);
+	memcpy(raw + response.length(), body, contentLength);
 	return response.length() + contentLength;
 
 }

@@ -342,6 +342,7 @@ string getMIMEType(string asset){
 void processClient(int fd){
 	int* contentLength;
 	char* raw;
+	char* body;
 	int rawLength;
 	HTTPRequest* httpReq;
   HTTPResponse* httpRes;
@@ -372,10 +373,10 @@ void processClient(int fd){
 			contentLengthHeader = HTTPMessageFactory::contentLength;
 			contentLengthHeader += to_string(*contentLength);
 		}
-		httpRes->_body = getData(httpReq->_asset,contentLength);
+		body = getData(httpReq->_asset,contentLength);
 	}
 	log(httpRes->_status);
-	rawLength = httpRes->loadRaw(*contentLength, raw);
+	rawLength = httpRes->loadRaw(*contentLength, raw,body);
 	write(fd,raw, rawLength);
 	
 	delete httpReq;
