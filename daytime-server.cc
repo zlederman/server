@@ -396,5 +396,3 @@ buildHTTPRequest( int fd )
 	log(req->toString());
 	return req;  
 }
-	char where[*contentLength];
-	char where[*contentLength];
