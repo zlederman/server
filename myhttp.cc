@@ -55,8 +55,6 @@ int HTTPResponse::loadRaw(int contentLength, char* raw){
 	response += "\r\n";
 	memcpy(raw,response.c_str(),response.length());
 	memcpy(raw + response.length(), _body, contentLength);
-	free(_body);
-	_body = NULL;
 	return response.length() + contentLength;
 
 }
@@ -68,6 +66,7 @@ HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> heade
 
 HTTPRequest::~HTTPRequest(){}
 HTTPResponse::~HTTPResponse(){
+	delete[] _body
 }
 
 string HTTPRequest::toString(){
