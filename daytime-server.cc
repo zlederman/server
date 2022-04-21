@@ -316,7 +316,7 @@ void getBody(string asset, HTTPResponse* httpRes){
 	httpRes->_bodySize = ftell(f);
 	httpRes->_body = new char[httpRes->_bodySize];
 	rewind(f);
-	fread(httpRes->_body,sizeof(char),httpRes->bodySize,f);
+	fread(httpRes->_body,sizeof(char),httpRes->)bodySize,f);
 }
 
 
@@ -354,7 +354,7 @@ char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
 	contentTypeHeader = getMIMEType(httpReq->_asset);
 	contentLengthHeader = HTTPMessageFactory::contentLength;
 	getBody(httpReq->_asset,httpRes);
-	contentLengthHeader += to_string(httpReq->_bodySize);
+	contentLengthHeader += to_string(httpRes->_bodySize);
 
 	
 	raw = (char*) malloc(sizeof(char)* (HTTPMessageFactory::maxResponseHeaderSize + httpRes->_bodySize));
@@ -386,14 +386,14 @@ void processClient(int fd){
 		raw = dispatchOK(httpRes,httpReq,rawLength);
 	}
 	else{
-		raw = httpRes->loadRaw(rawLength);	
+		*rawLength = httpRes->loadRaw(raw);	
 	}
 	log(httpRes->_status);
-	write(fd,raw, rawLength);
+	write(fd,raw,*rawLength);
 	
 	//delete httpReq;
 	//delete httpRes;
-	free(contentLength);
+	free(rawLength);
 	free(raw);
 
 }
