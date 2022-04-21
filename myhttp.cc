@@ -29,7 +29,7 @@ const int HTTPMessageFactory::maxResponseHeaderSize = 2048;
 HTTPResponse::HTTPResponse(int statusCode) {
 	_status = HTTPMessageFactory::statuses.at(statusCode);
 	if(statusCode == 401){
-		_headers->push_back(HTTPMessageFactory::authHeader);
+		insertHeader(HTTPMessageFactory::authHeader);
 	}
 	_bodySize = 0;
 }
@@ -68,7 +68,7 @@ HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> heade
 			_request = request;
 			_asset = asset;
 			_headers = headers;	
-};i
+}
 
 HTTPRequest::~HTTPRequest(){}
 HTTPResponse::~HTTPResponse(){
