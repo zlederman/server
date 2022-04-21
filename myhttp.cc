@@ -63,8 +63,6 @@ HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> heade
 };
 
 HTTPRequest::~HTTPRequest(){
-	delete _asset;
-	delete[] _headers;
 }
 
 string HTTPRequest::toString(){
