@@ -394,8 +394,8 @@ void processClient(int fd){
 	log(httpRes->_status);
 	write(fd,raw,*rawLength);
 	
-	//delete httpReq;
-	//delete httpRes;
+	delete httpReq;
+	delete httpRes;
 	free(rawLength);
 	free(raw);
 
