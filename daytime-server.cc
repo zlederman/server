@@ -320,11 +320,31 @@ string getData(string asset){
 	return data;
 
 }
+string getMIMEType(string asset){
+	string png = string(".png");
+	string ico = string(".ico");
+	string gif = string(".gif");
+	string html = string(".html");
+	if(asset.find(png) != string::npos) { 
+		return HTTPMessageFactory::contentTypePNG;
+ 	}
+	if(asset.find(ico) != string::npos) { 
+		return HTTPMessageFactory::contentTypeICO;
+	}
+	if(asset.find(gif) != string::npos) {
+		return HTTPMessageFactory::contentTypeGIF;
+	}
+	if(asset.find(html) != string::npos){
+		return HTTPMessageFactory::contentTypeHTML;
+	}
+	return errString;
+}
 void processClient(int fd){
 
 	HTTPRequest* httpReq;
   HTTPResponse* httpRes;
 	string raw_response;
+	string contentTypeHeader;
 				//get http request object
 	httpReq = buildHTTPRequest(fd);
 	switch(httpReq->_request){
@@ -340,8 +360,12 @@ void processClient(int fd){
 	if(httpRes->_status == string("401 Unauthorized")){
 		httpRes->_headers.push_back(HTTPMessageFactory::authHeader);
 	}
-	if(httpRes->_status == string("200 OK")){
-		httpRes->_headers.push_back(HTTPMessageFactory::contentTypeHTML);
+	if(httpRes->_status == string("200 OK")){	
+		contentTypeHeader = getMIMEType(httpReq->_asset);
+		if(contentTypeHeader != errString){
+			httpRes->_headers.push_back(ContentTypeHeader);
+		}
+
 		httpRes->_body = getData(httpReq->_asset);
 	}
 	log(httpRes->_status);
