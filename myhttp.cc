@@ -72,6 +72,7 @@ HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> heade
 
 HTTPRequest::~HTTPRequest(){}
 HTTPResponse::~HTTPResponse(){
+	delete _body;
 }
 
 string HTTPRequest::toString(){
