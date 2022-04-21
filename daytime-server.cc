@@ -324,6 +324,7 @@ string getMIMEType(string asset){
 	string ico = string(".ico");
 	string gif = string(".gif");
 	string html = string(".html");
+	string svg = string(".svg");
 	if(asset.find(png) != string::npos) { 
 		return HTTPMessageFactory::contentTypePNG;
  	}
@@ -335,6 +336,9 @@ string getMIMEType(string asset){
 	}
 	if(asset.find(html) != string::npos){
 		return HTTPMessageFactory::contentTypeHTML;
+	}
+	if(asset.find(svg) != string::npos){
+		return HTTPMessageFactory::contentTypeSVG;
 	}
 	return errString;
 }

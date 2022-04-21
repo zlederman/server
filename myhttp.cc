@@ -22,6 +22,7 @@ const string HTTPMessageFactory::contentTypeHTML = string("Content-type: text/ht
 const string HTTPMessageFactory::contentTypePNG = string("Content-type: image/png");
 const string HTTPMessageFactory::contentTypeGIF = string("Content-type: image/gif");
 const string HTTPMessageFactory::contentTypeICO = string("Content-type: image/vnd.microsoft.icon");
+const string HTTPMessageFactory::contentTypeSVG = string("Content-type: image/svg+xml");
 const string HTTPMessageFactory::contentLength = string("Content-Length: ");
 
 HTTPResponse::HTTPResponse(int statusCode) {
