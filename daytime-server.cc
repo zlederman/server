@@ -379,8 +379,8 @@ void processClient(int fd){
 	rawLength = httpRes->loadRaw(*contentLength, raw,body);
 	write(fd,raw, rawLength);
 	
-	delete httpReq;
-	delete httpRes;
+	//delete httpReq;
+//	delete httpRes;
 	free(contentLength);
 	free(raw);
 
