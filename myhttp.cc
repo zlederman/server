@@ -56,6 +56,7 @@ int HTTPResponse::loadRaw(int contentLength, char* raw){
 	memcpy(raw,response.c_str(),response.length());
 	memcpy(raw + response.length(), _body, contentLength);
 	free(_body);
+	_body = NULL;
 	return response.length() + contentLength;
 
 }
