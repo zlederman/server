@@ -363,9 +363,8 @@ void processClient(int fd){
 	if(httpRes->_status == string("200 OK")){	
 		contentTypeHeader = getMIMEType(httpReq->_asset);
 		if(contentTypeHeader != errString){
-			httpRes->_headers.push_back(ContentTypeHeader);
+			httpRes->_headers.push_back(contentTypeHeader);
 		}
-
 		httpRes->_body = getData(httpReq->_asset);
 	}
 	log(httpRes->_status);
