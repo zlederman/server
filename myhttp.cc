@@ -24,9 +24,14 @@ const string HTTPMessageFactory::contentTypeGIF = string("Content-type: image/gi
 const string HTTPMessageFactory::contentTypeICO = string("Content-type: image/vnd.microsoft.icon");
 const string HTTPMessageFactory::contentTypeSVG = string("Content-type: image/svg+xml");
 const string HTTPMessageFactory::contentLength = string("Content-Length: ");
+const int HTTPMessageFactory::maxResponseHeaderSize = 2048;
 
 HTTPResponse::HTTPResponse(int statusCode) {
 	_status = HTTPMessageFactory::statuses.at(statusCode);
+	if(statusCode == 401){
+		_headers->push_back(HTTPMessageFactory::authHeader);
+	}
+	_bodySize = 0;
 }
 
 const map<int,string> HTTPMessageFactory::statuses = {
@@ -41,7 +46,7 @@ void HTTPResponse::insertHeader(string header){
 	_headers.push_back(header);
 }
 
-int HTTPResponse::loadRaw(int contentLength, char* raw, char* body){
+int HTTPResponse::loadRaw(char* raw){
 	string response;
 	int responseLen;
 	response += HTTPMessageFactory::version;
@@ -54,16 +59,16 @@ int HTTPResponse::loadRaw(int contentLength, char* raw, char* body){
 		response += "\r\n";
 	}
 	response += "\r\n";
-	memcpy(raw,response.c_str(),response.length());
-	memcpy(raw + response.length(), body, contentLength);
-	return response.length() + contentLength;
+	memcpy(raw,response.c_str(),response.length());	
+	memcpy(raw + response.length(), _body, _bodySize);
+	return response.length() + _bodySize;
 
 }
 HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> headers){
 			_request = request;
 			_asset = asset;
 			_headers = headers;	
-};
+};i
 
 HTTPRequest::~HTTPRequest(){}
 HTTPResponse::~HTTPResponse(){

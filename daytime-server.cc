@@ -61,6 +61,7 @@ int initIncoming(int masterSocket);
 string getIP(struct in_addr ip_struct);
 void iterativeServer(int masterSocket);
 void forkServer(int masterSocket);
+char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength);
 void log(string status){
 	cout << "\033[1;32m[ INFO ]\033[0m " << status << endl; 
 }
@@ -298,12 +299,12 @@ HTTPResponse* initGetResponse(HTTPRequest* request){
 	return httpFactory->initResponse(responseCode);
 }
 
-char* getData(string asset, int* contentLength){
-	string data;
+void getBody(string asset, HTTPResponse* httpRes){
 	string name;
 	FILE* f;
 	char* where;
 	name = rootDir;
+	
 	if(asset == "/"){
 		name += index;
 	}
@@ -312,19 +313,21 @@ char* getData(string asset, int* contentLength){
 	}
 	f = fopen(name.c_str(),"r");
 	fseek(f, 0, SEEK_END);
-	*contentLength = ftell(f);
-	where = (char*) malloc(sizeof(char) * (*contentLength));
+	httpRes->_bodySize = ftell(f);
+	httpRes->_body = new char[httpRes->_bodySize];
 	rewind(f);
-	fread(where,sizeof(char),*contentLength,f);
-	return where;
-
+	fread(httpRes->_body,sizeof(char),httpRes->bodySize,f);
 }
+
+
+
 string getMIMEType(string asset){
 	string png = string(".png");
 	string ico = string(".ico");
 	string gif = string(".gif");
 	string html = string(".html");
 	string svg = string(".svg");
+
 	if(asset.find(png) != string::npos) { 
 		return HTTPMessageFactory::contentTypePNG;
  	}
@@ -343,23 +346,33 @@ string getMIMEType(string asset){
 	return errString;
 }
 
-void processClient(int fd){
-	int* contentLength;
+char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
+	string contentTypeHeader;
+	string contentLengthHeader;
 	char* raw;
-	char* body;
-	int rawLength;
+
+	contentTypeHeader = getMIMEType(httpReq->_asset);
+	contentLengthHeader = HTTPMessageFactory::contentLength;
+	getBody(httpReq->_asset,httpRes);
+	contentLengthHeader += to_string(httpReq->_bodySize);
+
+	
+	raw = (char*) malloc(sizeof(char)* (HTTPMessageFactory::maxResponseHeaderSize + httpRes->_bodySize));
+	rawLength = httpRes->loadRaw(raw);
+	return raw;
+
+	
+}
+void processClient(int fd){
+	char* raw;
+	int* rawLength;
 	HTTPRequest* httpReq;
   HTTPResponse* httpRes;
-	string raw_response;
-	string contentTypeHeader;
-	string contentLengthHeader;	
-	//get http request object
+	
 	httpReq = buildHTTPRequest(fd);
 	switch(httpReq->_request){
 		case GET:
 			httpRes = initGetResponse(httpReq);
-			contentLength = (int*) malloc(sizeof(int));
-
 			break;
 		case POST:
 			break;
@@ -367,25 +380,19 @@ void processClient(int fd){
 			//handle unknown request type
 			break;
 	}
-	if(httpRes->_status == string("401 Unauthorized")){
-		httpRes->_headers.push_back(HTTPMessageFactory::authHeader);
-	}
+
+	rawLength = (int*) malloc(sizeof(int));
 	if(httpRes->_status == string("200 OK")){	
-		contentTypeHeader = getMIMEType(httpReq->_asset);
-		if(contentTypeHeader != string("\0")){
-			httpRes->_headers.push_back(contentTypeHeader);
-			contentLengthHeader = HTTPMessageFactory::contentLength;
-			contentLengthHeader += to_string(*contentLength);
-		}
-		body = getData(httpReq->_asset,contentLength);
+		raw = dispatchOK(httpRes,httpReq,rawLength);
+	}
+	else{
+		raw = httpRes->loadRaw(rawLength);	
 	}
 	log(httpRes->_status);
-	raw = (char*) malloc(sizeof(char*) *(20048 + *contentLength));
-	rawLength = httpRes->loadRaw(*contentLength, raw,body);
 	write(fd,raw, rawLength);
 	
 	//delete httpReq;
-//	delete httpRes;
+	//delete httpRes;
 	free(contentLength);
 	free(raw);
 
