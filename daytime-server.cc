@@ -358,7 +358,7 @@ char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
 
 	
 	raw = (char*) malloc(sizeof(char)* (HTTPMessageFactory::maxResponseHeaderSize + httpRes->_bodySize));
-	rawLength = httpRes->loadRaw(raw);
+	*rawLength = httpRes->loadRaw(raw);
 	return raw;
 
 	
