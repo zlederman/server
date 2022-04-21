@@ -316,7 +316,7 @@ void getBody(string asset, HTTPResponse* httpRes){
 	httpRes->_bodySize = ftell(f);
 	httpRes->_body = new char[httpRes->_bodySize];
 	rewind(f);
-	fread(httpRes->_body,sizeof(char),httpRes->)bodySize,f);
+	fread(httpRes->_body,sizeof(char),httpRes->_bodySize,f);
 }
 
 
