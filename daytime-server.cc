@@ -339,6 +339,7 @@ string getMIMEType(string asset){
 	}
 	return errString;
 }
+
 void processClient(int fd){
 
 	HTTPRequest* httpReq;
@@ -362,7 +363,7 @@ void processClient(int fd){
 	}
 	if(httpRes->_status == string("200 OK")){	
 		contentTypeHeader = getMIMEType(httpReq->_asset);
-		if(contentTypeHeader != errString){
+		if(contentTypeHeader != string("\0")){
 			httpRes->_headers.push_back(contentTypeHeader);
 		}
 		httpRes->_body = getData(httpReq->_asset);
