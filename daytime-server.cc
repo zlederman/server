@@ -359,7 +359,7 @@ void processClient(int fd){
 		case GET:
 			httpRes = initGetResponse(httpReq);
 			contentLength = (int*) malloc(sizeof(int));
-			raw = (char*)  malloc(sizeof(char) * 20048);
+			raw = (char*)  malloc(sizeof(char) * 200048);
 			break;
 		case POST:
 			break;
@@ -386,7 +386,7 @@ void processClient(int fd){
 	//delete httpReq;
 //	delete httpRes;
 	free(contentLength);
-	//free(raw);
+	free(raw);
 
 }
 
