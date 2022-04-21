@@ -302,6 +302,7 @@ char* getData(string asset, int* contentLength){
 	string data;
 	string name;
 	FILE* f;
+	char* where;
 	name = rootDir;
 	if(asset == "/"){
 		name += index;
@@ -312,7 +313,7 @@ char* getData(string asset, int* contentLength){
 	f = fopen(name.c_str(),"r");
 	fseek(f, 0, SEEK_END);
 	*contentLength = ftell(f);
-	char where[*contentLength];
+	where = (char*) malloc(sizeof(char) * (*contentLength));
 	rewind(f);
 	fread(where,sizeof(char),*contentLength,f);
 	return where;

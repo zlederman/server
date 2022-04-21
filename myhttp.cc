@@ -65,7 +65,9 @@ HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> heade
 };
 
 HTTPRequest::~HTTPRequest(){}
-HTTPResponse::~HTTPResponse(){}
+HTTPResponse::~HTTPResponse(){
+	free(_body);
+}
 
 string HTTPRequest::toString(){
 	string res;
