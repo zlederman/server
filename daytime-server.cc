@@ -355,8 +355,9 @@ char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
 	contentTypeHeader = getMIMEType(httpReq->_asset);
 	contentLengthHeader = HTTPMessageFactory::contentLength;
 	contentLengthHeader += to_string(httpRes->_bodySize);
-	httpRes.insertHeader(contentLengthHeader);
-	httpRes.insertHeader(contentTypeHeader);
+
+	httpRes->insertHeader(contentLengthHeader);
+	httpRes->insertHeader(contentTypeHeader);
 		
 	raw = (char*) malloc(sizeof(char)* (HTTPMessageFactory::maxResponseHeaderSize + httpRes->_bodySize));
 	*rawLength = httpRes->loadRaw(raw);
