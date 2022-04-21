@@ -142,8 +142,8 @@ main( int argc, char ** argv )
     perror("listen");
     exit( -1 );
   }
-	//iterativeServer(miasterSocket);
-	forkServer(masterSocket);	 
+	iterativeServer(miasterSocket);
+	//forkServer(masterSocket);	 
   
 }
 
@@ -375,7 +375,7 @@ void processClient(int fd){
 	}
 	log(httpRes->_status);
 	rawLength = httpRes->loadRaw(*contentLength, raw);
-	write(fd,raw, rawLength);
+	fwrite(fd,raw, rawLength);
 	
 	delete httpReq;
 	delete httpRes;
