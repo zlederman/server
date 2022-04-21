@@ -347,10 +347,9 @@ void processClient(int fd){
 	log(httpRes->_status);
 	raw_response = httpRes->toString();
 	write(fd,raw_response.c_str(),raw_response.length());
-	//interpret http object
-	// build response
-	// send response
-
+	
+	delete httpReq;
+	delete httpRes;
 }
 
 HTTPRequest*

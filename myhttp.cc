@@ -19,6 +19,9 @@ string getAsset(string requestHead);
 const string HTTPMessageFactory::version = "HTTP/1.0";
 const string HTTPMessageFactory::authHeader = string("WWW-Authenticate: Basic realm=\"ANTON\"");
 const string HTTPMessageFactory::contentTypeHTML = string("Content-type: text/html");
+const string HTTPMessageFactory::contentTypePNG = string("Content-type: image/png");
+const string HTTPMessageFactory::contentTypeGIF = string("Content-type: image/gif");
+const string HTTPMessageFactory::contentTypeICO = string("Content-type: image/vnd.microsoft.icon");
 
 HTTPResponse::HTTPResponse(int statusCode) {
 	_status = HTTPMessageFactory::statuses.at(statusCode);
