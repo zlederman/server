@@ -260,7 +260,7 @@ string getDirectory(string path){
 bool validate(string path){
 	DIR* dir;
 	string directory;
-	if(path.find("..")){
+	if(path.find("..") != string::npos){
 		return false;
 	}
 	path.erase(path.begin());
