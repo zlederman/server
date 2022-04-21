@@ -42,8 +42,8 @@ const char * usage =
 
 
 #define errString string("\0");
-#define rootDir "http-root-dir/";
-#define index "index.html";
+#define rootDir "http-root-dir";
+#define index "/index.html";
 
 using namespace std;
 
