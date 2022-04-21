@@ -386,6 +386,7 @@ void processClient(int fd){
 		raw = dispatchOK(httpRes,httpReq,rawLength);
 	}
 	else{
+		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize);
 		*rawLength = httpRes->loadRaw(raw);	
 	}
 	log(httpRes->_status);
