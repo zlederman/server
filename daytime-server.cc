@@ -298,7 +298,7 @@ HTTPResponse* initGetResponse(HTTPRequest* request){
 	return httpFactory->initResponse(responseCode);
 }
 
-string getData(string asset){
+char* getData(string asset, int* contentLength){
 	string data;
 	string name;
 	FILE* f;
@@ -311,13 +311,11 @@ string getData(string asset){
 	}
 	f = fopen(name.c_str(),"r");
 	fseek(f, 0, SEEK_END);
-	size_t size = ftell(f);
-
-	char where[size];
+	*contentLength = ftell(f);
+	char where[*contentLength];
 	rewind(f);
 	fread(where,sizeof(char),size,f);
-	data = string(where).substr(0,size);
-	return data;
+	return where;
 
 }
 string getMIMEType(string asset){
@@ -341,16 +339,21 @@ string getMIMEType(string asset){
 }
 
 void processClient(int fd){
-
+	int* contentLength;
+	char* raw;
+	int rawLength;
 	HTTPRequest* httpReq;
   HTTPResponse* httpRes;
 	string raw_response;
 	string contentTypeHeader;
-				//get http request object
+	string contentLengthHeader;	
+	//get http request object
 	httpReq = buildHTTPRequest(fd);
 	switch(httpReq->_request){
 		case GET:
 			httpRes = initGetResponse(httpReq);
+			contentLength = malloc(sizeof(int));
+			raw = malloc(sizeof(char) * 20048);
 			break;
 		case POST:
 			break;
@@ -365,15 +368,19 @@ void processClient(int fd){
 		contentTypeHeader = getMIMEType(httpReq->_asset);
 		if(contentTypeHeader != string("\0")){
 			httpRes->_headers.push_back(contentTypeHeader);
+			contentLengthHeader = HTTPMessageFactory::contentLength;
+			contentLengthHeader += to_string(*contentLength);
 		}
-		httpRes->_body = getData(httpReq->_asset);
+		httpRes->_body = getData(httpReq->_asset,contentLength);
 	}
 	log(httpRes->_status);
-	raw_response = httpRes->toString();
-	write(fd,raw_response.c_str(),raw_response.length());
+	rawLength = httpRes->loadRaw(*contentLength, raw);
+	write(fd,raw, rawLength);
 	
 	delete httpReq;
 	delete httpRes;
+	free(contentLength);
+	free(raw);
 }
 
 HTTPRequest*

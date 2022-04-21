@@ -22,6 +22,7 @@ const string HTTPMessageFactory::contentTypeHTML = string("Content-type: text/ht
 const string HTTPMessageFactory::contentTypePNG = string("Content-type: image/png");
 const string HTTPMessageFactory::contentTypeGIF = string("Content-type: image/gif");
 const string HTTPMessageFactory::contentTypeICO = string("Content-type: image/vnd.microsoft.icon");
+const string HTTPMessageFactory::contentLength = string("Content-Length: ");
 
 HTTPResponse::HTTPResponse(int statusCode) {
 	_status = HTTPMessageFactory::statuses.at(statusCode);
@@ -39,8 +40,9 @@ void HTTPResponse::insertHeader(string header){
 	_headers.push_back(header);
 }
 
-string HTTPResponse::toString(){
+int HTTPResponse::loadRaw(int contentLength, char* raw){
 	string response;
+	int responseLen;
 	response += HTTPMessageFactory::version;
 	response += " ";
 	response += _status;
@@ -51,9 +53,9 @@ string HTTPResponse::toString(){
 		response += "\r\n";
 	}
 	response += "\r\n";
-	response += _body;
-	
-	return response;
+	memcpy(raw,response,response.length());
+	memcpy(raw + response.length(), _body, *contentLength);
+	return response.length() + contentLength;
 
 }
 HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> headers){
@@ -110,6 +112,7 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 HTTPResponse* HTTPMessageFactory::initResponse(int statusCode){
 	return new HTTPResponse(statusCode);
 }
+
 
 string getAsset(string requestHead){
 	string assetRoot = string("/");
