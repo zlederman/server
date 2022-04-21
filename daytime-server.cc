@@ -314,7 +314,7 @@ char* getData(string asset, int* contentLength){
 	*contentLength = ftell(f);
 	char where[*contentLength];
 	rewind(f);
-	fread(where,sizeof(char),size,f);
+	fread(where,sizeof(char),*contentLength,f);
 	return where;
 
 }
@@ -352,8 +352,8 @@ void processClient(int fd){
 	switch(httpReq->_request){
 		case GET:
 			httpRes = initGetResponse(httpReq);
-			contentLength = malloc(sizeof(int));
-			raw = malloc(sizeof(char) * 20048);
+			contentLength = (int*) malloc(sizeof(int));
+			raw = (char*)  malloc(sizeof(char) * 20048);
 			break;
 		case POST:
 			break;
