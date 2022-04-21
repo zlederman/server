@@ -380,7 +380,7 @@ void processClient(int fd){
 		body = getData(httpReq->_asset,contentLength);
 	}
 	log(httpRes->_status);
-	raw = (char*) malloc(sizeof(char*) 20048 + *contentLength);
+	raw = (char*) malloc(sizeof(char*) *(20048 + *contentLength));
 	rawLength = httpRes->loadRaw(*contentLength, raw,body);
 	write(fd,raw, rawLength);
 	
