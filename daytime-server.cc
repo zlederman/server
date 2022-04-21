@@ -359,7 +359,7 @@ void processClient(int fd){
 		case GET:
 			httpRes = initGetResponse(httpReq);
 			contentLength = (int*) malloc(sizeof(int));
-			raw = (char*)  malloc(sizeof(char) * 200048);
+
 			break;
 		case POST:
 			break;
@@ -380,6 +380,7 @@ void processClient(int fd){
 		body = getData(httpReq->_asset,contentLength);
 	}
 	log(httpRes->_status);
+	raw = (char*) malloc(sizeof(char*) 20048 + *contentLength);
 	rawLength = httpRes->loadRaw(*contentLength, raw,body);
 	write(fd,raw, rawLength);
 	
