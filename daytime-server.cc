@@ -105,6 +105,7 @@ main( int argc, char ** argv )
 	if(argc < 3){
 		if(argv[1][0] == '-'){
 			port = 8888;
+			serverType = string(argv[1]);
 		}
 		else{
 			port = atoi(argv[1]);
