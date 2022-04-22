@@ -145,10 +145,10 @@ main( int argc, char ** argv )
   if ( error ) {
     perror("listen");
     exit( -1 );
-  }
-	iterativeServer(masterSocket);
+  }	
+	//iterativeServer(masterSocket);
 	//forkServer(masterSocket);	 
-  //lazyThreadServer(masterSocket);
+  lazyThreadServer(masterSocket);
 }
 
 
@@ -162,10 +162,11 @@ void iterativeServer(int serverSocket) {
 }
 void lazyThreadServer(int serverSocket){
 	int clientSocket;
-	pthread_t thread;
-	while(1){
-		clientSocket = initIncoming(serverSocket);
 
+	while(1){
+		
+		pthread_t thread;
+		clientSocket = initIncoming(serverSocket);
 		pthread_attr_t attr;
 		pthread_attr_init(&attr);
 		pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_DETACHED);
