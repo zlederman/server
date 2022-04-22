@@ -171,7 +171,7 @@ void lazyThreadServer(int serverSocket){
 		pthread_attr_init(&attr);
 		pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_DETACHED);
 		pthread_create(&thread,&attr,processClientWrapper, (void *) &clientSocket);	
-		close(clientSocket);
+
 	}
 }
 
@@ -199,6 +199,7 @@ extern "C"
 void * processClientWrapper(void * data){
 	int* clientSocket = (int*) data;
 	processClient(*clientSocket);
+	close(*clientSocket);
 	return NULL;
 }
 
