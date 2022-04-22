@@ -145,9 +145,9 @@ main( int argc, char ** argv )
     perror("listen");
     exit( -1 );
   }
-	iterativeServer(masterSocket);
+	//iterativeServer(masterSocket);
 	//forkServer(masterSocket);	 
-  
+  lazyThreadServer(masterSocket);
 }
 
 
