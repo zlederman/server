@@ -4,7 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <map>
-#include "myhttp.hh"
+
 
 #define get string("GET")
 #define post string("POST")
@@ -114,7 +114,6 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	string asset;
 	string rawAsset;
 	vector<string> headers;
-
 	lines = splitRaw(raw);
 	rtype = getType(lines[0]);
 	
@@ -130,7 +129,7 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	for(size_t i = 1; i < lines.size(); i++){
 		headers.push_back(lines.at(i));
 	}
-	return new HTTPRequest(rtype, asset, headers);	
+	return new HTTPRequest(rtype,asset,headers);	
 }
 
 HTTPResponse* HTTPMessageFactory::initResponse(int statusCode){

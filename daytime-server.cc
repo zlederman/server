@@ -49,6 +49,7 @@ const char * usage =
 using namespace std;
 
 int QueueLength = 5;
+
 HTTPMessageFactory* httpFactory = new HTTPMessageFactory();
 
 string PASS = ": Basic cGFzc3dvcmQ6dXNlcm5hbWU=";
@@ -161,12 +162,12 @@ void iterativeServer(int serverSocket) {
 	}
 }
 void lazyThreadServer(int serverSocket){
-	int clientSocket;
+
 
 	while(1){
 		
 		pthread_t thread;
-		clientSocket = initIncoming(serverSocket);
+		int clientSocket = initIncoming(serverSocket);
 		pthread_attr_t attr;
 		pthread_attr_init(&attr);
 		pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_DETACHED);
