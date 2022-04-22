@@ -200,6 +200,7 @@ void * processClientWrapper(void * data){
 	int* clientSocket = (int*) data;
 	processClient(*clientSocket);
 	close(*clientSocket);
+	pthread_exit(NULL);
 	return NULL;
 }
 
