@@ -167,7 +167,7 @@ void lazyThreadServer(int serverSocket){
 		pthread_attr_t attr;
 		pthread_attr_init(&attr);
 		pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_DETACHED);
-		pthread_create(&thread,&attr,processClient, (void *) clientSocket);	
+		pthread_create(&thread,&attr,processClientWrapper, (void *) clientSocket);	
 		close(clientSocket);
 	}
 }
@@ -192,7 +192,12 @@ void forkServer(int serverSocket) {
 	}
 }
 
-string getIP(struct in_addr ip_struct){
+extern "C"
+void * processClientWrapper(void * data){
+	processClient((int) *data);
+}
+
+string getIP(struct in_aiddr ip_struct){
 	string res;
 	uint32_t ip_num = ip_struct.s_addr;
 	res += "Client IP ";
