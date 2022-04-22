@@ -113,7 +113,7 @@ main( int argc, char ** argv )
 	}
 	if(argc == 3){
 		port = atoi(argv[2]);
-		serverType = string(arv[1]);
+		serverType = string(argv[1]);
 	}
 	
 	//registering sig int handler
