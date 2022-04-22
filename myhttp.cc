@@ -106,6 +106,7 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	requestType rtype;
 	string asset;
 	vector<string> headers;
+
 	lines = splitRaw(raw);
 	rtype = getType(lines[0]);
 	asset = getAsset(lines[0]);

@@ -62,6 +62,7 @@ string getIP(struct in_addr ip_struct);
 void iterativeServer(int masterSocket);
 void forkServer(int masterSocket);
 char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength);
+
 void log(string status){
 	cout << "\033[1;32m[ INFO ]\033[0m " << status << endl; 
 }
@@ -229,7 +230,7 @@ string readRaw(int slaveFd){
 	unsigned char newChar;	
 	unsigned char oldChar;
 
-
+	
 	while (( n = read( slaveFd, &newChar, sizeof(newChar) ) ) > 0 ) {
 		if(oldChar == '\012' && newChar == '\015'){
 			
@@ -250,29 +251,17 @@ string readRaw(int slaveFd){
 	return raw;
 }
 
-string getDirectory(string path){
-	for(int i = path.length() - 1; i >= 0; i--){
-		if(path.at(i) == '/'){
-			return path.substr(0,i+1);
-		}
-	}
-	return string("/");
-}
+
+
 bool validate(string path){
 	DIR* dir;
-	string directory;
+	string fname;
 	if(path.find("..") != string::npos){
 		return false;
 	}
-	path.erase(path.begin());
-	directory += rootDir;
-	directory += getDirectory(path);
-	// check if path goes into parent
-
-	// check if directory or file exists
-	dir = opendir(directory.c_str());
-	if(dir) {
-		closedir(dir);
+	fname += rootDir;
+	fname += path;
+	if(access(fname, F_OK) == 0){
 		return true;
 	}
 	else{
@@ -304,13 +293,8 @@ void getBody(string asset, HTTPResponse* httpRes){
 	FILE* f;
 	char* where;
 	name = rootDir;
-	
-	if(asset == "/"){
-		name += index;
-	}
-	else{
-		name += asset;
-	}
+	name += asset;
+
 	f = fopen(name.c_str(),"r");
 	fseek(f, 0, SEEK_END);
 	httpRes->_bodySize = ftell(f);
