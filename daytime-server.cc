@@ -152,7 +152,8 @@ main( int argc, char ** argv )
   }	
 	//iterativeServer(masterSocket);
 	//forkServer(masterSocket);	 
-  lazyThreadServer(masterSocket);
+  //lazyThreadServer(masterSocket);
+	poolThreadServer(masterSocket);
 }
 
 
