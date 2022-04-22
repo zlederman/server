@@ -199,7 +199,7 @@ void * processClientWrapper(void * data){
 	return NULL;
 }
 
-string getIP(struct in_aiddr ip_struct){
+string getIP(struct in_addr ip_struct){
 	string res;
 	uint32_t ip_num = ip_struct.s_addr;
 	res += "Client IP ";
