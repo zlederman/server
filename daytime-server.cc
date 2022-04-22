@@ -171,7 +171,7 @@ void lazyThreadServer(int serverSocket){
 		pthread_attr_t attr;
 		pthread_attr_init(&attr);
 		pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_DETACHED);
-		pthread_create(&thread,&attr,processClientWrapper, clientSocket);	
+		pthread_create(&thread,&attr,processClientWrapper,(void*) clientSocket);	
 
 	}
 }
