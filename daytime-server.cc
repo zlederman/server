@@ -96,12 +96,26 @@ int
 main( int argc, char ** argv )
 {
 	
-
-				// Print usage if not enough arguments
-  if ( argc < 2 ) {
-    fprintf( stderr, "%s", usage );
-    exit( -1 );
-  }
+  int port;
+	string serverType;
+	if ( argc < 2 ) {
+			port = 8888;
+			serverType = string("-d");
+	}
+	if(argc < 3){
+		if(argv[1][0] == '-'){
+			port = 8888;
+		}
+		else{
+			port = atoi(argv[1]);
+			serverType = string("-d");
+		}
+	}
+	if(argc == 3){
+		port = atoi(argv[2]);
+		serverType = string(arv[1]);
+	}
+	
 	//registering sig int handler
 	//used for quiting server
 	struct sigaction sa_ctrlc;
@@ -112,9 +126,7 @@ main( int argc, char ** argv )
 		perror("sigaction");
 		exit(2);
 	}
-  // Get the port from the arguments
-  int port = atoi( argv[1] );
-  
+	
   // Set the IP address and port for this server
   struct sockaddr_in serverIPAddress; 
   memset( &serverIPAddress, 0, sizeof(serverIPAddress) );
@@ -149,11 +161,27 @@ main( int argc, char ** argv )
   if ( error ) {
     perror("listen");
     exit( -1 );
-  }	
-	//iterativeServer(masterSocket);
-	//forkServer(masterSocket);	 
-  //lazyThreadServer(masterSocket);
-	poolThreadServer(masterSocket);
+  }
+	if(serverType == string("-p")){
+		log(string("starting Pool Of 5 Threads "));
+		poolThreadServer(masterSocket);
+	}
+	else if(serverType == string("-t")){  	
+		log(string("starting lazy threads"));
+		lazyThreadServer(masterSocket);
+	}
+	else if(serverType == string("-f")){		
+		log(string("starting lazy fork"));
+		forkServer(masterSocket);	 
+	}
+	else{
+		log(string("starting iterative"));
+		iterativeServer(masterSocket);		
+	}
+
+
+
+
 }
 
 
