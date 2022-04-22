@@ -173,7 +173,7 @@ void poolThreadServer(int serverSocket){
 		exit(-1);
 	}
 	for(int i = 0; i < 4; i++){
-		pthread_create(&thread[i],NULL,iterativeServer_r,(void*) serverSocket);	
+		pthread_create(&threads[i],NULL,iterativeServer_r,(void*) serverSocket);	
 	}
 }
 
