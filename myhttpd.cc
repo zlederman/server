@@ -181,6 +181,7 @@ extern "C" void reap(int sig){
 	if(res >0){
 		logStr += to_string(res);
 		logStr += " exited.";
+		log(logStr);
 	}
 
 }
