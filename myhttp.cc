@@ -105,11 +105,18 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	vector<string> lines;
 	requestType rtype;
 	string asset;
+	string rawAsset;
 	vector<string> headers;
 
 	lines = splitRaw(raw);
 	rtype = getType(lines[0]);
-	asset = getAsset(lines[0]);
+	rawAsset = getAsset(lines[0]);
+	if(rawAsset == string("/"){
+		rawAsset = string("/index.html");
+	}
+
+	asset = string("http-root-dir");
+	asset += rawAsset;
 	lines.pop_back();
 
 	for(size_t i = 1; i < lines.size(); i++){
@@ -126,11 +133,11 @@ HTTPResponse* HTTPMessageFactory::initResponse(int statusCode){
 string getAsset(string requestHead){
 	string assetRoot = string("/");
 	size_t pos;
-	string res;
+	string res; 
 	if((pos = requestHead.find(assetRoot)) != string::npos){
 		if(requestHead.at(pos - 1) != ' '){
 			return errString;
-		}
+		}//fails if this matches HTTP/1.0 => no asset
 	}
 	else{
 		return errString;
@@ -138,7 +145,7 @@ string getAsset(string requestHead){
 	while(requestHead.at(pos) != ' ' && requestHead.at(pos) != '\0'){
 		res += requestHead.at(pos);
 		pos++;
-	}
+	}//gets the asset string
 	return res;
 }
 

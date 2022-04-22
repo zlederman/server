@@ -246,7 +246,7 @@ string readRaw(int slaveFd){
 		}
     raw += newChar;
 		oldChar = newChar;
-  }
+  	}
 
 	return raw;
 }
@@ -255,13 +255,10 @@ string readRaw(int slaveFd){
 
 bool validate(string path){
 	DIR* dir;
-	string fname;
 	if(path.find("..") != string::npos){
 		return false;
 	}
-	fname += rootDir;
-	fname += path;
-	if(access(fname.c_str(), F_OK) == 0){
+	if(access(path.c_str(), F_OK) == 0){
 		return true;
 	}
 	else{
@@ -289,13 +286,10 @@ HTTPResponse* initGetResponse(HTTPRequest* request){
 }
 
 void getBody(string asset, HTTPResponse* httpRes){
-	string name;
 	FILE* f;
 	char* where;
-	name = rootDir;
-	name += asset;
-
-	f = fopen(name.c_str(),"r");
+	
+	f = fopen(asset.c_str(),"r");
 	fseek(f, 0, SEEK_END);
 	httpRes->_bodySize = ftell(f);
 	httpRes->_body = new char[httpRes->_bodySize];
