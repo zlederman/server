@@ -49,7 +49,7 @@ const char * usage =
 using namespace std;
 
 int QueueLength = 5;
-
+pthread_mutex_t lock;
 HTTPMessageFactory* httpFactory = new HTTPMessageFactory();
 
 string PASS = ": Basic cGFzc3dvcmQ6dXNlcm5hbWU=";
@@ -63,8 +63,11 @@ int initIncoming(int masterSocket);
 string getIP(struct in_addr ip_struct);
 void iterativeServer(int masterSocket);
 void forkServer(int masterSocket);
+void poolThreadServer(int serverSocket);
 void lazyThreadServer(int serverSocket);
+int initIncoming_r(int masterSocket);
 extern "C" void * processClientWrapper(void * data);
+void* iterativeServer_r(void* data);
 char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength);
 
 void log(string status){
@@ -158,9 +161,22 @@ void iterativeServer(int serverSocket) {
 	while(1) {
 		clientSocket = initIncoming(serverSocket);
 		processClient(clientSocket);
-		close(clientSocket);
 	}
 }
+
+
+void poolThreadServer(int serverSocket){
+	pthread_t threads[4];
+	
+	if(pthread_mutex_init(&lock,NULL)!= 0){
+		perror("mutex");
+		exit(-1);
+	}
+	for(int i = 0; i < 4; i++){
+		pthread_create(&thread[i],NULL,iterativeServer_r,(void*) serverSocket);	
+	}
+}
+
 void lazyThreadServer(int serverSocket){
 
 
@@ -196,6 +212,15 @@ void forkServer(int serverSocket) {
 	}
 }
 
+extern "C" 
+void* iterativeServer_r(void* data){
+	int serverSocket = (size_t) data;
+	int clientSocket;
+	while(1){
+			clientSocket = initIncoming(serverSocket);
+			processClient(clientSocket);
+	}
+}
 extern "C"
 void * processClientWrapper(void * data){
 	int clientSocket = (size_t) data;
@@ -218,7 +243,24 @@ string getIP(struct in_addr ip_struct){
 	res += to_string((ip_num & (0xFF << 24)) >> 24);
 	return res;
 }
+int initIncoming_r(int masterSocket){
+	struct sockaddr_in clientIPAddress;
+	int alen = sizeof(clientIPAddress);
 
+	pthread_mutex_lock(&lock);
+	int slaveSocket = accept( masterSocket,
+									(struct sockaddr *)&clientIPAddress,
+									(socklen_t*)&alen);
+	log(getIP(clientIPAddress.sin_addr));
+	pthread_mutex_unlock(&lock);
+	if(slaveSocket < 0){
+		perror("accept");
+		exit(-1);
+	}
+	return slaveSocket;
+
+	
+}
 int initIncoming(int masterSocket) {
 	struct sockaddr_in clientIPAddress;
 	int alen = sizeof(clientIPAddress);
