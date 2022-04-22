@@ -67,7 +67,7 @@ void poolThreadServer(int serverSocket);
 void lazyThreadServer(int serverSocket);
 int initIncoming_r(int masterSocket);
 extern "C" void * processClientWrapper(void * data);
-void* iterativeServer_r(void* data);
+extern "C" void* iterativeServer_r(void* data);
 char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength);
 
 void log(string status){
