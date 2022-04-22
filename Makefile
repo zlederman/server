@@ -9,8 +9,8 @@ myhttp.o: myhttp.cc myhttp.hh
 daytime-server : daytime-server.o myhttp.o
 	$(CXX) -pthread -o$@ $@.o myhttp.o $(NETLIBS)
 
-myhttpd : myhttpd.o
-	$(CXX) -o $@ $@.o $(NETLIBS)
+myhttpd : myhttpd.o myhttp.o
+	$(CXX) -pthread -o $@ $@.o myhttp.o $(NETLIBS)
 
 use-dlopen: use-dlopen.o
 	$(CXX) -o $@ $@.o $(NETLIBS) -ldl

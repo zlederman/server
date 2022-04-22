@@ -116,7 +116,6 @@ main( int argc, char ** argv )
 		port = atoi(argv[2]);
 		serverType = string(argv[1]);
 	}
-	
 	//registering sig int handler
 	//used for quiting server
 	struct sigaction sa_ctrlc;
@@ -199,7 +198,7 @@ void iterativeServer(int serverSocket) {
 
 void poolThreadServer(int serverSocket){
 	pthread_t threads[4];
-	
+	//initializes mutex
 	if(pthread_mutex_init(&lock,NULL)!= 0){
 		perror("mutex");
 		exit(-1);
@@ -241,12 +240,15 @@ void forkServer(int serverSocket) {
 			exit(-1);
 		}
 		close(clientSocket);
+		//collect processes
 		while(waitpid(0,0,0)>0);
 	}
 }
 
 extern "C" 
 void* iterativeServer_r(void* data){
+	//re-entrant version of iterative server
+	//jsut contains lock for accept
 	int serverSocket = (size_t) data;
 	int clientSocket;
 	while(1){
@@ -257,6 +259,7 @@ void* iterativeServer_r(void* data){
 }
 extern "C"
 void * processClientWrapper(void * data){
+	//wraps the process client function for threads
 	int clientSocket = (size_t) data;
 	processClient(clientSocket);
 	close(clientSocket);
@@ -265,6 +268,7 @@ void * processClientWrapper(void * data){
 }
 
 string getIP(struct in_addr ip_struct){
+	//obtains 8 bit chunks of ip address
 	string res;
 	uint32_t ip_num = ip_struct.s_addr;
 	res += "Client IP ";
@@ -278,6 +282,7 @@ string getIP(struct in_addr ip_struct){
 	return res;
 }
 int initIncoming_r(int masterSocket){
+	//re-entrant version of initIncoming
 	struct sockaddr_in clientIPAddress;
 	int alen = sizeof(clientIPAddress);
 
@@ -316,11 +321,13 @@ bool authenticate(HTTPRequest* httpReq){
 	string delim = string(": Basic ");
 
 	size_t idx = header.find(delim);
+	//checks if they even sent the pass
 	if(header == string("\0") || idx == string::npos){
 		return false;
 	}	
-	pass = header.substr(idx ,header.length() - idx);
+	pass = header.substr(idx ,header.length() - idx); //extracts pass
 	if(pass != PASS){
+		//checks if pass is correct
 		return false;
 	}
 	return true;
@@ -356,10 +363,11 @@ string readRaw(int slaveFd){
 
 
 bool validate(string path){
-	DIR* dir;
+	//checks if try to access parent
 	if(path.find("..") != string::npos){
 		return false;
 	}
+	//checks if file exists
 	if(access(path.c_str(), F_OK) == 0){
 		return true;
 	}
@@ -370,6 +378,7 @@ bool validate(string path){
 
 
 HTTPResponse* initGetResponse(HTTPRequest* request){
+	//default response is 400 Bad Request
 	int responseCode = 400;
 	//check if authed
 	if(!authenticate(request)){
@@ -390,18 +399,22 @@ HTTPResponse* initGetResponse(HTTPRequest* request){
 void getBody(string asset, HTTPResponse* httpRes){
 	FILE* f;
 	char* where;
-	
+	//gets size
 	f = fopen(asset.c_str(),"r");
 	fseek(f, 0, SEEK_END);
 	httpRes->_bodySize = ftell(f);
+
 	httpRes->_body = new char[httpRes->_bodySize];
 	rewind(f);
+	//reads body into response object
 	fread(httpRes->_body,sizeof(char),httpRes->_bodySize,f);
 }
 
 
 
 string getMIMEType(string asset){
+	//searches file type 
+	// slow as ever
 	string png = string(".png");
 	string ico = string(".ico");
 	string gif = string(".gif");
@@ -431,16 +444,16 @@ char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
 	string contentLengthHeader;
 	char* raw;
 
-	getBody(httpReq->_asset,httpRes);
-	contentTypeHeader = getMIMEType(httpReq->_asset);
-	contentLengthHeader = HTTPMessageFactory::contentLength;
-	contentLengthHeader += to_string(httpRes->_bodySize);
-
+	getBody(httpReq->_asset,httpRes);//post validation reads into the byte array also loads body size
+	contentTypeHeader = getMIMEType(httpReq->_asset); //gets type of body
+	contentLengthHeader = HTTPMessageFactory::contentLength;  
+	contentLengthHeader += to_string(httpRes->_bodySize);//sends over content length
+	//build response headers
 	httpRes->insertHeader(contentLengthHeader);
 	httpRes->insertHeader(contentTypeHeader);
 		
-	raw = (char*) malloc(sizeof(char)* (HTTPMessageFactory::maxResponseHeaderSize + httpRes->_bodySize));
-	*rawLength = httpRes->loadRaw(raw);
+	raw = (char*) malloc(sizeof(char)* (HTTPMessageFactory::maxResponseHeaderSize + httpRes->_bodySize)); //allocates space for body and header
+	*rawLength = httpRes->loadRaw(raw);//loads header + body into byte array
 	return raw;
 
 	
@@ -451,10 +464,10 @@ void processClient(int fd){
 	HTTPRequest* httpReq;
   HTTPResponse* httpRes;
 	
-	httpReq = buildHTTPRequest(fd);
+	httpReq = buildHTTPRequest(fd); //reads and returns constructed request
 	switch(httpReq->_request){
 		case GET:
-			httpRes = initGetResponse(httpReq);
+			httpRes = initGetResponse(httpReq); //creates response from validation steps
 			break;
 		case POST:
 			break;
@@ -463,17 +476,17 @@ void processClient(int fd){
 			break;
 	}
 
-	rawLength = (int*) malloc(sizeof(int));
+	rawLength = (int*) malloc(sizeof(int));//mallocs space for size of raw res 
 	if(httpRes->_status == string("200 OK")){	
-		raw = dispatchOK(httpRes,httpReq,rawLength);
+		raw = dispatchOK(httpRes,httpReq,rawLength); 
 	}
 	else{
-		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize);
-		*rawLength = httpRes->loadRaw(raw);	
+		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize); //allocates space for a raw res with no body
+		*rawLength = httpRes->loadRaw(raw);	//loads response into the char array
 	}
 	log(httpRes->_status);
-	write(fd,raw,*rawLength);
-	
+	write(fd,raw,*rawLength); //writes to client
+	//cleanup 
 	delete httpReq;
 	delete httpRes;
 	free(rawLength);
@@ -487,9 +500,9 @@ buildHTTPRequest( int fd )
   HTTPRequest* req;
 	string raw_req;
   
-	raw_req = readRaw(fd);  
+	raw_req = readRaw(fd); //extract string from raw request 
   
-	req = httpFactory->parseMessage(raw_req);
-	log(req->toString());
+	req = httpFactory->parseMessage(raw_req); //parse into HTTPRequest OBJ
+	log(req->toString()); 
 	return req;  
 }

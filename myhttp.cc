@@ -13,10 +13,13 @@
 
 using namespace std;
 
+//HELPERS
 vector<string> splitRaw(string raw);
 requestType getType(string requestHead);
 string getAsset(string requestHead);
 
+
+// CONSTANTS LIKE HEADERS
 const string HTTPMessageFactory::version = "HTTP/1.0";
 const string HTTPMessageFactory::authHeader = string("WWW-Authenticate: Basic realm=\"ANTON\"");
 const string HTTPMessageFactory::contentTypeHTML = string("Content-type: text/html");
@@ -26,15 +29,6 @@ const string HTTPMessageFactory::contentTypeICO = string("Content-type: image/vn
 const string HTTPMessageFactory::contentTypeSVG = string("Content-type: image/svg+xml");
 const string HTTPMessageFactory::contentLength = string("Content-Length: ");
 const int HTTPMessageFactory::maxResponseHeaderSize = 2048;
-
-HTTPResponse::HTTPResponse(int statusCode) {
-	_status = HTTPMessageFactory::statuses.at(statusCode);
-	if(statusCode == 401){
-		insertHeader(HTTPMessageFactory::authHeader);
-	}
-	_bodySize = 0;
-}
-
 const map<int,string> HTTPMessageFactory::statuses = {
 	{200, string("200 OK")},
 	{401, string("401 Unauthorized")},
@@ -42,12 +36,36 @@ const map<int,string> HTTPMessageFactory::statuses = {
 	{404, string("404 Not Found")}
 };
 
+/*
+ *
+ * HTTP RESPONSE IMPL
+ *
+ */
 
+HTTPResponse::HTTPResponse(int statusCode) {
+	//GETS RESPONSE TYPE
+	_status = HTTPMessageFactory::statuses.at(statusCode);
+	if(statusCode == 401){
+		//adds headers for unauthorized
+		insertHeader(HTTPMessageFactory::authHeader);
+	}
+	_bodySize = 0;
+}
+
+HTTPResponse::~HTTPResponse(){
+	//only delete body if ther is one
+	if(_bodySize > 0){
+		delete _body;
+	}
+
+}
 void HTTPResponse::insertHeader(string header){
 	_headers.push_back(header);
 }
 
 int HTTPResponse::loadRaw(char* raw){
+	//builds header into one string 
+	//laods body and header into one byte arr
 	string response;
 	int responseLen;
 	response += HTTPMessageFactory::version;
@@ -60,11 +78,19 @@ int HTTPResponse::loadRaw(char* raw){
 		response += "\r\n";
 	}
 	response += "\r\n";
+	//copy header string into raw bytes and then  copy body (can be 0 bytes)
 	memcpy(raw,response.c_str(),response.length());	
 	memcpy(raw + response.length(), _body, _bodySize);
+	//return size for use later
 	return response.length() + _bodySize;
 
 }
+
+/*
+ *
+ * HTTP REQUEST IMPL
+ * 
+ */
 HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> headers){
 			_request = request;
 			_asset = asset;
@@ -72,14 +98,10 @@ HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> heade
 }
 
 HTTPRequest::~HTTPRequest(){}
-HTTPResponse::~HTTPResponse(){
-	if(_bodySize > 0){
-		delete _body;
-	}
 
-}
 
 string HTTPRequest::toString(){
+	//for logging use
 	string res;
 	string rawAsset;
 	switch(_request){
@@ -108,15 +130,24 @@ string HTTPRequest::findHeader(string headerName) {
 	}
 	return errString;
 }
+
+/*
+ *
+ * FACTORY METHODS
+ *
+ */
+
 HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	vector<string> lines;
 	requestType rtype;
 	string asset;
 	string rawAsset;
 	vector<string> headers;
+	
 	lines = splitRaw(raw);
 	rtype = getType(lines[0]);
 	
+	//format asset
 	rawAsset = getAsset(lines[0]);
 	if(rawAsset == string("/")){
 		rawAsset = string("/index.html");
@@ -136,6 +167,10 @@ HTTPResponse* HTTPMessageFactory::initResponse(int statusCode){
 	return new HTTPResponse(statusCode);
 }
 
+
+/*
+ * HELPERS 
+ */
 
 string getAsset(string requestHead){
 	string assetRoot = string("/");
@@ -166,7 +201,7 @@ requestType getType(string requestHead){
 	return ERR;
 }
 vector<string> splitRaw(string raw){
-	
+	//splits into a vector of chunks by carriage return
 	vector<string> tokens;
 	string delimeter = std::string("\015\012");
 	size_t pos = 0;
