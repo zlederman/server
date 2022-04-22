@@ -51,9 +51,9 @@ main( int argc, char ** argv )
 	
   int port;
 	string serverType;
-	if ( argc < 2 ) {
-			port = 8888;
-			serverType = string("-d");
+	if(argc == 3){
+		port = atoi(argv[2]);
+		serverType = string(argv[1]);
 	}
 	if(argc < 3){
 		if(argv[1][0] == '-'){
@@ -65,10 +65,12 @@ main( int argc, char ** argv )
 			serverType = string("-d");
 		}
 	}
-	if(argc == 3){
-		port = atoi(argv[2]);
-		serverType = string(argv[1]);
+
+	if ( argc < 2 ) {
+			port = 8888;
+			serverType = string("-d");
 	}
+
 	//registering sig int handler
 	//used for quiting server
 	struct sigaction sa_ctrlc;
