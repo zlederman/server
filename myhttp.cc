@@ -110,8 +110,9 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 
 	lines = splitRaw(raw);
 	rtype = getType(lines[0]);
+	
 	rawAsset = getAsset(lines[0]);
-	if(rawAsset == string("/"){
+	if(rawAsset == string("/")){
 		rawAsset = string("/index.html");
 	}
 
