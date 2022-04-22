@@ -162,7 +162,9 @@ void iterativeServer(int serverSocket) {
 	while(1) {
 		clientSocket = initIncoming(serverSocket);
 		processClient(clientSocket);
+		close(clientSocket);
 	}
+
 }
 
 
@@ -221,6 +223,7 @@ void* iterativeServer_r(void* data){
 	while(1){
 			clientSocket = initIncoming(serverSocket);
 			processClient(clientSocket);
+			close(clientSocket);
 	}
 }
 extern "C"
