@@ -61,6 +61,7 @@ int initIncoming(int masterSocket);
 string getIP(struct in_addr ip_struct);
 void iterativeServer(int masterSocket);
 void forkServer(int masterSocket);
+extern "C" void * processClientWrapper(void * data);
 char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength);
 
 void log(string status){
