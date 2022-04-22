@@ -9,7 +9,7 @@
 #define get string("GET")
 #define post string("POST")
 #define errString string("\0");
-#define rootDir string("http-root-dir");
+#define rootDir string("http-root-dir")
 
 using namespace std;
 
