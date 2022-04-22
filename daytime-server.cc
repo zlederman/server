@@ -27,6 +27,7 @@ const char * usage =
 
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <signal.h>
 #include <netinet/in.h>
 #include <netdb.h>
 #include <unistd.h>
