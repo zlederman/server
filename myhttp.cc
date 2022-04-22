@@ -9,6 +9,7 @@
 #define get string("GET")
 #define post string("POST")
 #define errString string("\0");
+#define rootDir string("http-root-dir");
 
 using namespace std;
 
@@ -80,6 +81,7 @@ HTTPResponse::~HTTPResponse(){
 
 string HTTPRequest::toString(){
 	string res;
+	string rawAsset;
 	switch(_request){
 		case GET:
 			res += get;
@@ -91,8 +93,10 @@ string HTTPRequest::toString(){
 			res += "ERROR INVALID REQ";
 			return res;
 	}
+	rawAsset = _asset;
+	rawAsset.erase(0,rootDir.length());
 	res += " ";
- 	res += _asset;	
+ 	res += rawAsset;	
 	return res;
 }
 
