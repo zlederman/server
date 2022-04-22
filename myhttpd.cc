@@ -1,30 +1,3 @@
-
-const char * usage =
-"                                                               \n"
-"daytime-server:                                                \n"
-"                                                               \n"
-"Simple server program that shows how to use socket calls       \n"
-"in the server side.                                            \n"
-"                                                               \n"
-"To use it in one window type:                                  \n"
-"                                                               \n"
-"   daytime-server <port>                                       \n"
-"                                                               \n"
-"Where 1024 < port < 65536.             \n"
-"                                                               \n"
-"In another window type:                                       \n"
-"                                                               \n"
-"   telnet <host> <port>                                        \n"
-"                                                               \n"
-"where <host> is the name of the machine where daytime-server  \n"
-"is running. <port> is the port number you used when you run   \n"
-"daytime-server.                                               \n"
-"                                                               \n"
-"Then type your name and return. You will get a greeting and   \n"
-"the time of the day.                                          \n"
-"                                                               \n";
-
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <signal.h>
@@ -42,9 +15,6 @@ const char * usage =
 #include "myhttp.hh"
 
 
-#define errString string("\0");
-#define rootDir "http-root-dir/";
-#define index "/index.html";
 
 using namespace std;
 
