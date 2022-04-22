@@ -198,7 +198,7 @@ void forkServer(int serverSocket) {
 
 extern "C"
 void * processClientWrapper(void * data){
-	int clientSocket =  data;
+	int clientSocket = (void*) data;
 	processClient(clientSocket);
 	close(clientSocket);
 	pthread_exit(NULL);
