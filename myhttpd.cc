@@ -23,12 +23,13 @@ pthread_mutex_t lock;
 HTTPMessageFactory* httpFactory = new HTTPMessageFactory(); //initialize factory class
 
 string PASS = ": Basic cGFzc3dvcmQ6dXNlcm5hbWU="; //definitely not the smart thing to do
-
+extern "C" void quit(int sig);
 void processClient( int socket );
 HTTPRequest* buildHTTPRequest(int fd);
 string getIP(struct in_addr ip_struct);
 bool authenticate(HTTPRequest* httpReq);
 void log(string status);
+HTTPResponse* initGetResponse(HTTPRequest* request);
 bool validate(string path);
 char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength);
 
@@ -206,7 +207,7 @@ void poolThreadServer(int serverSocket){
 
 void lazyThreadServer(int serverSocket){
 	while(1){	
-		pthread_t thread;
+		pthread_t thread;extern "C" void quit(int sig)
 		int clientSocket = initIncoming(serverSocket);
 		pthread_attr_t attr;
 		pthread_attr_init(&attr);
