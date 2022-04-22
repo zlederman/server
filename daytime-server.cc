@@ -196,6 +196,7 @@ void forkServer(int serverSocket) {
 extern "C"
 void * processClientWrapper(void * data){
 	processClient((int) *data);
+	return NULL;
 }
 
 string getIP(struct in_aiddr ip_struct){
