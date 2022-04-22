@@ -130,7 +130,7 @@ main( int argc, char ** argv )
   int optval = 1; 
   int err = setsockopt(masterSocket, SOL_SOCKET, SO_REUSEADDR, 
 		       (char *) &optval, sizeof( int ) );
-   
+8888   
   // Bind the socket to the IP address and port
   int error = bind( masterSocket,
 		    (struct sockaddr *)&serverIPAddress,
@@ -147,9 +147,9 @@ main( int argc, char ** argv )
     perror("listen");
     exit( -1 );
   }
-	//iterativeServer(masterSocket);
+	iterativeServer(masterSocket);
 	//forkServer(masterSocket);	 
-  lazyThreadServer(masterSocket);
+  //lazyThreadServer(masterSocket);
 }
 
 
