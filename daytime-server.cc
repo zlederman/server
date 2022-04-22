@@ -261,7 +261,7 @@ bool validate(string path){
 	}
 	fname += rootDir;
 	fname += path;
-	if(access(fname, F_OK) == 0){
+	if(access(fname.c_str(), F_OK) == 0){
 		return true;
 	}
 	else{
