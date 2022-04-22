@@ -158,6 +158,19 @@ void iterativeServer(int serverSocket) {
 		close(clientSocket);
 	}
 }
+void lazyThreadServer(int serverSocket){
+	int clientSocket;
+	pthread_t thread;
+	while(1){
+		clientSocket = initIncoming(serverSocket);
+
+		pthread_attr_t attr;
+		pthread_attr_init(&attr);
+		pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_DETACHED);
+		pthread_create(&thread,&attr,processClient, (void *) clientSocket);	
+		close(clientSocket);
+	}
+}
 
 void forkServer(int serverSocket) {
 	int clientSocket;
