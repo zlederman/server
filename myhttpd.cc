@@ -207,7 +207,7 @@ void poolThreadServer(int serverSocket){
 
 void lazyThreadServer(int serverSocket){
 	while(1){	
-		pthread_t thread;extern "C" void quit(int sig)
+		pthread_t thread;
 		int clientSocket = initIncoming(serverSocket);
 		pthread_attr_t attr;
 		pthread_attr_init(&attr);
