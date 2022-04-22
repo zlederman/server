@@ -55,6 +55,11 @@ main( int argc, char ** argv )
 		port = atoi(argv[2]);
 		serverType = string(argv[1]);
 	}
+ 	if ( argc < 2 ) {
+			port = 8888;
+			serverType = string("-d");
+	}
+
 	else if(argc < 3){
 		if(argv[1][0] == '-'){
 			port = 8888;
@@ -66,10 +71,6 @@ main( int argc, char ** argv )
 		}
 	}
 
-	else if ( argc < 2 ) {
-			port = 8888;
-			serverType = string("-d");
-	}
 
 	//registering sig int handler
 	//used for quiting server
