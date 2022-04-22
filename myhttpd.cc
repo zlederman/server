@@ -15,52 +15,34 @@
 #include "myhttp.hh"
 
 
-
+#define errString string("/0");
 using namespace std;
 
 int QueueLength = 5;
 pthread_mutex_t lock;
-HTTPMessageFactory* httpFactory = new HTTPMessageFactory();
+HTTPMessageFactory* httpFactory = new HTTPMessageFactory(); //initialize factory class
 
-string PASS = ": Basic cGFzc3dvcmQ6dXNlcm5hbWU=";
-// Processes time request
+string PASS = ": Basic cGFzc3dvcmQ6dXNlcm5hbWU="; //definitely not the smart thing to do
+
 void processClient( int socket );
 HTTPRequest* buildHTTPRequest(int fd);
+string getIP(struct in_addr ip_struct);
 bool authenticate(HTTPRequest* httpReq);
 void log(string status);
 bool validate(string path);
+char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength);
+
 int initIncoming(int masterSocket);
-string getIP(struct in_addr ip_struct);
+int initIncoming_r(int masterSocket);
+
 void iterativeServer(int masterSocket);
 void forkServer(int masterSocket);
 void poolThreadServer(int serverSocket);
 void lazyThreadServer(int serverSocket);
-int initIncoming_r(int masterSocket);
+
+
 extern "C" void * processClientWrapper(void * data);
 extern "C" void* iterativeServer_r(void* data);
-char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength);
-
-void log(string status){
-	cout << "\033[1;32m[ INFO ]\033[0m " << status << endl; 
-}
-
-
-extern "C" void reap(int sig){
-	int status;
-	string logStr;
-	int res = waitpid(-1,&status,WNOHANG);
-	if(res >0){
-		logStr += to_string(res);
-		logStr += " exited.";
-	}
-
-}
-
-extern "C" void quit(int sig){
-	waitpid(-1,NULL,WNOHANG);
-	exit(0);
-}
-
 
 int
 main( int argc, char ** argv )
@@ -148,12 +130,56 @@ main( int argc, char ** argv )
 		log(string("starting iterative"));
 		iterativeServer(masterSocket);		
 	}
+}
 
 
+/*
+ * LOGGING FUNCTIONS
+ */
 
+void log(string status){
+	cout << "\033[1;32m[ INFO ]\033[0m " << status << endl; 
+}
+
+string getIP(struct in_addr ip_struct){
+	//obtains 8 bit chunks of ip address
+	string res;
+	uint32_t ip_num = ip_struct.s_addr;
+	res += "Client IP ";
+	res += to_string(ip_num & (0xFF));
+	res += ".";	
+	res += to_string((ip_num & (0xFF << 8)) >> 8);
+	res += ".";
+	res += to_string((ip_num & (0xFF << 16)) >> 16);
+	res += ".";
+	res += to_string((ip_num & (0xFF << 24)) >> 24);
+	return res;
+}
+
+/*
+ * PROCESS COLLECTORS
+ */
+
+extern "C" void reap(int sig){
+	int status;
+	string logStr;
+	int res = waitpid(-1,&status,WNOHANG);
+	if(res >0){
+		logStr += to_string(res);
+		logStr += " exited.";
+	}
 
 }
 
+extern "C" void quit(int sig){
+	waitpid(-1,NULL,WNOHANG);
+	exit(0);
+}
+ 
+
+/*
+ * SERVER TYPE DEFINITIONS
+ */
 
 void iterativeServer(int serverSocket) {
 	int clientSocket;
@@ -164,7 +190,6 @@ void iterativeServer(int serverSocket) {
 	}
 
 }
-
 
 void poolThreadServer(int serverSocket){
 	pthread_t threads[4];
@@ -180,17 +205,13 @@ void poolThreadServer(int serverSocket){
 }
 
 void lazyThreadServer(int serverSocket){
-
-
-	while(1){
-		
+	while(1){	
 		pthread_t thread;
 		int clientSocket = initIncoming(serverSocket);
 		pthread_attr_t attr;
 		pthread_attr_init(&attr);
 		pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_DETACHED);
 		pthread_create(&thread,&attr,processClientWrapper,(void*) clientSocket);	
-
 	}
 }
 
@@ -215,6 +236,10 @@ void forkServer(int serverSocket) {
 	}
 }
 
+/*
+ * MULTITHREADING ENTRY POINTS
+ */
+
 extern "C" 
 void* iterativeServer_r(void* data){
 	//re-entrant version of iterative server
@@ -237,20 +262,10 @@ void * processClientWrapper(void * data){
 	return NULL;
 }
 
-string getIP(struct in_addr ip_struct){
-	//obtains 8 bit chunks of ip address
-	string res;
-	uint32_t ip_num = ip_struct.s_addr;
-	res += "Client IP ";
-	res += to_string(ip_num & (0xFF));
-	res += ".";	
-	res += to_string((ip_num & (0xFF << 8)) >> 8);
-	res += ".";
-	res += to_string((ip_num & (0xFF << 16)) >> 16);
-	res += ".";
-	res += to_string((ip_num & (0xFF << 24)) >> 24);
-	return res;
-}
+/*
+ * CLIENT SOCKET ACCEPTORS
+ */
+
 int initIncoming_r(int masterSocket){
 	//re-entrant version of initIncoming
 	struct sockaddr_in clientIPAddress;
@@ -284,6 +299,50 @@ int initIncoming(int masterSocket) {
 	return slaveSocket;
 }
 
+/*
+ * TOP LEVEL REQ/RES FUNCTION
+ */
+
+void processClient(int fd){
+	char* raw;
+	int* rawLength;
+	HTTPRequest* httpReq;
+  HTTPResponse* httpRes;
+	
+	httpReq = buildHTTPRequest(fd); //reads and returns constructed request
+	switch(httpReq->_request){
+		case GET:
+			httpRes = initGetResponse(httpReq); //creates response from validation steps
+			break;
+		case POST:
+			break;
+		default:
+			//handle unknown request type
+			break;
+	}
+
+	rawLength = (int*) malloc(sizeof(int));//mallocs space for size of raw res 
+	if(httpRes->_status == string("200 OK")){	
+		raw = dispatchOK(httpRes,httpReq,rawLength); 
+	}
+	else{
+		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize); //allocates space for a raw res with no body
+		*rawLength = httpRes->loadRaw(raw);	//loads response into the char array
+	}
+	log(httpRes->_status);
+	write(fd,raw,*rawLength); //writes to client
+	//cleanup 
+	delete httpReq;
+	delete httpRes;
+	free(rawLength);
+	free(raw);
+
+}
+
+/*
+ * INPUT VALIDATION
+ */ 
+
 bool authenticate(HTTPRequest* httpReq){	
 	string pass;
 	string authHeader = string("Authorization");
@@ -302,35 +361,6 @@ bool authenticate(HTTPRequest* httpReq){
 	}
 	return true;
 }
-
-string readRaw(int slaveFd){
-	int n;
-	string raw;
-	unsigned char newChar;	
-	unsigned char oldChar;
-
-	
-	while (( n = read( slaveFd, &newChar, sizeof(newChar) ) ) > 0 ) {
-		if(oldChar == '\012' && newChar == '\015'){
-			
-			raw += newChar;
-			//catches double carriage return
-			if((n = read(slaveFd,&newChar, sizeof(newChar))) > 0) {
-				if(newChar == '\012'){
-					raw += newChar;
-					break;		
-				}
-			}
-
-		}
-    raw += newChar;
-		oldChar = newChar;
-  	}
-
-	return raw;
-}
-
-
 
 bool validate(string path){
 	//checks if try to access parent
@@ -366,7 +396,11 @@ HTTPResponse* initGetResponse(HTTPRequest* request){
 	return httpFactory->initResponse(responseCode);
 }
 
-void getBody(string asset, HTTPResponse* httpRes){
+/*
+ * INFO GETTERS
+ */
+
+void getBody(string	asset, HTTPResponse* httpRes){
 	FILE* f;
 	char* where;
 	//gets size
@@ -409,6 +443,10 @@ string getMIMEType(string asset){
 	return errString;
 }
 
+/*
+ * OK RESPONSE BUILDER
+ */
+
 char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
 	string contentTypeHeader;
 	string contentLengthHeader;
@@ -428,40 +466,37 @@ char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
 
 	
 }
-void processClient(int fd){
-	char* raw;
-	int* rawLength;
-	HTTPRequest* httpReq;
-  HTTPResponse* httpRes;
+
+
+/*
+ * RAW REQUEST HANDLERS
+ */ 
+
+string readRaw(int slaveFd){
+	int n;
+	string raw;
+	unsigned char newChar;	
+	unsigned char oldChar;
+
 	
-	httpReq = buildHTTPRequest(fd); //reads and returns constructed request
-	switch(httpReq->_request){
-		case GET:
-			httpRes = initGetResponse(httpReq); //creates response from validation steps
-			break;
-		case POST:
-			break;
-		default:
-			//handle unknown request type
-			break;
-	}
+	while (( n = read( slaveFd, &newChar, sizeof(newChar) ) ) > 0 ) {
+		if(oldChar == '\012' && newChar == '\015'){
+			
+			raw += newChar;
+			//catches double carriage return
+			if((n = read(slaveFd,&newChar, sizeof(newChar))) > 0) {
+				if(newChar == '\012'){
+					raw += newChar;
+					break;		
+				}
+			}
 
-	rawLength = (int*) malloc(sizeof(int));//mallocs space for size of raw res 
-	if(httpRes->_status == string("200 OK")){	
-		raw = dispatchOK(httpRes,httpReq,rawLength); 
-	}
-	else{
-		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize); //allocates space for a raw res with no body
-		*rawLength = httpRes->loadRaw(raw);	//loads response into the char array
-	}
-	log(httpRes->_status);
-	write(fd,raw,*rawLength); //writes to client
-	//cleanup 
-	delete httpReq;
-	delete httpRes;
-	free(rawLength);
-	free(raw);
+		}
+    raw += newChar;
+		oldChar = newChar;
+  	}
 
+	return raw;
 }
 
 HTTPRequest*
