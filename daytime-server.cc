@@ -176,7 +176,7 @@ void poolThreadServer(int serverSocket){
 	for(int i = 0; i < 4; i++){
 		pthread_create(&threads[i],NULL,iterativeServer_r,(void*) serverSocket);	
 	}
-	iterativeServer((void*) serverSocket);
+	iterativeServer_r((void*) serverSocket);
 }
 
 void lazyThreadServer(int serverSocket){
