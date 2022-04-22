@@ -82,6 +82,15 @@ main( int argc, char ** argv )
 		perror("sigaction");
 		exit(2);
 	}
+
+	struct sigaction sa_zombie;
+	sa_zombie.sa_handler = reap;
+	sigemptyset(&sa_zombie.sa_mask);
+	sa_zombie.sa_flags = SA_RESTART;
+	if(sigaction(SIGCHLD, &sa_zombie, NULL)){
+		perror("sigaction");
+		exit(2);
+	}
 	
   // Set the IP address and port for this server
   struct sockaddr_in serverIPAddress; 
@@ -236,7 +245,6 @@ void forkServer(int serverSocket) {
 		}
 		close(clientSocket);
 		//collect processes
-		while(waitpid(0,0,0)>0);
 	}
 }
 
