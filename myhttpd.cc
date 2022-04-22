@@ -24,6 +24,7 @@ HTTPMessageFactory* httpFactory = new HTTPMessageFactory(); //initialize factory
 
 string PASS = ": Basic cGFzc3dvcmQ6dXNlcm5hbWU="; //definitely not the smart thing to do
 extern "C" void quit(int sig);
+extern "C" void reap(int sig);
 void processClient( int socket );
 HTTPRequest* buildHTTPRequest(int fd);
 string getIP(struct in_addr ip_struct);
