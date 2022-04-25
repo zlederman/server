@@ -44,7 +44,7 @@ void loadDire(string asset,HTTPResponse* httpRes){
 
 	while((ent = readdir(dir)) != NULL){
 		path = asset;
-		fname = string(dirent->d_name);
+		fname = string(ent->d_name);
 		path += fname;
 		stat(path,&fattr);
 		entries.push_back(new DirEntry(fname,fattr));
