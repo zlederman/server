@@ -66,7 +66,7 @@ char* assembleHTML(vector<DirEntry*> entries) {
 	}
 	templateHTML.replace(entriesInd,9,entryHTML);
 
-	return templateHTML.data();
+	return (char*) templateHTML.data();
 }
 
 void loadDire(string asset,HTTPResponse* httpRes){	
