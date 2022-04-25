@@ -64,9 +64,10 @@ char* assembleHTML(vector<DirEntry*> entries) {
 	
 	for(DirEntry* entr : entries){
 		entryHTML += entr->toString();
+		delete entr;
 	}
 	templateHTML.replace(entriesInd,9,entryHTML);
-	delete[] entries;
+
 	return (char*) templateHTML.data();
 }
 
