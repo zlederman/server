@@ -64,7 +64,7 @@ char* assembleHTML(vector<DirEntry*> entries) {
 	for(DirEntry* entr : entries){
 		entryHTML += entr->toString();
 	}
-	templateHTML.find(entriesInd,9,entryHTML);
+	templateHTML.replace(entriesInd,9,entryHTML);
 
 	return templateHTML.data();
 }
