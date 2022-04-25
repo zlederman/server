@@ -42,14 +42,31 @@ void loadFile(string asset, HTTPResponse* httpRes){
 	fread(httpRes->_body, sizeof(char),httpRes->_bodySize,f);
 }
 
+char* getTemplate(){
+	FILE* f;
+	char* templ;
+	int size = 0;
+	f = fopen("./htdocs/dirent_template.html","r");
+	fseek(f,0,SEEK_END);
+	size = ftell(f);
+	rewind(f);
+	templ = (char*) malloc(sizeof(char) * size);
+	fread(templ, sizeof(char), size,f);
+	return templ;
+}
+
 char* assembleHTML(vector<DirEntry*> entries) {
-	stringstream ss;
-	ss << "<table>";
+	string templateHTML;
+	string entryHTML;
+	int entriesInd;
+	templateHTML = string(getTemplate());
+	entriesInd = templateHTML.find("<entries>");
 	for(DirEntry* entr : entries){
-		ss << entr->toString();
+		entryHTML += entr->toString();
 	}
-	ss << "</table>";
-	return (char*) ss.str().data();
+	templateHTML.find(entriesInd,9,entryHTML);
+
+	return templateHTML.data();
 }
 
 void loadDire(string asset,HTTPResponse* httpRes){	
@@ -72,7 +89,7 @@ void loadDire(string asset,HTTPResponse* httpRes){
 		stat(path.c_str(),&fattr);
 		entries.push_back(new DirEntry(fname,fattr));
 	}
-
+	
 	assembleHTML(entries);
 }
 
