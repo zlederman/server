@@ -38,7 +38,7 @@ void loadDire(string asset,HTTPResponse* httpRes){
 	struct stat fattr;
 	vector<DirEntry*> entries;
 	if((dir = opendir(asset.c_str())) == NULL){
-		perror("opendir")
+		perror("opendir");
 		exit(-1);
 	}
 	while((dirent = readdir(dir)) != NULL){
