@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include "dirBrowser.hh"
 
-
+using namespace std;
 DirEntry::DirEntry(struct stat attr, string fname){
 	_name = fname;
 	_size = attr.st_size;
