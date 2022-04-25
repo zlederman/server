@@ -11,7 +11,6 @@
 #include "myhttp.hh"
 #include "dirbrowser.hh"
 using namespace std;
-<tr><td valign="top"><img src="/icons/back.gif" alt="[PARENTDIR]"></td><td><a href="/homes/grr/">Parent Directory</a></td><td>&nbsp;</td><td align="right">  - </td><td>&nbsp;</td></tr>
 
 
 DirEntry::DirEntry(string fname, struct stat fattr) {
