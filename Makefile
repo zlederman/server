@@ -13,7 +13,7 @@ daytime-server : daytime-server.o myhttp.o
 	$(CXX) -pthread -o$@ $@.o myhttp.o $(NETLIBS)
 
 myhttpd : myhttpd.o myhttp.o dirBrowser.o
-	$(CXX) -pthread -o $@ $@.o myhttp.o $(NETLIBS)
+	$(CXX) -pthread -o $@ $@.o dirBrowser.o myhttp.o $(NETLIBS)
 
 use-dlopen: use-dlopen.o
 	$(CXX) -o $@ $@.o $(NETLIBS) -ldl
