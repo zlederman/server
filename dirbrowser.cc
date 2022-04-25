@@ -46,7 +46,7 @@ void loadDire(string asset,HTTPResponse* httpRes){
 		path = asset;
 		fname = string(ent->d_name);
 		path += fname;
-		stat(path,&fattr);
+		stat(path.c_str(),&fattr);
 		entries.push_back(new DirEntry(fname,fattr));
 	}
 }
