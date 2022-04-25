@@ -13,7 +13,7 @@
 #include <dirent.h>
 #include <errno.h>
 #include "myhttp.hh"
-
+#include "dirBrowser.hh"
 
 #define errString string("/0");
 using namespace std;
