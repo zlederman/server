@@ -17,3 +17,8 @@ char* DirBrowser::buildHTML(string path,enum sortBy by, enum sortOrder order){
 	vector<DirEntry*> entries;
 	
 }
+
+char* serveAsset(string asset){
+
+
+}
