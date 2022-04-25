@@ -2,6 +2,7 @@
 #include <dirent.h>
 #include <errno.h>
 #include <sys/types.h>
+#include <stdio.h>
 #include <sys/stat.h>
 #include "dirBrowser.hh"
 #include "myhttp.hh"
