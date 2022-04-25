@@ -6,14 +6,14 @@ all: git-commit myhttpd daytime-server use-dlopen hello.so
 myhttp.o: myhttp.cc myhttp.hh
 	$(CXX) -c myhttp.cc $(NETLIBS)
 
-dirBrowser.o: dirBrowser.cc dirBrowser.hh
-	$(CXX) -c dirBrowser.cc $(NETLIBS)
+dirbrowser.o: dirbrowser.cc dirbrowser.hh
+	$(CXX) -c dirbrowser.cc $(NETLIBS)
 
 daytime-server : daytime-server.o myhttp.o
 	$(CXX) -pthread -o$@ $@.o myhttp.o $(NETLIBS)
 
-myhttpd : myhttpd.o myhttp.o dirBrowser.o
-	$(CXX) -pthread -o $@ $@.o dirBrowser.o myhttp.o $(NETLIBS)
+myhttpd : myhttpd.o myhttp.o dirbrowser.o
+	$(CXX) -pthread -o $@ $@.o dirbrowser.o myhttp.o $(NETLIBS)
 
 use-dlopen: use-dlopen.o
 	$(CXX) -o $@ $@.o $(NETLIBS) -ldl
