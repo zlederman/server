@@ -44,9 +44,12 @@ void loadFile(string asset, HTTPResponse* httpRes){
 
 char* assembleHTML(vector<DirEntry*> entries) {
 	stringstream ss;
+	ss << "<table>";
 	for(DirEntry* entr : entries){
 		ss << entr->toString();
 	}
+	ss << "</table>";
+	return ss.str().data();
 }
 
 void loadDire(string asset,HTTPResponse* httpRes){	
