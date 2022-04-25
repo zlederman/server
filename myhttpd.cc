@@ -20,7 +20,9 @@ using namespace std;
 
 int QueueLength = 5;
 pthread_mutex_t lock;
+
 HTTPMessageFactory* httpFactory = new HTTPMessageFactory(); //initialize factory class
+DirBrowser* dirBrowser = new DirBrowser();
 
 string PASS = ": Basic cGFzc3dvcmQ6dXNlcm5hbWU="; //definitely not the smart thing to do
 extern "C" void quit(int sig);
