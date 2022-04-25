@@ -41,12 +41,12 @@ void loadDire(string asset,HTTPResponse* httpRes){
 		perror("opendir");
 		exit(-1);
 	}
-	while((dirent = readdir(dir)) != NULL){
+	while((dirent = readdir(dir))!= NULL){
 		path = asset;
 		fname = string(dirent->d_name);
 		path += fname;
 		stat(path,&fattr);
-		entries.append(new DirEntry(fname,fattr));
+		entries.push_back(new DirEntry(fname,fattr));
 	}
 }
 
