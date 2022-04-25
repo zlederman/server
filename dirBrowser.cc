@@ -40,7 +40,7 @@ void serveAsset(string asset, HTTPResponse* httpRes){
 
 	stat(asset.c_str(), &pathStat);
 	if(S_ISREG(pathStat.st_mode)){
-		loadFile(string asset, httpRes);
+		loadFile( asset, httpRes);
 	}
 	if(S_ISDIR(pathStat.st_mode)){
 		/* something */
