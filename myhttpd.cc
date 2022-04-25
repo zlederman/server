@@ -14,7 +14,7 @@
 #include <errno.h>
 #include "myhttp.hh"
 #include "dirBrowser.hh"
-#include "dirBrowser.cc"
+
 #define errString string("/0");
 using namespace std;
 

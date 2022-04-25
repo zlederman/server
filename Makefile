@@ -7,7 +7,7 @@ myhttp.o: myhttp.cc myhttp.hh
 	$(CXX) -c myhttp.cc $(NETLIBS)
 
 dirBrowser.o : dirBrowser.cc dirBrowser.hh
-	$(CXX) -c dirBrowser.cc $(NETLIBS)
+	$(CXX) -o dirBrowser.cc $(NETLIBS)
 
 daytime-server : daytime-server.o myhttp.o
 	$(CXX) -pthread -o$@ $@.o myhttp.o $(NETLIBS)
