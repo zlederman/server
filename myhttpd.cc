@@ -468,7 +468,7 @@ char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
 	string contentLengthHeader;
 	char* raw;
 
-	dirBrowser.serveAsset(httpReq->_asset,httpRes);
+	dirBrowser->serveAsset(httpReq->_asset,httpRes);
 	//getBody(httpReq->_asset,httpRes);//post validation reads into the byte array also loads body size
 	contentTypeHeader = getMIMEType(httpReq->_asset); //gets type of body
 	contentLengthHeader = HTTPMessageFactory::contentLength;  
