@@ -42,7 +42,7 @@ void loadFile(string asset, HTTPResponse* httpRes){
 	fread(httpRes->_body, sizeof(char),httpRes->_bodySize,f);
 }
 
-char* assembleHTML(vector<DirEntry> entries) {
+char* assembleHTML(vector<DirEntry*> entries) {
 	stringstream ss;
 	for(DirEntry* entr : entries){
 		ss << entr->toString();
