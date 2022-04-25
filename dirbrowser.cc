@@ -6,17 +6,30 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <time.h>
+#include <sstream>
+#include <iostream>
 #include "myhttp.hh"
 #include "dirbrowser.hh"
 using namespace std;
+<tr><td valign="top"><img src="/icons/back.gif" alt="[PARENTDIR]"></td><td><a href="/homes/grr/">Parent Directory</a></td><td>&nbsp;</td><td align="right">  - </td><td>&nbsp;</td></tr>
 
 
 DirEntry::DirEntry(string fname, struct stat fattr) {
 	_name = fname;
 	_modified = fattr.st_mtime;
 	_description = string("");
-	int _size = fattr.st_size;
+	_size = fattr.st_size;
 	_type = S_ISDIR(fattr.st_mode) ? dir : file;
+
+}
+
+string DirEntry::toString(){
+	sstream ss;
+	ss << "<tr>";
+	ss << "<td>" << _name << "</td>";
+	ss << "<td>" << to_string(size) << "</td>";
+	ss << "<td>" << string(ctime(&_modified)) << "</td>";
+	ss << "</tr>";
 
 }
 void loadFile(string asset, HTTPResponse* httpRes){
@@ -29,6 +42,12 @@ void loadFile(string asset, HTTPResponse* httpRes){
 	fread(httpRes->_body, sizeof(char),httpRes->_bodySize,f);
 }
 
+char* assembleHTML(vector<DirEntry> entries) {
+	sstream ss;
+	for(DirEntry* entr : entries){
+		ss << entr->toString();
+	}
+}
 
 void loadDire(string asset,HTTPResponse* httpRes){	
 	DIR* dir;
