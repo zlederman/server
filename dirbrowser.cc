@@ -63,6 +63,7 @@ void loadDire(string asset,HTTPResponse* httpRes){
 
 	while((ent = readdir(dir)) != NULL){
 		path = asset;
+		path += "/";
 		fname = string(ent->d_name);
 		path += fname;
 		stat(path.c_str(),&fattr);
