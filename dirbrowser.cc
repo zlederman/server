@@ -41,7 +41,7 @@ void loadDire(string asset,HTTPResponse* httpRes){
 		perror("opendir");
 		exit(-1);
 	}
-	while((dirent = readdir(dir))) != NULL){
+	while((dirent = readdir(dir)) != NULL){
 		path = asset;
 		fname = string(dirent->d_name);
 		path += fname;
