@@ -17,7 +17,7 @@ DirEntry::DirEntry(string fname, struct stat fattr) {
 	_name = fname;
 	_modified = fattr.st_mtime;
 	_description = string("");
-	_size = fattr.st_size;
+	_size = (long long) fattr.st_size;
 	_type = S_ISDIR(fattr.st_mode) ? dir : file;
 
 }
