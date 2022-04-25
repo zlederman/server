@@ -66,7 +66,7 @@ char* assembleHTML(vector<DirEntry*> entries) {
 		entryHTML += entr->toString();
 	}
 	templateHTML.replace(entriesInd,9,entryHTML);
-
+	delete[] entries;
 	return (char*) templateHTML.data();
 }
 
@@ -93,7 +93,7 @@ void loadDire(string asset,HTTPResponse* httpRes){
 	}
 	
 	httpRes->_body = assembleHTML(entries);
-	httpRes->_bodySize = 2048;
+	httpRes->_bodySize = 100;
 }
 
 void DirBrowser::serveAsset(string asset, HTTPResponse* httpRes){
