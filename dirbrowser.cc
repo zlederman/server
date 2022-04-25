@@ -15,7 +15,7 @@ void loadFile(string asset, HTTPResponse* httpRes){
 
 void DirBrowser::serveAsset(string asset, HTTPResponse* httpRes){
 	struct stat attr;
-	stat(path,&attr);
+	stat(asset,&attr);
 	if(S_ISREG(attr.st_mode)){
 		loadFile(asset,httpRes);
 	}
