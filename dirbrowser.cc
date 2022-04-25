@@ -46,7 +46,7 @@ char* getTemplate(){
 	FILE* f;
 	char* templ;
 	int size = 0;
-	f = fopen("./htdocs/dirent_template.html","r");
+	f = fopen("http-root-dir/htdocs/dirent_template.html","r");
 	fseek(f,0,SEEK_END);
 	size = ftell(f);
 	rewind(f);
