@@ -27,7 +27,7 @@ char* DirBrowser::buildHTML(string path,enum sortBy by, enum sortOrder order){
 
 void loadFile(string asset,HTTPResponse* httpRes){
 	FILE* f;
-	f = open(asset.c_str(),'r');
+	f = fopen(asset.c_str(),'r');
 	fseek(f,0,SEEK_END);
 	httpRes->_bodySize = ftell(f);
 	httpRes->_body = new char[httpRes->_bodySize];
