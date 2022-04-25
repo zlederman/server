@@ -68,6 +68,8 @@ void loadDire(string asset,HTTPResponse* httpRes){
 		stat(path.c_str(),&fattr);
 		entries.push_back(new DirEntry(fname,fattr));
 	}
+
+	assembleHTML(entries);
 }
 
 void DirBrowser::serveAsset(string asset, HTTPResponse* httpRes){
