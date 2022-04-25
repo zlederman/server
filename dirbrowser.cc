@@ -24,7 +24,7 @@ DirEntry::DirEntry(string fname, struct stat fattr) {
 }
 
 string DirEntry::toString(){
-	sstream ss;
+	stringstream ss;
 	ss << "<tr>";
 	ss << "<td>" << _name << "</td>";
 	ss << "<td>" << to_string(size) << "</td>";
@@ -44,7 +44,7 @@ void loadFile(string asset, HTTPResponse* httpRes){
 }
 
 char* assembleHTML(vector<DirEntry> entries) {
-	sstream ss;
+	stringstream ss;
 	for(DirEntry* entr : entries){
 		ss << entr->toString();
 	}
