@@ -8,8 +8,8 @@
 using namespace std;
 DirEntry::DirEntry(string fname, struct stat fattr){
 	_name = fname;
-	_size = attr.st_size;
-	_modified = attr.st_mtime;
+	_size = fattr.st_size;
+	_modified = fattr.st_mtime;
 }
 
 
