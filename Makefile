@@ -6,7 +6,7 @@ all: git-commit myhttpd daytime-server use-dlopen hello.so
 myhttp.o: myhttp.cc myhttp.hh
 	$(CXX) -c myhttp.cc $(NETLIBS)
 
-dirBrowser.o: dirBrowser.cc dirBrowser.hh
+dirBrowser.o : dirBrowser.cc dirBrowser.hh
 	$(CXX) -c dirBrowser.cc $(NETLIBS)
 
 daytime-server : daytime-server.o myhttp.o
