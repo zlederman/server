@@ -351,7 +351,7 @@ void processClient(int fd){
 	delete httpReq;
 	delete httpRes;
 	free(rawLength);
-	free(raw);
+//	free(raw);
 
 }
 
