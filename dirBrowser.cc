@@ -6,7 +6,7 @@
 #include "dirBrowser.hh"
 
 using namespace std;
-DirEntry::DirEntry(struct stat attr, string fname){
+DirEntry::DirEntry(string fname, struct stat fattr){
 	_name = fname;
 	_size = attr.st_size;
 	_modified = attr.st_mtime;
