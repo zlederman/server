@@ -43,7 +43,7 @@ void loadFile(string asset, HTTPResponse* httpRes){
 }
 
 char* assembleHTML(vector<DirEntry*> entries) {
-	stringstream ss;
+	stringstream ss("");
 	char*
 	ss << "<table>";
 	for(DirEntry* entr : entries){
