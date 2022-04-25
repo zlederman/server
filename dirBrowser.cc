@@ -37,12 +37,12 @@ void serveAsset(string asset, HTTPResponse* httpRes){
 	struct stat pathStat;
 	FILE* f;
 
-	stat(asset.c_str(), pathStat);
+	stat(asset.c_str(), &pathStat);
 	if(S_ISREG(pathStat.st_mode)){
 		loadFile(string asset, httpRes);
 	}
 	if(S_ISDIR(pathStat.st_mode)){
 		/* something */
 	}
-	
+
 }
