@@ -13,7 +13,7 @@ DirEntry::DirEntry(struct stat attr, string fname){
 }
 
 
-DirBrowser::buildHTML(string path,enum sortBy by, enum sortOrder order){
+char* DirBrowser::buildHTML(string path,enum sortBy by, enum sortOrder order){
 	vector<DirEntry*> entries;
 	
 }
