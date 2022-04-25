@@ -91,7 +91,7 @@ void loadDire(string asset,HTTPResponse* httpRes){
 		entries.push_back(new DirEntry(fname,fattr));
 	}
 	
-	assembleHTML(entries);
+	return assembleHTML(entries);
 }
 
 void DirBrowser::serveAsset(string asset, HTTPResponse* httpRes){
