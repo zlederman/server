@@ -78,7 +78,7 @@ void loadDire(string asset,HTTPResponse* httpRes){
 	string path;
 	struct stat fattr;
 	vector<DirEntry*> entries;
-	
+	char* rawHTML;
 	if((dir = opendir(asset.c_str())) == NULL){
 		perror("opendir");
 		exit(-1);
@@ -91,10 +91,10 @@ void loadDire(string asset,HTTPResponse* httpRes){
 		path += fname;
 		stat(path.c_str(),&fattr);
 		entries.push_back(new DirEntry(fname,fattr));
-	}
-	
-	httpRes->_body = assembleHTML(entries);
-	httpRes->_bodySize = 100;
+	}	
+	rawHTML = assembleHTML(entries);
+	httpRes->_bodySize = 	sizeof(rawHTML)/sizeof(char);
+	httpRes->_body = rawHTML;
 }
 
 void DirBrowser::serveAsset(string asset, HTTPResponse* httpRes){
