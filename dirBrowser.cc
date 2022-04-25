@@ -4,6 +4,10 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "dirBrowser.hh"
+#include "myhttp.hh"
+
+#define _DIR 0;
+#define _FILE 1;
 
 using namespace std;
 DirEntry::DirEntry(string fname, struct stat fattr){
@@ -18,7 +22,27 @@ char* DirBrowser::buildHTML(string path,enum sortBy by, enum sortOrder order){
 	
 }
 
-char* serveAsset(string asset){
 
+void loadFile(string asset,HTTPResponse* httpRes){
+	FILE* f;
+	f = open(asset.c_str(),"r"):
+	fseek(f,0,SEEK_END);
+	httpRes->_bodySize = ftell(f);
+	httpRes->_body = new char[httpRes->_bodySize];
+	rewind(f);
+	fread(httpRes->_body,sizeof(char),httpRes->_bodySize,f);
+}
 
+void serveAsset(string asset, HTTPResponse* httpRes){
+	struct stat pathStat;
+	FILE* f;
+
+	stat(asset.c_str(), pathStat);
+	if(S_ISREG(pathStat.st_mode)){
+		loadFile(string asset, httpRes);
+	}
+	if(S_ISDIR(pathStat.st_mode)){
+		/* something */
+	}
+	
 }
