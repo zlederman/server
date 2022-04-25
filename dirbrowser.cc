@@ -30,6 +30,7 @@ string DirEntry::toString(){
 	ss << "<td>" << to_string(size) << "</td>";
 	ss << "<td>" << string(ctime(&_modified)) << "</td>";
 	ss << "</tr>";
+	return ss.str();
 
 }
 void loadFile(string asset, HTTPResponse* httpRes){
