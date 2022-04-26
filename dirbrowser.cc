@@ -190,7 +190,7 @@ void loadDire(string asset,HTTPResponse* httpRes, vector<string> params){
 	rawHTML = assembleHTML(entries);
 	httpRes->_bodySize = rawHTML.length(); 
 	httpRes->_body = new char[httpRes->_bodySize];
-	strcpy(httpRes->_body,rawHTML.c_str());
+	//strcpy(httpRes->_body,rawHTML.c_str());
 	closedir(dir);
 }
 
@@ -202,6 +202,6 @@ void DirBrowser::serveAsset(string asset, HTTPResponse* httpRes,vector<string> p
 		loadFile(asset,httpRes);
 	}
 	if(S_ISDIR(attr.st_mode)){
-	//	loadDire(asset,httpRes,params);
+		loadDire(asset,httpRes,params);
 	}
 }
