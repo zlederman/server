@@ -145,7 +145,6 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	requestType rtype;
 	string asset;
 	string rawAsset;
-	string rootDir =  string("/http-root-dir/");
 	vector<string> headers;
 	vector<string> queryParams;
 	int idxQuery;
