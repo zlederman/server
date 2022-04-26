@@ -101,7 +101,7 @@ void loadDire(string asset,HTTPResponse* httpRes){
 		stat(path.c_str(),&fattr);
 		entries.push_back(new DirEntry(fname,fattr));
 	}	
-
+	sort(entries.begin(), entries.end(),compTime);
 	rawHTML = assembleHTML(entries);
 	httpRes->_bodySize = rawHTML.length(); 
 	httpRes->_body = new char[httpRes->_bodySize];
