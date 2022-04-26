@@ -165,6 +165,9 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	if(rawAsset.find(rootDir) == string::npos){
 		asset = string("http-root-dir");
 	}
+	else{
+		asset.erase(asset.front());
+	}
 	asset += rawAsset;
 	lines.pop_back();
 
