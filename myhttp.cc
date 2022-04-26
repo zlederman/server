@@ -145,6 +145,7 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	requestType rtype;
 	string asset;
 	string rawAsset;
+	string rootDir ("/http-root-dir/");
 	vector<string> headers;
 	vector<string> queryParams;
 	int idxQuery;
@@ -162,10 +163,9 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	if(rawAsset == string("/")){
 		rawAsset = string("/index.html");
 	}
-	if(asset.find("http-root-dir") == string::npos){
+	if(rawAsset.find(rootDir) == string::npos){
 		asset = string("http-root-dir");
 	}
-
 	asset += rawAsset;
 	lines.pop_back();
 
