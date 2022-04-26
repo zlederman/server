@@ -122,7 +122,7 @@ string assembleHTML(vector<DirEntry*> entries) {
 }
 
 
-void loadDire(string asset,HTTPResponse* httpRes, vector<string> params){	
+void loadDire(string asset,HTTPResponse* httpRes){	
 	DIR* dir;
 	struct dirent* ent;
 	string fname;
@@ -150,7 +150,7 @@ void loadDire(string asset,HTTPResponse* httpRes, vector<string> params){
 	strcpy(httpRes->_body,rawHTML.c_str());
 }
 
-void DirBrowser::serveAsset(string asset, HTTPResponse* httpRes){
+void DirBrowser::serveAsset(string asset, HTTPResponse* httpRes,vector<string> params){
 	struct stat attr;
 	stat(asset.c_str(), &attr);
 	if(S_ISREG(attr.st_mode)){
