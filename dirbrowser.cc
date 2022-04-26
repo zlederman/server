@@ -186,11 +186,11 @@ void loadDire(string asset,HTTPResponse* httpRes, vector<string> params){
 		stat(path.c_str(),&fattr);
 		entries.push_back(new DirEntry(fname,fattr));
 	}	
-//	entries = sortBy(entries,params);	
+	entries = sortBy(entries,params);	
 	rawHTML = assembleHTML(entries);
 	httpRes->_bodySize = rawHTML.length(); 
 	httpRes->_body = new char[httpRes->_bodySize];
-	strcpy(httpRes->_body,rawHTML.c_str());
+	strcpy(&httpRes->_body,rawHTML.c_str());
 	closedir(dir);
 }
 
