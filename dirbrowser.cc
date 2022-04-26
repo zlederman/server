@@ -14,14 +14,6 @@
 #include "myhttp.hh"
 #include "dirbrowser.hh"
 
-#define ASC 0x1
-#define DES 0x2
-#define NAME 0xA
-#define SIZE 0xB
-#define DATE 0xC
-#define DESC 0xD
-
-
 using namespace std;
 
 string topDirTemplate = 
@@ -40,6 +32,30 @@ string bottomDirTemplate =
 	"</html>";
 
 
+string getIcon(string fname, enum type _type){
+	int extIdx;
+	string ext;
+	if(fname == string("."){
+		return string("");
+	}
+	if(fname == string(".."){
+		return string("/icons/back.gif");
+	}
+	if(_type == dir){
+		return string("/icons/folder.gif");
+	}
+	if((extIdx = fname.find(".")) == string::npos){
+		return string("/icons/unknown.gif");
+	}
+	ext = fname.substr(extIdx, fname.length() - extIdx);
+	if(ext == string(".gif") || ext == string(".png"){
+		return string("/icons/back.gif");
+	}
+	else{
+		return string("/icons/text.gif");
+	}	
+
+}
 
 DirEntry::DirEntry(string fname, struct stat fattr) {
 	_name = fname;
@@ -47,7 +63,7 @@ DirEntry::DirEntry(string fname, struct stat fattr) {
 	_description = string("");
 	_size = (long int) fattr.st_size;
 	_type = S_ISDIR(fattr.st_mode) ? dir : file;
-
+	_icon = getIcon(fname,_type);
 }
 
 bool compTimeNeg(DirEntry* ent1, DirEntry* ent2){
@@ -75,6 +91,7 @@ bool compDesc(DirEntry* ent1, DirEntry* ent2){
 string DirEntry::toString(){
 	stringstream ss;
 	ss << "<tr><td valign=\"top\">";
+	ss << "<img src=\"" << _icon << "\"></td>";
 	ss << "<td>" << _name << "</td>";
 	ss << "<td>&nbsp;</td>";	
 	ss << "<td>" << string(ctime(&_modified)) << "</td>";	
