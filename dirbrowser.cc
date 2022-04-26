@@ -119,7 +119,7 @@ vector<DirEntry*> sortBy(vector<DirEntry*> entries,vector<string> params){
 			sort(entries.begin(),entries.end(),compName);
 			break;
 		case 'S':
-			sort(entries.begin(),entries.end(), compSize):
+			sort(entries.begin(),entries.end(), compSize);
 			break;
 		case 'M':
 			sort(entries.begin(), entries.end(), compTime);
@@ -130,7 +130,7 @@ vector<DirEntry*> sortBy(vector<DirEntry*> entries,vector<string> params){
 	}
 	switch(sortOrder){
 		case 'D':
-			reverse(entries.begin(),entries.end()):
+			reverse(entries.begin(),entries.end());
 			break;
 		default:
 			break;
