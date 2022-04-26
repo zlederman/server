@@ -35,7 +35,7 @@ string bottomDirTemplate =
 string getIcon(string fname, enum type _type){
 	int extIdx;
 	string ext;
-	if(fname == string("."){
+	if(fname == string(".")){
 		return string("");
 	}
 	if(fname == string(".."){
