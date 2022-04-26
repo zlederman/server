@@ -112,6 +112,10 @@ string assembleHTML(vector<DirEntry*> entries) {
 }
 
 vector<DirEntry*> sortBy(vector<DirEntry*> entries,vector<string> params){
+	if(params.size() == 0){
+		sort(entries.begin(),entries.end(),compName);
+		return entries;
+	}
 	char sortType = params.at(0).at(2);
 	char sortOrder = params.at(1).at(2);
 	switch(sortType){
@@ -126,7 +130,10 @@ vector<DirEntry*> sortBy(vector<DirEntry*> entries,vector<string> params){
 			break;
 		case 'D':
 			sort(entries.begin(),entries.end(), compDesc);
-			break;		
+			break;
+		default:
+			sort(entries.begin(),entries.end(),compName);
+			return entries;		
 	}
 	switch(sortOrder){
 		case 'D':
