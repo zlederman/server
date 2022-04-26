@@ -45,6 +45,7 @@ string DirEntry::toString(){
 	ss << "<td>" << to_string(_size) << "</td>";	
 	ss << "<td>&nbsp;</td>";
 	ss << "<td>" << string(ctime(&_modified)) << "</td>";
+	ss << "<td>&nbsp;</td>";
 	ss << "</tr>";
 	return ss.str();
 
