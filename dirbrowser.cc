@@ -39,7 +39,7 @@ string getIcon(string fname, enum type _type){
 		return string("");
 	}
 	if(fname == string("..")){
-		return string("/icons/back.gif");
+		return string("/icons/back.xbm");
 	}
 	if(_type == dir){
 		return string("/icons/folder.gif");
