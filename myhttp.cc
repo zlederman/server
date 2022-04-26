@@ -27,6 +27,8 @@ const string HTTPMessageFactory::contentTypePNG = string("Content-type: image/pn
 const string HTTPMessageFactory::contentTypeGIF = string("Content-type: image/gif");
 const string HTTPMessageFactory::contentTypeICO = string("Content-type: image/vnd.microsoft.icon");
 const string HTTPMessageFactory::contentTypeSVG = string("Content-type: image/svg+xml");
+const string HTTPMessageFactory::contentTypeXBM = string("Content-type: image/xbm");
+
 const string HTTPMessageFactory::contentLength = string("Content-Length: ");
 const int HTTPMessageFactory::maxResponseHeaderSize = 2048;
 const map<int,string> HTTPMessageFactory::statuses = {

@@ -440,7 +440,7 @@ string getMIMEType(string asset){
 	string gif = string(".gif");
 	string html = string(".html");
 	string svg = string(".svg");
-
+	string xbm = string(".xbm");
 	if(asset.find(png) != string::npos) { 
 		return HTTPMessageFactory::contentTypePNG;
  	}
@@ -455,6 +455,9 @@ string getMIMEType(string asset){
 	}
 	if(asset.find(svg) != string::npos){
 		return HTTPMessageFactory::contentTypeSVG;
+	}
+	if(asset.find(xbm) != string::npos){
+		return HTTPMessageFactory::contentTypeXBM;
 	}
 	return errString;
 }
