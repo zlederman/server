@@ -38,7 +38,7 @@ string getIcon(string fname, enum type _type){
 	if(fname == string(".")){
 		return string("");
 	}
-	if(fname == string(".."){
+	if(fname == string("..")){
 		return string("/icons/back.gif");
 	}
 	if(_type == dir){
