@@ -93,8 +93,8 @@ string assembleHTML(vector<DirEntry*> entries) {
 }
 
  getParams(vector<string> params){
-	char sortType = *params.at(0).at(2);
-	char sortOrder = *params.at(1).at(2);
+	char sortType = params.at(0).at(2);
+	char sortOrder = params.at(1).at(2);
 	int8_t res = 0;
 	switch(sortType){
 		case 'N':
