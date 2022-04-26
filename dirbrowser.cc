@@ -141,7 +141,7 @@ vector<DirEntry*> sortBy(vector<DirEntry*> entries,vector<string> params){
 
 
 
-void loadDire(string asset,HTTPResponse* httpRes){	
+void loadDire(string asset,HTTPResponse* httpRes, vector<string> params){	
 	DIR* dir;
 	struct dirent* ent;
 	string fname;
@@ -161,9 +161,8 @@ void loadDire(string asset,HTTPResponse* httpRes){
 		path += fname;
 		stat(path.c_str(),&fattr);
 		entries.push_back(new DirEntry(fname,fattr));
-	}
-	
-	sort(entries.begin(), entries.end(),compTime);
+	}	
+	sortBy(entries,params);	
 	rawHTML = assembleHTML(entries);
 	httpRes->_bodySize = rawHTML.length(); 
 	httpRes->_body = new char[httpRes->_bodySize];
@@ -178,7 +177,6 @@ void DirBrowser::serveAsset(string asset, HTTPResponse* httpRes,vector<string> p
 		loadFile(asset,httpRes);
 	}
 	if(S_ISDIR(attr.st_mode)){
-		paramInt = getParams(params);
-		loadDire(asset,httpRes);
+		loadDire(asset,httpRes,params);
 	}
 }
