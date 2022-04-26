@@ -9,7 +9,7 @@
 #include <sstream>
 #include <iostream>
 #include <cstring>
-#include <sort.h>
+#include <algorithm>   
 #include "myhttp.hh"
 #include "dirbrowser.hh"
 using namespace std;
