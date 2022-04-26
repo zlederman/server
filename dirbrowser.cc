@@ -122,7 +122,7 @@ string assembleHTML(vector<DirEntry*> entries) {
 	entriesInd = templateHTML.find("<entries>");
 	
 	for(DirEntry* entr : entries){
-		if(entr->_fname != string(".")){
+		if(entr->_name != string(".")){
 			entryHTML += entr->toString();
 		}
 		delete entr;
