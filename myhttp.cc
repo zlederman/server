@@ -162,7 +162,7 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	if(rawAsset == string("/")){
 		rawAsset = string("/index.html");
 	}
-	if(asset.find("http-root-dir")!= string::npos){
+	if(asset.find("http-root-dir") == string::npos){
 		asset = string("http-root-dir");
 	}
 
