@@ -20,6 +20,13 @@ string topDirTemplate =
 	"<h1>dir-name</h1>"
 	"<table>"
 	"<tr><th valign=\"top\"><img src=\"/icons/blank.gif\" alt=\"[ICO]\"></th><th><a href=\"?C=N;O=D\">Name</a></th><th><a href=\"?C=M;O=A\">Last modified</a></th><th><a href=\"?C=S;O=A\">Size</a></th><th><a href=\"?C=D;O=A\">Description</a></th></tr>";
+
+string bottomDirTemplate = 
+	"<tr><th colspan="5"><hr></th></tr>"
+	"</table>"
+	"</body>"
+	"</html>";
+
 DirEntry::DirEntry(string fname, struct stat fattr) {
 	_name = fname;
 	_modified = fattr.st_mtime;
@@ -49,7 +56,7 @@ void loadFile(string asset, HTTPResponse* httpRes){
 	fread(httpRes->_body, sizeof(char),httpRes->_bodySize,f);
 }
 
-char* assembleHTML(vector<DirEntry*> entries) {
+string assembleHTML(vector<DirEntry*> entries) {
 	string templateHTML;
 	string entryHTML;
 	int entriesInd;
@@ -60,9 +67,9 @@ char* assembleHTML(vector<DirEntry*> entries) {
 		entryHTML += entr->toString();
 		delete entr;
 	}
-	templateHTML.replace(entriesInd,9,entryHTML);
-
-	return (char*) templateHTML.data();
+	templateHTML += entryHTML;
+	templateHTML += bottomDirTemplate;
+	return templateHTML;
 }
 
 void loadDire(string asset,HTTPResponse* httpRes){	
@@ -87,8 +94,9 @@ void loadDire(string asset,HTTPResponse* httpRes){
 		entries.push_back(new DirEntry(fname,fattr));
 	}	
 	rawHTML = assembleHTML(entries);
-	httpRes->_bodySize = 	sizeof(rawHTML)/sizeof(char);
-	httpRes->_body = rawHTML;
+	httpRes->_bodySize = rawHTML.length(); 
+	httpRes->_body = new char[httpRes->_bodySize];
+	strcpy(httpRes->_body,rawHTML.c_str());
 }
 
 void DirBrowser::serveAsset(string asset, HTTPResponse* httpRes){
