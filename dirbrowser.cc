@@ -121,6 +121,7 @@ string assembleHTML(vector<DirEntry*> entries) {
 	
 	for(DirEntry* entr : entries){
 		entryHTML += entr->toString();
+		delete entr;
 	}
 	templateHTML += entryHTML;
 	templateHTML += bottomDirTemplate;
@@ -201,6 +202,6 @@ void DirBrowser::serveAsset(string asset, HTTPResponse* httpRes,vector<string> p
 		loadFile(asset,httpRes);
 	}
 	if(S_ISDIR(attr.st_mode)){
-		loadDire(asset,httpRes,params);
+	//	loadDire(asset,httpRes,params);
 	}
 }
