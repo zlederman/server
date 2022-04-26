@@ -41,7 +41,9 @@ string DirEntry::toString(){
 	stringstream ss;
 	ss << "<tr>";
 	ss << "<td>" << _name << "</td>";
-	ss << "<td>" << to_string(_size) << "</td>";
+	ss << "<td>&nbsp;</td>";
+	ss << "<td>" << to_string(_size) << "</td>";	
+	ss << "<td>&nbsp;</td>";
 	ss << "<td>" << string(ctime(&_modified)) << "</td>";
 	ss << "</tr>";
 	return ss.str();
