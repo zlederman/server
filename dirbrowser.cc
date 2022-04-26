@@ -24,7 +24,7 @@ string topDirTemplate =
 	"<h1>dir-name</h1>"
 	"<table>"
 	"<tr><th valign=\"top\"><img src=\"\" alt=\"[ICO]\"></th><th><a href=\"?C=N;O=D\">Name</a></th><th><a href=\"?C=M;O=A\">Last modified</a></th><th><a href=\"?C=S;O=A\">Size</a></th><th><a href=\"?C=D;O=A\">Description</a></th></tr>";
-
+	
 string bottomDirTemplate = 
 	"<tr><th colspan=\"5\"><hr></th></tr>"
 	"</table>"
@@ -65,7 +65,6 @@ DirEntry::DirEntry(string fname,string asset, struct stat fattr) {
 	_type = S_ISDIR(fattr.st_mode) ? dir : file;
 	_icon = getIcon(fname,_type);
 	_path = asset;
-
 
 }
 
@@ -123,7 +122,9 @@ string assembleHTML(vector<DirEntry*> entries) {
 	entriesInd = templateHTML.find("<entries>");
 	
 	for(DirEntry* entr : entries){
-		entryHTML += entr->toString();
+		if(_entr->fname != string(".")){
+			entryHTML += entr->toString();
+		}
 		delete entr;
 	}
 	templateHTML += entryHTML;
