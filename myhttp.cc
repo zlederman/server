@@ -213,7 +213,17 @@ vector<string> splitRaw(string raw){
 	}	
 	return tokens;
 }
-
-
+vector<string> getParams(string assetStr){
+	vector<string> tokens;
+	string delimeter = std::string(";");
+	size_t pos = 0;
+	string token;
+	while((pos = assetStr.find(delimeter)) != string::npos){
+		token = assetStr.substr(0,pos);
+		raw.erase(0,pos+delimeter.length());
+		tokens.push_back(token);
+	}
+	return tokens;
+}
 
 
