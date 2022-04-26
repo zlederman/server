@@ -492,8 +492,27 @@ char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
 
 void handleCGI(int clientFd,HTTPRequest* httpReq){
 	string envVars = httpReq->_queryParams.at(0);
+	int clientCopy;
+	int pid;
+	string exeString;
+	setenv("QUERY_STRING",envVars->c_str(),1);
+	setenv("REQUEST_METHOD","GET",1);
+	clientCopy = dup(clientFd);
+	pid = fork();
+	if(pid == 0){
+		dup2(clientCopy,1);
+		exeString += ".";
+		exeString += httpReq->_asset;
+		execv(exeString.c_str(),{exeString.c_str(),NULL});
 
+	}
+	if(pid < 0){
+
+	}
+	//
+	close(clientCopy);
 }
+
 
 /*
  * RAW REQUEST HANDLERS
