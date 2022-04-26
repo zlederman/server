@@ -79,7 +79,7 @@ void loadDire(string asset,HTTPResponse* httpRes){
 	string path;
 	struct stat fattr;
 	vector<DirEntry*> entries;
-	char* rawHTML;
+	string rawHTML;
 	if((dir = opendir(asset.c_str())) == NULL){
 		perror("opendir");
 		exit(-1);
