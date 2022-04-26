@@ -220,7 +220,7 @@ vector<string> getParams(string assetStr){
 	string token;
 	while((pos = assetStr.find(delimeter)) != string::npos){
 		token = assetStr.substr(0,pos);
-		raw.erase(0,pos+delimeter.length());
+		assetStr.erase(0,pos+delimeter.length());
 		tokens.push_back(token);
 	}
 	return tokens;
