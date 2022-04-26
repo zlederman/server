@@ -1,5 +1,6 @@
 #include <string>
 #include <stdio.h>
+#include <functional>
 #include <vector>
 #include <dirent.h>
 #include <sys/stat.h>
@@ -92,7 +93,7 @@ string assembleHTML(vector<DirEntry*> entries) {
 	return templateHTML;
 }
 
- getParams(vector<string> params){
+int8_t getParams(vector<string> params){
 	char sortType = params.at(0).at(2);
 	char sortOrder = params.at(1).at(2);
 	int8_t res = 0;
@@ -143,7 +144,7 @@ void loadDire(string asset,HTTPResponse* httpRes){
 		stat(path.c_str(),&fattr);
 		entries.push_back(new DirEntry(fname,fattr));
 	}	
-	sort(entries.begin(), entries.end(),DirEntry::compTime);
+	sort(entries.begin(), entries.end(),not_fn(DirEntry::compTime));
 	rawHTML = assembleHTML(entries);
 	httpRes->_bodySize = rawHTML.length(); 
 	httpRes->_body = new char[httpRes->_bodySize];
@@ -153,10 +154,12 @@ void loadDire(string asset,HTTPResponse* httpRes){
 void DirBrowser::serveAsset(string asset, HTTPResponse* httpRes,vector<string> params){
 	struct stat attr;
 	stat(asset.c_str(), &attr);
+	int8_t paramInt;
 	if(S_ISREG(attr.st_mode)){
 		loadFile(asset,httpRes);
 	}
 	if(S_ISDIR(attr.st_mode)){
+		paramInt = getParams(params);
 		loadDire(asset,httpRes);
 	}
 }
