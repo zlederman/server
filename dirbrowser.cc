@@ -49,24 +49,11 @@ void loadFile(string asset, HTTPResponse* httpRes){
 	fread(httpRes->_body, sizeof(char),httpRes->_bodySize,f);
 }
 
-char* getTemplate(){
-	FILE* f;
-	char* templ;
-	int size = 0;
-	f = fopen("http-root-dir/htdocs/dirent_template.html","r");
-	fseek(f,0,SEEK_END);
-	size = ftell(f);
-	rewind(f);
-	templ = (char*) malloc(sizeof(char) * size);
-	fread(templ, sizeof(char), size,f);
-	return templ;
-}
-
 char* assembleHTML(vector<DirEntry*> entries) {
 	string templateHTML;
 	string entryHTML;
 	int entriesInd;
-	templateHTML = string(getTemplate());
+	templateHTML = string(topDirTemplate);
 	entriesInd = templateHTML.find("<entries>");
 	
 	for(DirEntry* entr : entries){
