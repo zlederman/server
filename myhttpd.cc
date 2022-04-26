@@ -468,7 +468,7 @@ char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
 	string contentLengthHeader;
 	char* raw;
 
-	dirBrowser->serveAsset(httpReq->_asset,httpReq->_queryParams,httpRes);
+	dirBrowser->serveAsset(httpReq->_asset,httpRes,httpReq->_queryParams);
 	contentTypeHeader = getMIMEType(httpReq->_asset); //gets type of body
 	contentLengthHeader = HTTPMessageFactory::contentLength;  
 	contentLengthHeader += to_string(httpRes->_bodySize);//sends over content length
