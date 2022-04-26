@@ -154,7 +154,7 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	
 	//format asset
 	rawAsset = getAsset(lines[0]);
-	idxQuery = rawAsset.find("?") == string::npos;
+	idxQuery = rawAsset.find("?");
 	if(idxQuery != string::npos){
 		queryParams = splitRaw(rawAsset.substr(idxQuery+1,rawAsset.length()),string(";"));
 		rawAsset = rawAsset.substr(0,idxQuery);
