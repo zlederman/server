@@ -42,7 +42,7 @@ string getIcon(string fname, enum type _type){
 		return string("/icons/ball.gif");
 	}
 	if(_type == dir){
-		return string("/icons/folder.gif");
+		return string("/icons/index.gif");
 	}
 	if((extIdx = fname.find(".")) == string::npos){
 		return string("/icons/unknown.xbm");
