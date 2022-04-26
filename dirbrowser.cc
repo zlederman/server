@@ -57,13 +57,16 @@ string getIcon(string fname, enum type _type){
 
 }
 
-DirEntry::DirEntry(string fname, struct stat fattr) {
+DirEntry::DirEntry(string fname,string asset, struct stat fattr) {
 	_name = fname;
 	_modified = fattr.st_mtime;
 	_description = string("");
 	_size = (long int) fattr.st_size;
 	_type = S_ISDIR(fattr.st_mode) ? dir : file;
 	_icon = getIcon(fname,_type);
+	_path = asset;
+
+
 }
 
 bool compTimeNeg(DirEntry* ent1, DirEntry* ent2){
@@ -92,7 +95,8 @@ string DirEntry::toString(){
 	stringstream ss;
 	ss << "<tr><td valign=\"top\">";
 	ss << "<img src=\"" << _icon << "\"></td>";
-	ss << "<td>" << _name << "</td>";
+	ss << "<td>" << "<a href=\"" << _path << "\">";
+	ss	<< _name << "</a></td>";
 	ss << "<td>" << string(ctime(&_modified)) << "</td>";	
 	ss << "<td>&nbsp;</td>";
 	ss << "<td>" << to_string(_size) << "</td>";	
@@ -183,7 +187,7 @@ void loadDire(string asset,HTTPResponse* httpRes, vector<string> params){
 		fname = string(ent->d_name);
 		path += fname;
 		stat(path.c_str(),&fattr);
-		entries.push_back(new DirEntry(fname,fattr));
+		entries.push_back(new DirEntry(fname,path,fattr));
 	}	
 	entries = sortBy(entries,params);	
 	rawHTML = assembleHTML(entries);
