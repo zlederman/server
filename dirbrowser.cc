@@ -8,7 +8,7 @@
 #include <time.h>
 #include <sstream>
 #include <iostream>
-#include <ctrsing>
+#include <cstring>
 #include "myhttp.hh"
 #include "dirbrowser.hh"
 using namespace std;
