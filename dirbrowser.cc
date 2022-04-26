@@ -37,16 +37,18 @@ DirEntry::DirEntry(string fname, struct stat fattr) {
 
 }
 
+DirEntry::compTime(DirEntry* ent1, DirEntry* ent2){
+	return ent1->_modified < ent2->_modified;
+}
+
 string DirEntry::toString(){
 	stringstream ss;
-	ss << "<tr>";
+	ss << "<tr><td valign=\"top\">";
 	ss << "<td>" << _name << "</td>";
 	ss << "<td>&nbsp;</td>";	
 	ss << "<td>" << string(ctime(&_modified)) << "</td>";	
 	ss << "<td>&nbsp;</td>";
 	ss << "<td>" << to_string(_size) << "</td>";	
-
-
 	ss << "<td>&nbsp;</td>";
 	ss << "</tr>";
 	return ss.str();
@@ -99,6 +101,7 @@ void loadDire(string asset,HTTPResponse* httpRes){
 		stat(path.c_str(),&fattr);
 		entries.push_back(new DirEntry(fname,fattr));
 	}	
+
 	rawHTML = assembleHTML(entries);
 	httpRes->_bodySize = rawHTML.length(); 
 	httpRes->_body = new char[httpRes->_bodySize];
