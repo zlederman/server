@@ -175,7 +175,7 @@ void loadDire(string asset,HTTPResponse* httpRes, vector<string> params){
 	string rawHTML;
 	if((dir = opendir(asset.c_str())) == NULL){
 		perror("opendir");
-		exit(-1);
+//		exit(-1);
 	}
 
 	while((ent = readdir(dir)) != NULL){
