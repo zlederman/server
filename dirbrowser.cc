@@ -12,6 +12,15 @@
 #include <algorithm>   
 #include "myhttp.hh"
 #include "dirbrowser.hh"
+
+#define ASC 0x1
+#define DES 0x2
+#define NAME 0xA
+#define SIZE 0xB
+#define DATE 0xC
+#define DESC 0xD
+
+
 using namespace std;
 
 string topDirTemplate = 
@@ -81,7 +90,37 @@ string assembleHTML(vector<DirEntry*> entries) {
 	return templateHTML;
 }
 
-void loadDire(string asset,HTTPResponse* httpRes){	
+ getParams(vector<string> params){
+	char sortType = *params.at(0).at(2);
+	char sortOrder = *params.at(1).at(2);
+	int8_t res = 0;
+	switch(sortType){
+		case 'N':
+			res |= (NAME << 4);
+			break;
+		case 'S':
+			res |= (SIZE << 4);
+			break;
+		case 'M':
+			res |= (DATE << 4);
+			break;
+		case 'D':
+			res |= (DESC << 4);
+			break;		
+	}
+	switch(sortOrder){
+		case 'A':
+			res |= ASC;
+			break;
+		case 'D':
+			res |= DES;
+			break;
+	}
+	return res;
+}
+
+
+void loadDire(string asset,HTTPResponse* httpRes, vector<string> params){	
 	DIR* dir;
 	struct dirent* ent;
 	string fname;
@@ -102,7 +141,7 @@ void loadDire(string asset,HTTPResponse* httpRes){
 		stat(path.c_str(),&fattr);
 		entries.push_back(new DirEntry(fname,fattr));
 	}	
-	sort(entries.begin(), entries.end(),DirEntry::compTime);
+	sort(entries.begin(), entries.end(),!DirEntry::compTime);
 	rawHTML = assembleHTML(entries);
 	httpRes->_bodySize = rawHTML.length(); 
 	httpRes->_body = new char[httpRes->_bodySize];
