@@ -38,6 +38,8 @@ string bottomDirTemplate =
 	"</body>"
 	"</html>";
 
+
+
 DirEntry::DirEntry(string fname, struct stat fattr) {
 	_name = fname;
 	_modified = fattr.st_mtime;
@@ -141,7 +143,7 @@ void loadDire(string asset,HTTPResponse* httpRes, vector<string> params){
 		stat(path.c_str(),&fattr);
 		entries.push_back(new DirEntry(fname,fattr));
 	}	
-	sort(entries.begin(), entries.end(),!DirEntry::compTime);
+	sort(entries.begin(), entries.end(),DirEntry::compTime);
 	rawHTML = assembleHTML(entries);
 	httpRes->_bodySize = rawHTML.length(); 
 	httpRes->_body = new char[httpRes->_bodySize];
