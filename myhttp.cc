@@ -217,7 +217,10 @@ vector<string> splitRaw(string raw, string delimeter){
 		token = raw.substr(0,pos);
 		raw.erase(0,pos + delimeter.length());
 		tokens.push_back(token);
-	}	
+	}
+	if(delimeter != string("\015\012")){
+		tokens.push_back(raw);
+	}
 	return tokens;
 }
 
