@@ -12,7 +12,14 @@
 #include "dirbrowser.hh"
 using namespace std;
 
-
+string topDirTemplate = 
+	"<!DOCTYPE HTML>"
+	"<html>"
+	"<head>dir-name</head>"
+	"<body>"
+	"<h1>dir-name</h1>"
+	"<table>"
+	"<tr><th valign=\"top\"><img src=\"/icons/blank.gif\" alt=\"[ICO]\"></th><th><a href=\"?C=N;O=D\">Name</a></th><th><a href=\"?C=M;O=A\">Last modified</a></th><th><a href=\"?C=S;O=A\">Size</a></th><th><a href=\"?C=D;O=A\">Description</a></th></tr>";
 DirEntry::DirEntry(string fname, struct stat fattr) {
 	_name = fname;
 	_modified = fattr.st_mtime;
