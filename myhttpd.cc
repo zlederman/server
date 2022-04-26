@@ -342,7 +342,7 @@ void processClient(int fd){
 	if(httpReq->_asset.find(cgi) != string::npos){
 		handleCGI(fd,httpReq);		
 	}
-	if(httpRes->_status == string("200 OK")){	
+	else if(httpRes->_status == string("200 OK")){	
 		raw = dispatchOK(httpRes,httpReq,rawLength); 
 	}
 	else{
