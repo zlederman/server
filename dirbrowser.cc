@@ -37,7 +37,7 @@ DirEntry::DirEntry(string fname, struct stat fattr) {
 
 }
 
-DirEntry::compTime(DirEntry* ent1, DirEntry* ent2){
+bool DirEntry::compTime(DirEntry* ent1, DirEntry* ent2){
 	return ent1->_modified < ent2->_modified;
 }
 
