@@ -50,8 +50,26 @@ DirEntry::DirEntry(string fname, struct stat fattr) {
 
 }
 
-bool DirEntry::compTime(DirEntry* ent1, DirEntry* ent2){
+bool compTimeNeg(DirEntry* ent1, DirEntry* ent2){
+	return !(ent1->_modified < ent2->_modified);
+}
+bool compTime(DirEntry* ent1, DirEntry* ent2){
 	return ent1->_modified < ent2->_modified;
+}
+bool compSize(DirEntry* ent1, DirEntry* ent2){
+	return ent1->_size < ent2->_size;
+}
+bool compSizeNeg(DirEntry* ent1, DirEntry* ent2){
+	return !(ent1->_size < ent2->_size);
+}
+bool compName(DirEntry* ent1, DirEntry* ent2){
+		return ent1->_name < ent2->_name;
+}
+bool compNameNeg(DirEntry* ent1, DirEntry* ent2){
+	return !(ent1->_name < ent2->_name);
+}
+bool compDesc(DirEntry* ent1, DirEntry* ent2){
+	return ent1->_description < ent2->_description;
 }
 
 string DirEntry::toString(){
@@ -93,34 +111,34 @@ string assembleHTML(vector<DirEntry*> entries) {
 	return templateHTML;
 }
 
-int8_t getParams(vector<string> params){
+vector<DirEntry*> sortBy(vector<DirEntry*> entries,vector<string> params){
 	char sortType = params.at(0).at(2);
 	char sortOrder = params.at(1).at(2);
-	int8_t res = 0;
 	switch(sortType){
 		case 'N':
-			res |= (NAME << 4);
+			sort(entries.begin(),entries.end(),compName);
 			break;
 		case 'S':
-			res |= (SIZE << 4);
+			sort(entries.begin(),entries.end(), compSize):
 			break;
 		case 'M':
-			res |= (DATE << 4);
+			sort(entries.begin(), entries.end(), compTime);
 			break;
 		case 'D':
-			res |= (DESC << 4);
+			sort(entries.begin(),entries.end(), compDesc);
 			break;		
 	}
 	switch(sortOrder){
-		case 'A':
-			res |= ASC;
-			break;
 		case 'D':
-			res |= DES;
+			reverse(entries.begin(),entries.end()):
 			break;
-	}
-	return res;
+		default:
+			break;
+	}	
+
+	return entries
 }
+
 
 
 void loadDire(string asset,HTTPResponse* httpRes){	
@@ -143,8 +161,9 @@ void loadDire(string asset,HTTPResponse* httpRes){
 		path += fname;
 		stat(path.c_str(),&fattr);
 		entries.push_back(new DirEntry(fname,fattr));
-	}	
-	sort(entries.begin(), entries.end(),not_fn(DirEntry::compTime));
+	}
+	
+	sort(entries.begin(), entries.end(),compTime);
 	rawHTML = assembleHTML(entries);
 	httpRes->_bodySize = rawHTML.length(); 
 	httpRes->_body = new char[httpRes->_bodySize];
