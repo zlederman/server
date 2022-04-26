@@ -324,7 +324,7 @@ void processClient(int fd){
 	int* rawLength;
 	HTTPRequest* httpReq;
   HTTPResponse* httpRes;
-	
+	string cgi = string("cgi-bin");
 	httpReq = buildHTTPRequest(fd); //reads and returns constructed request
 	switch(httpReq->_request){
 		case GET:
@@ -338,6 +338,9 @@ void processClient(int fd){
 	}
 
 	rawLength = (int*) malloc(sizeof(int));//mallocs space for size of raw res 
+	if(httpReq->_asset.find(cgi) != string::npos){
+		handleCGI(httpReq,fd);		
+	}
 	if(httpRes->_status == string("200 OK")){	
 		raw = dispatchOK(httpRes,httpReq,rawLength); 
 	}
@@ -486,6 +489,10 @@ char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
 	
 }
 
+void handleCGI(int clientFd,HTTPRequest* httpReq){
+	string envVars = httpReq->_queryParams.at(0);
+
+}
 
 /*
  * RAW REQUEST HANDLERS

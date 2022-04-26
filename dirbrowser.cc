@@ -167,8 +167,6 @@ vector<DirEntry*> sortBy(vector<DirEntry*> entries,vector<string> params){
 	return entries;
 }
 
-
-
 void loadDire(string asset,HTTPResponse* httpRes, vector<string> params){	
 	DIR* dir;
 	struct dirent* ent;
