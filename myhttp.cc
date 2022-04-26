@@ -14,7 +14,7 @@
 using namespace std;
 
 //HELPERS
-vector<string> splitRaw(string raw);
+vector<string> splitRaw(string raw, string delimeter);
 requestType getType(string requestHead);
 string getAsset(string requestHead);
 
@@ -153,7 +153,7 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	rawAsset = getAsset(lines[0]);
 	idxQuery = rawAsset.find("?");
 	queryParams = splitRaw(rawAsset.substr(0,rawAsset.length()),string("?"));
-	
+
 	rawAsset = rawAsset.substr(0,idxQuery);
 	if(rawAsset == string("/")){
 		rawAsset = string("/index.html");
