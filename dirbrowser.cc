@@ -136,7 +136,7 @@ vector<DirEntry*> sortBy(vector<DirEntry*> entries,vector<string> params){
 			break;
 	}	
 
-	return entries
+	return entries;
 }
 
 
