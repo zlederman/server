@@ -143,12 +143,18 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	string asset;
 	string rawAsset;
 	vector<string> headers;
-	
-	lines = splitRaw(raw);
+	vector<string> queryParams;
+	int idxQuery;
+
+	lines = splitRaw(raw,string("\015\012"));
 	rtype = getType(lines[0]);
 	
 	//format asset
 	rawAsset = getAsset(lines[0]);
+	idxQuery = rawAsset.find("?");
+	queryParams = splitRaw(rawAsset.substr(0,rawAsset.length()),string("?"));
+	
+	rawAsset = rawAsset.substr(0,idxQuery);
 	if(rawAsset == string("/")){
 		rawAsset = string("/index.html");
 	}
@@ -200,10 +206,9 @@ requestType getType(string requestHead){
 	}
 	return ERR;
 }
-vector<string> splitRaw(string raw){
+vector<string> splitRaw(string raw, string delimeter){
 	//splits into a vector of chunks by carriage return
 	vector<string> tokens;
-	string delimeter = std::string("\015\012");
 	size_t pos = 0;
 	string token;
 	while((pos = raw.find(delimeter)) != string::npos){
