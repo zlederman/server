@@ -162,6 +162,7 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	if(rawAsset == string("/")){
 		rawAsset = string("/index.html");
 	}
+	asset = rootDir;
 	asset += rawAsset;
 	lines.pop_back();
 
