@@ -93,6 +93,7 @@ string DirEntry::toString(){
 	ss << "<tr><td valign=\"top\">";
 	ss << "<img src=\"" << _icon << "\"></td>";
 	ss << "<td>" << _name << "</td>";
+	ss << "<td></td>";	
 	ss << "<td>" << string(ctime(&_modified)) << "</td>";	
 	ss << "<td>&nbsp;</td>";
 	ss << "<td>" << to_string(_size) << "</td>";	
