@@ -91,9 +91,10 @@ int HTTPResponse::loadRaw(char* raw){
  * HTTP REQUEST IMPL
  * 
  */
-HTTPRequest::HTTPRequest(requestType request, string asset, vector<string> headers){
+HTTPRequest::HTTPRequest(requestType request, string asset,vector<string> queryParams, vector<string> headers){
 			_request = request;
 			_asset = asset;
+			_queryParams = queryParams;
 			_headers = headers;	
 }
 
@@ -152,9 +153,10 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	//format asset
 	rawAsset = getAsset(lines[0]);
 	idxQuery = rawAsset.find("?");
-	queryParams = splitRaw(rawAsset.substr(0,rawAsset.length()),string("?"));
-
-	rawAsset = rawAsset.substr(0,idxQuery);
+	if(idxQuery != string::npos){
+		queryParams = splitRaw(rawAsset.substr(0,rawAsset.length()),string("?"));
+		rawAsset = rawAsset.substr(0,idxQuery);
+	}
 	if(rawAsset == string("/")){
 		rawAsset = string("/index.html");
 	}
@@ -166,7 +168,7 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	for(size_t i = 1; i < lines.size(); i++){
 		headers.push_back(lines.at(i));
 	}
-	return new HTTPRequest(rtype,asset,headers);	
+	return new HTTPRequest(rtype,asset,queryParams,headers);	
 }
 
 HTTPResponse* HTTPMessageFactory::initResponse(int statusCode){
@@ -218,17 +220,4 @@ vector<string> splitRaw(string raw, string delimeter){
 	}	
 	return tokens;
 }
-vector<string> getParams(string assetStr){
-	vector<string> tokens;
-	string delimeter = std::string(";");
-	size_t pos = 0;
-	string token;
-	while((pos = assetStr.find(delimeter)) != string::npos){
-		token = assetStr.substr(0,pos);
-		assetStr.erase(0,pos+delimeter.length());
-		tokens.push_back(token);
-	}
-	return tokens;
-}
-
 
