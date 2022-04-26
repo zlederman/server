@@ -31,6 +31,7 @@ void processClient( int socket );
 HTTPRequest* buildHTTPRequest(int fd);
 string getIP(struct in_addr ip_struct);
 bool authenticate(HTTPRequest* httpReq);
+void handleCGI(int clientFd,HTTPRequest* httpReq);
 void log(string status);
 HTTPResponse* initGetResponse(HTTPRequest* request);
 bool validate(string path);
@@ -339,7 +340,7 @@ void processClient(int fd){
 
 	rawLength = (int*) malloc(sizeof(int));//mallocs space for size of raw res 
 	if(httpReq->_asset.find(cgi) != string::npos){
-		handleCGI(httpReq,fd);		
+		handleCGI(fd,httpReq);		
 	}
 	if(httpRes->_status == string("200 OK")){	
 		raw = dispatchOK(httpRes,httpReq,rawLength); 
