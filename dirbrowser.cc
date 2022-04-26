@@ -121,7 +121,6 @@ string assembleHTML(vector<DirEntry*> entries) {
 	
 	for(DirEntry* entr : entries){
 		entryHTML += entr->toString();
-		delete entr;
 	}
 	templateHTML += entryHTML;
 	templateHTML += bottomDirTemplate;
