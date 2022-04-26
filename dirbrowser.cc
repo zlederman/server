@@ -49,7 +49,7 @@ string getIcon(string fname, enum type _type){
 	}
 	ext = fname.substr(extIdx, fname.length() - extIdx);
 	if(ext == string(".gif") || ext == string(".png")){
-		return string("/icons/back.gif");
+		return string("/icons/image.gif");
 	}
 	else{
 		return string("/icons/text.gif");
