@@ -340,6 +340,9 @@ void processClient(int fd){
 
 	rawLength = (int*) malloc(sizeof(int));//mallocs space for size of raw res 
 	if(httpReq->_asset.find(cgi) != string::npos){
+		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize);
+		rawLength = httpRes->loadRaw(raw)
+		write(fd,raw,*rawLength);
 		handleCGI(fd,httpReq);		
 	}
 	else if(httpRes->_status == string("200 OK")){	
@@ -501,8 +504,9 @@ void handleCGI(int clientFd,HTTPRequest* httpReq){
 	setenv("QUERY_STRING",envVars.c_str(),1);
 	setenv("REQUEST_METHOD","GET",1);
 	clientCopy = dup(clientFd);
-
 	pid = fork();
+	char* raw = (char*) malloc(sizeof(char) * HTTPMessageFactory::maxResponseHeaderSize);
+
 	if(pid == 0){
 		dup2(clientCopy,1);
 		exeString += httpReq->_asset;
