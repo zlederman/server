@@ -339,7 +339,7 @@ void processClient(int fd){
 	}
 
 	rawLength = (int*) malloc(sizeof(int));//mallocs space for size of raw res 
-	if(httpReq->_asset.find(cgi) != string::npos){
+	if(httpReq->_asset.find(cgi) != string::npos && httpReq->_asset.back() != '/'){
 		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize);
 		*rawLength = httpRes->loadRaw(raw,true);
 		write(fd,raw,*rawLength);
