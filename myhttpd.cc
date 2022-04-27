@@ -501,13 +501,15 @@ void handleCGI(int clientFd,HTTPRequest* httpReq){
 	std::vector<const char*> args;
 	string exeString;
 	string envVars;
-	setenv("QUERY_STRING",envVars.c_str(),1);
+
 	setenv("REQUEST_METHOD","GET",1);
 	clientCopy = dup(clientFd);
 	pid = fork();
 	char* raw = (char*) malloc(sizeof(char) * HTTPMessageFactory::maxResponseHeaderSize);
 
 	if(pid == 0){
+		
+		setenv("QUERY_STRING",envVars.c_str(),1);
 		dup2(clientCopy,1);
 		exeString += httpReq->_asset;
 		args.push_back(exeString.c_str());
@@ -547,7 +549,7 @@ string readRaw(int slaveFd){
 			if((n = read(slaveFd,&newChar, sizeof(newChar))) > 0) {
 				if(newChar == '\012'){
 					raw += newChar;
-					break;		
+
 				}
 			}
 
