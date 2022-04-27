@@ -505,7 +505,7 @@ void handleCGI(int clientFd,HTTPRequest* httpReq){
 		exeString += httpReq->_asset;
 		args.push_back(exeString.c_str());
 		if(httpReq->_queryParams.size() > 0){
-			enVars = httpReq->_queryParams.at(0);
+			envVars = httpReq->_queryParams.at(0);
 			args.push_back(envVars.c_str());
 		}
 		args.push_back(NULL);
