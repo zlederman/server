@@ -1,16 +1,13 @@
 CXX = g++ -g -fPIC
 NETLIBS= -lnsl
 
-all: git-commit myhttpd daytime-server use-dlopen hello.so
+all: git-commit myhttpd use-dlopen hello.so
 
 myhttp.o: myhttp.cc myhttp.hh
 	$(CXX) -c myhttp.cc $(NETLIBS)
 
 dirbrowser.o: dirbrowser.cc dirbrowser.hh
 	$(CXX) -c dirbrowser.cc $(NETLIBS)
-
-daytime-server : daytime-server.o myhttp.o
-	$(CXX) -pthread -o$@ $@.o myhttp.o $(NETLIBS)
 
 myhttpd : myhttpd.o myhttp.o dirbrowser.o
 	$(CXX) -pthread -o $@ $@.o dirbrowser.o myhttp.o $(NETLIBS)
