@@ -491,7 +491,6 @@ char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
 }
 
 void handleCGI(int clientFd,HTTPRequest* httpReq){
-	string envVars = httpReq->_queryParams.at(0);
 	int clientCopy;
 	int pid;
 	std::vector<const char*> args;
@@ -505,7 +504,9 @@ void handleCGI(int clientFd,HTTPRequest* httpReq){
 		dup2(clientCopy,1);
 		exeString += httpReq->_asset;
 		args.push_back(exeString.c_str());
-		args.push_back(envVars.c_str());
+		if(httpReq->_queryParams.size() > 0){
+			args.push_back(envVars.c_str());
+		}
 		args.push_back(NULL);
 		execvp(exeString.c_str(), const_cast<char* const*>(args.data()));
 
