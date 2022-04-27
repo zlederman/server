@@ -550,7 +550,7 @@ string readRaw(int slaveFd){
 			if((n = read(slaveFd,&newChar, sizeof(newChar))) > 0) {
 				if(newChar == '\012'){
 					raw += newChar;
-					return;
+					return raw;
 				}
 			}
 
