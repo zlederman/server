@@ -507,7 +507,7 @@ void handleCGI(int clientFd,HTTPRequest* httpReq){
 		args.push_back(exeString.c_str());
 		args.push_back(envVars.c_str());
 		args.push_back(NULL);
-		execvp(exeString.c_str(), const_cast<char* const*>(args.data())});
+		execvp(exeString.c_str(), const_cast<char* const*>(args.data()));
 
 	}
 	if(pid < 0){
