@@ -344,13 +344,15 @@ void processClient(int fd){
 	}
 	else if(httpRes->_status == string("200 OK")){	
 		raw = dispatchOK(httpRes,httpReq,rawLength); 
+		write(fd,raw,*rawLength); //writes to client
 	}
 	else{
 		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize); //allocates space for a raw res with no body
 		*rawLength = httpRes->loadRaw(raw);	//loads response into the char array
+		write(fd,raw,*rawLength); //writes to client
 	}
 	log(httpRes->_status);
-	write(fd,raw,*rawLength); //writes to client
+
 	//cleanup 
 	delete httpReq;
 	delete httpRes;
@@ -499,6 +501,7 @@ void handleCGI(int clientFd,HTTPRequest* httpReq){
 	setenv("QUERY_STRING",envVars.c_str(),1);
 	setenv("REQUEST_METHOD","GET",1);
 	clientCopy = dup(clientFd);
+
 	pid = fork();
 	if(pid == 0){
 		dup2(clientCopy,1);
@@ -515,7 +518,6 @@ void handleCGI(int clientFd,HTTPRequest* httpReq){
 	if(pid < 0){
 		perror("fork");
 		exit(-1);
-
 	}
 	
 	close(clientCopy);
