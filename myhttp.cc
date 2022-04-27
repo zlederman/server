@@ -161,7 +161,7 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 		rawAsset = rawAsset.substr(0,idxQuery);
 	}
 	if(rawAsset == string("/")){
-		rawAsset = string("/index.html");
+		rawAsset = string("/htdocs/index.html");
 	}
 	asset = rootDir;
 	asset += rawAsset;
