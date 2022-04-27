@@ -509,13 +509,14 @@ void handleCGI(int clientFd,HTTPRequest* httpReq){
 
 	if(pid == 0){
 		
-		setenv("QUERY_STRING",envVars.c_str(),1);
+
 		dup2(clientCopy,1);
 		exeString += httpReq->_asset;
 		args.push_back(exeString.c_str());
 		if(httpReq->_queryParams.size() > 0){
 			envVars = httpReq->_queryParams.at(0);
 			args.push_back(envVars.c_str());
+			setenv("QUERY_STRING",envVars.c_str(),1);
 		}
 		args.push_back(NULL);
 		execvp(exeString.c_str(), const_cast<char* const*>(args.data()));
