@@ -65,7 +65,7 @@ void HTTPResponse::insertHeader(string header){
 	_headers.push_back(header);
 }
 
-int HTTPResponse::loadRaw(char* raw){
+int HTTPResponse::loadRaw(char* raw,bool isCgi){
 	//builds header into one string 
 	//laods body and header into one byte arr
 	string response;
@@ -79,8 +79,9 @@ int HTTPResponse::loadRaw(char* raw){
 		response += header;
 		response += "\r\n";
 	}
-	response += "\r\n";
-	//copy header string into raw bytes and then  copy body (can be 0 bytes)
+	if(!isCgi){
+		response += "\r\n";
+	}//copy header string into raw bytes and then  copy body (can be 0 bytes)
 	memcpy(raw,response.c_str(),response.length());	
 	memcpy(raw + response.length(), _body, _bodySize);
 	//return size for use later

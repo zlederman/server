@@ -341,7 +341,7 @@ void processClient(int fd){
 	rawLength = (int*) malloc(sizeof(int));//mallocs space for size of raw res 
 	if(httpReq->_asset.find(cgi) != string::npos){
 		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize);
-		*rawLength = httpRes->loadRaw(raw);
+		*rawLength = httpRes->loadRaw(raw,true);
 		write(fd,raw,*rawLength);
 		handleCGI(fd,httpReq);		
 	}
@@ -351,7 +351,7 @@ void processClient(int fd){
 	}
 	else{
 		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize); //allocates space for a raw res with no body
-		*rawLength = httpRes->loadRaw(raw);	//loads response into the char array
+		*rawLength = httpRes->loadRaw(raw,false);	//loads response into the char array
 		write(fd,raw,*rawLength); //writes to client
 	}
 	log(httpRes->_status);
@@ -489,7 +489,7 @@ char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
 	httpRes->insertHeader(contentTypeHeader);
 		
 	raw = (char*) malloc(sizeof(char)* (HTTPMessageFactory::maxResponseHeaderSize + httpRes->_bodySize)); //allocates space for body and header
-	*rawLength = httpRes->loadRaw(raw);//loads header + body into byte array
+	*rawLength = httpRes->loadRaw(raw,false);//loads header + body into byte array
 	return raw;
 
 	
