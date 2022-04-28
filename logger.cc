@@ -30,7 +30,7 @@ void BoundedBuffer::enqueue(string request){
 	pthread_mutex_unlock(&_mutex);
 	//sem_post(&_emptySem);
 }
-void BoundedBuffer::write() {
+void BoundedBuffer::writeBuff() {
 	//sem_wait(&_emptySem);
 	int fd;
 	pthread_mutex_lock(&_mutex);
