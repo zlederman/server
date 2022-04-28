@@ -58,6 +58,11 @@ string getIcon(string fname, enum type _type){
 }
 string getParent(string asset){
 	string res;
+	int indexDouble = 0;
+	if((indexDouble = asset.find("//")) != string::npos){
+		asset.replace(indexDouble,2,"/");
+	}
+
 }
 DirEntry::DirEntry(string fname,string asset, struct stat fattr) {
 	_name = fname;
@@ -186,15 +191,15 @@ void loadDire(string asset,HTTPResponse* httpRes, vector<string> params){
 		exit(-1);
 	}
 	
-	asset.erase(0,string("http-root-dir").length());
+
 	while((ent = readdir(dir)) != NULL){
 		path = asset;
 		path += "/";
 		fname = string(ent->d_name);
 		path += fname;
 		stat(path.c_str(),&fattr);
-
-		entries.push_back(new DirEntry(fname,asset,fattr));
+		path.erase(0,string("http-root-dir").length());
+		entries.push_back(new DirEntry(fname,path,fattr));
 	}	
 	entries = sortBy(entries,params);	
 	rawHTML = assembleHTML(entries);
