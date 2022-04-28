@@ -36,7 +36,7 @@ string getIP(struct in_addr ip_struct);
 bool authenticate(HTTPRequest* httpReq);
 void handleCGI(int clientFd,HTTPRequest* httpReq);
 void log(string status);
-void delegateResponse(int fd,HTTPResponse* httpRes, HTTPRequest* httpReq);
+void delegateRequest(int fd,HTTPResponse* httpRes, HTTPRequest* httpReq);
 HTTPResponse* initGetResponse(HTTPRequest* request);
 bool validate(string path);
 char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength);
