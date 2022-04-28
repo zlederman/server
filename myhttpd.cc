@@ -353,7 +353,7 @@ void processClient(int fd){
 void delegateRequest(int fd,HTTPResponse* httpRes, HTTPRequest* httpReq){
 	int * rawLength;
 	char* raw;
-	regex cgiPattern = regex("cgi-bin/.+");
+	regex cgiPattern = regex("cgi-bin/[A-Za-z0-9]+");
 	regex statPattern = regex("stats.*");
 	rawLength = (int*) malloc(sizeof(int));
 	
