@@ -640,7 +640,7 @@ buildHTTPRequest( int fd )
 	raw_req = readRaw(fd); //extract string from raw request 
   
 	req = httpFactory->parseMessage(raw_req); //parse into HTTPRequest OBJ
-	req->_ip = httpFactor->getIP(fd);
+	req->_ip = httpFactory->getIP(fd);
 	log(req->toString()); 
 	return req;  
 }
