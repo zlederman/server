@@ -334,6 +334,7 @@ void processClient(int fd){
   HTTPResponse* httpRes;
 	string cgi = string("cgi-bin");
 	httpReq = buildHTTPRequest(fd); //reads and returns constructed request
+	logger.addRequest();
 	switch(httpReq->_request){
 		case GET:
 			httpRes = initGetResponse(httpReq); //creates response from validation steps
@@ -354,18 +355,20 @@ void delegateRequest(int fd,HTTPResponse* httpRes, HTTPRequest* httpReq){
 	int * rawLength;
 	char* raw;
 	regex cgiPattern ("cgi-bin/.+");
-	smatch m;
+	smatch cgiMatch;
+	smatch statMatch;
 	regex statPattern = regex("stats.*");
 	rawLength = (int*) malloc(sizeof(int));
 	
-	if(regex_search(httpReq->_asset,m,cgiPattern)){
+	if(regex_search(httpReq->_asset,cgiMatch,cgiPattern)){
 		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize);
 		*rawLength = httpRes->loadRaw(raw,IS_CGI);
 		write(fd,raw,*rawLength);
 		handleCGI(fd,httpReq);
 	}
-	else if(regex_match(httpReq->_asset,statPattern)){
-		/* nothing rn */
+	else if(regex_search(httpReq->_asset,statMatch,statPattern)){
+		raw = dispatchStat(httpRes,httpReq,rawLength);
+		write(fd,raw,*rawLength);
 	}
 	else if(httpRes->_status == OK){
 		raw = dispatchOK(httpRes,httpReq, rawLength);
@@ -508,12 +511,24 @@ char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
 	httpRes->insertHeader(contentTypeHeader);
 		
 	raw = (char*) malloc(sizeof(char)* (HTTPMessageFactory::maxResponseHeaderSize + httpRes->_bodySize)); //allocates space for body and header
-	*rawLength = httpRes->loadRaw(raw,false);//loads header + body into byte array
+	*rawLength = httpRes->loadRaw(raw,!IS_CGI);//loads header + body into byte array
 	return raw;
 
 	
 }
 
+char* dispatchStat(HTTPResponse* httpRes, HTTPReq* httpReq, int* rawLength){
+	char* raw;
+	string contentLengthHeader;
+	logger->serveAsset(httpRes);
+	httpRes->insertHeader(HTTPMessageFactory::contentTypeHTML);
+	contentLengthHeader = HTTPMessageFactory::contentLength;
+	contentLengthHeader += to_string(httpRes->_bodySize);
+	httpRes->insertHeader(contentLengthHeader);
+	raw = (char*) malloc(sizeof(char*) (HTTPMessageFactory::maxResponseSize + httpRes->_bodySize));
+	*rawLength = httpRes->loadRaw(raw,!IS_CGI);
+	return raw;
+}
 
 void setEnvVars(HTTPRequest* httpReq){
 	string envVars;	
