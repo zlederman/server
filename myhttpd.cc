@@ -371,6 +371,7 @@ string processClient(int fd){
 
 	delegateRequest(fd,httpRes,httpReq);
 	lastURL = httpReq->toString();
+	logger->logRequest(lastURL);
 	delete httpReq;
 	delete httpRes;
 	return lastURL;
