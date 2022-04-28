@@ -1,3 +1,6 @@
+#include <netinet/in.h>
+#include <netdb.h>
+#include <sys/types.h>
 #include <string>
 #include <stdio.h>
 #include <regex>
@@ -122,7 +125,7 @@ string HTTPRequest::toString(){
 	rawAsset.erase(0,rootDir.length());
 	res += " ";
  	res += rawAsset;	
-	res += _ip
+	res += _ip;
 	return res;
 }
 
