@@ -6,7 +6,7 @@
 #include <sstream>
 #include "logger.hh"
 
-#define eps 2.225e-308;
+#define eps 2.225e-308
 
 using namespace std;
 
