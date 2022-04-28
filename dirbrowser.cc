@@ -131,7 +131,7 @@ void loadFile(string asset, HTTPResponse* httpRes){
 	f = fopen(asset.c_str(),"r");
 	fseek(f,0,SEEK_END);
 	httpRes->_bodySize = ftell(f);
-	httpRes->_body = new char[httpRes->_bodySize];
+	httpRes->_body = new char[httpRes->_bodySize+1];
 	rewind(f);
 	fread(httpRes->_body, sizeof(char),httpRes->_bodySize,f);
 }
@@ -214,8 +214,8 @@ void loadDire(string asset,HTTPResponse* httpRes, vector<string> params){
 	}	
 	entries = sortBy(entries,params);	
 	rawHTML = assembleHTML(entries);
-	httpRes->_bodySize = rawHTML.length() + 1; 
-	httpRes->_body = new char[httpRes->_bodySize];
+	httpRes->_bodySize = rawHTML.length(); 
+	httpRes->_body = new char[httpRes->_bodySize + 1];
 	strcpy(httpRes->_body,rawHTML.c_str());
 	closedir(dir);
 }
