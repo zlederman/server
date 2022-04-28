@@ -300,6 +300,7 @@ void * processClientWrapper(void * data){
 	clock_t start, end;
 	string lastURL;
 	double cpuTime;
+	
 	start = clock();
 	int clientSocket = (size_t) data;
 	lastURL = processClient(clientSocket);

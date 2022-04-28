@@ -43,7 +43,7 @@ void BoundedBuffer::writeBuff() {
 		pthread_mutex_unlock(&_mutex);
 		return;
 	}
-	fd = open(_logFile.c_str(),O_CREAT | O_APPEND | O_RDWR);
+	fd = open(_logFile.c_str(),O_CREAT | O_APPEND | O_RDWR,  0777);
 	for(string req : _queue){
 		write(fd, req.c_str(), req.length() + 1);
 	}	
