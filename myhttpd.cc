@@ -211,6 +211,7 @@ void iterativeServer(int serverSocket) {
 	clock_t start,end;
 	double cpuTime;
 	string lastURL;
+	string* ipaddr;
 	while(1) {
 		clientSocket = initIncoming(serverSocket);
 		start = clock();
