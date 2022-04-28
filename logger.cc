@@ -39,15 +39,15 @@ void BoundedBuffer::writeBuff() {
 		pthread_mutex_unlock(&_mutex);
 		return;
 	}
-	fd = open(_logFile.c_str(),O_CREAT | O_APPEND | O_WRONLY);
+	fd = open(_logFile.c_str(),O_CREAT | O_APPEND | O_RDWR);
 	for(string req : _queue){
 		write(fd, req.c_str(), req.length() + 1);
 	}	
-	close(fd);
+	close(fd);	
+	_tail = 0;
 	for(int i = 0 ; i < _numThreads; i++){
 		sem_post(&_fullSem);
 	}
-
 
 	pthread_mutex_unlock(&_mutex);
 }
