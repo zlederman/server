@@ -64,7 +64,7 @@ string getParent(string asset){
 	if((indexDouble = asset.find("//")) != string::npos){
 		asset.replace(indexDouble,2,"/");
 	}
-	for(size_t i = asset.length() - 1; i >= 0; i++){
+	for(size_t i = asset.length() - 1; i >= 0; i--){
 		if(asset.at(i) == '/'){
 			slashCnt ++;
 		}
