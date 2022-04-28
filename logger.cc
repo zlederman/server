@@ -14,7 +14,7 @@ Logger::Logger(string name) {
 	_requestCount = 0;
 	_name = name;
 	_maxTime = 0.0;
-	_minTIme = 1.79769e+308;
+	_minTime = 1.79769e+308;
 }	
 
 
