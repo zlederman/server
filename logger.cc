@@ -49,8 +49,8 @@ string Logger::assembleHTML(){
 void Logger::serveAsset(HTTPResponse* httpRes){
 	string html;
 	html = assembleHTML();
-	httpRes->_bodySize = html.length() + 1;
-	httpRes->_body = new char[httpRes->_bodySize];
+	httpRes->_bodySize = html.length() ;
+	httpRes->_body = new char[httpRes->_bodySize + 1];
 	strcpy(httpRes->_body,html.c_str());
 
 }
