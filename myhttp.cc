@@ -124,7 +124,8 @@ string HTTPRequest::toString(){
 	rawAsset = _asset;
 	rawAsset.erase(0,rootDir.length());
 	res += " ";
- 	res += rawAsset;	
+ 	res += rawAsset;
+	res += " ";	
 	res += _ip;
 	return res;
 }
@@ -228,7 +229,7 @@ vector<string> splitRaw(string raw, string delimeter){
 	}
 	return tokens;
 }
-string extractIP(int ipRaw){
+string extractIP(uint32_t ipRaw){
 	string res;
 	res += to_string(ipRaw & (0xFF));
 	res += ".";
@@ -246,7 +247,7 @@ string HTTPMessageFactory::getIP(int fd){
 	int res;
 
 	res = getpeername(fd,(struct sockaddr*) &addr,&addr_size);
-	return extractIP(res);	
+	return extractIP(addr.sin_addr.s_addr);	
 	
 }
 
