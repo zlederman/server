@@ -25,7 +25,7 @@ BoundedBuffer::BoundedBuffer(string logFile, int numThreads){
 void BoundedBuffer::enqueue(string request){
 	sem_wait(&_fullSem);
 	pthread_mutex_lock(&_mutex);
-	_queue[tail] = request;
+	_queue[_tail] = request;
 	_tail = (_tail+1)% MAX;
 	pthread_mutex_unlock(&_mutex);
 	//sem_post(&_emptySem);
@@ -60,6 +60,7 @@ Logger::Logger(string name) {
 	_minTime = 1.79769e+308;
 	_minURL = string("");
 	_maxURL = string("");
+	buff = new BoundedBuffer;
 	pthread_mutex_init(&_requestLock,NULL);
 	pthread_mutex_init(&_timeLock,NULL);
 }	
