@@ -43,7 +43,7 @@ void delegateRequest(int fd,HTTPResponse* httpRes, HTTPRequest* httpReq);
 HTTPResponse* initGetResponse(HTTPRequest* request);
 bool validate(string path);
 char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength);
-char* dispatchStat(HTTPResponse* httpRes, HTTPReq* httpReq, int* rawLength);
+char* dispatchStat(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength);
 int initIncoming(int masterSocket);
 int initIncoming_r(int masterSocket);
 
@@ -517,7 +517,7 @@ char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
 	
 }
 
-char* dispatchStat(HTTPResponse* httpRes, HTTPReq* httpReq, int* rawLength){
+char* dispatchStat(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
 	char* raw;
 	string contentLengthHeader;
 	logger->serveAsset(httpRes);
@@ -525,7 +525,7 @@ char* dispatchStat(HTTPResponse* httpRes, HTTPReq* httpReq, int* rawLength){
 	contentLengthHeader = HTTPMessageFactory::contentLength;
 	contentLengthHeader += to_string(httpRes->_bodySize);
 	httpRes->insertHeader(contentLengthHeader);
-	raw = (char*) malloc(sizeof(char)* (HTTPMessageFactory::maxResponseSize + httpRes->_bodySize));
+	raw = (char*) malloc(sizeof(char)* (HTTPMessageFactory::maxResponseHeaderSize + httpRes->_bodySize));
 	*rawLength = httpRes->loadRaw(raw,!IS_CGI);
 	return raw;
 }
