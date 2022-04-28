@@ -17,7 +17,7 @@
 #include "dirbrowser.hh"
 #define OK string("200 OK");
 #define errString string("/0");
-#define IS_CGI true;
+#define IS_CGI true
 using namespace std;
 
 int QueueLength = 5;
