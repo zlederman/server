@@ -56,7 +56,9 @@ string getIcon(string fname, enum type _type){
 	}	
 
 }
-
+string getParent(string asset){
+	string res;
+}
 DirEntry::DirEntry(string fname,string asset, struct stat fattr) {
 	_name = fname;
 	_modified = fattr.st_mtime;
@@ -64,8 +66,12 @@ DirEntry::DirEntry(string fname,string asset, struct stat fattr) {
 	_size = (long int) fattr.st_size;
 	_type = S_ISDIR(fattr.st_mode) ? dir : file;
 	_icon = getIcon(fname,_type);
-	_path = asset;
-
+  if(asset.find(string("..")) != string::npos){
+		_path = getParent(asset);
+	}
+	else{
+		_path = asset;
+	}
 }
 
 bool compTimeNeg(DirEntry* ent1, DirEntry* ent2){
