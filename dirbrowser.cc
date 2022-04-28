@@ -45,7 +45,7 @@ string getIcon(string fname, enum type _type){
 		return string("/icons/menu.gif");
 	}
 	if((extIdx = fname.find(".")) == string::npos){
-		return string("/icons/binary.xbm");
+		return string("/icons/binary.gif");
 	}
 	ext = fname.substr(extIdx, fname.length() - extIdx);
 	if(ext == string(".gif") || ext == string(".png") || ext == string(".xbm")){
