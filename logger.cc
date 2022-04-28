@@ -73,6 +73,7 @@ void Logger::addRequest() {
 }
 
 void Logger::logRequest(string request){
+	request += "\n";
 	buff->enqueue(request);
 }
 
