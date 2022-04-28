@@ -528,7 +528,8 @@ char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
 }
 
 
-void setEnvVars(HTTPRequest* httpReq){	
+void setEnvVars(HTTPRequest* httpReq){
+	string envVars;	
 	setenv("REQUEST_METHOD","GET",1);
 	if(httpReq->_queryParams.size() > 0){
 			envVars = httpReq->_queryParams.at(0);
