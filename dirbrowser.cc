@@ -73,7 +73,7 @@ string getParent(string asset){
 			break;
 		}		
 	}
-	return asset.substr(0,idxParent);
+	return asset.substr(0,idxParent + 1);
 }
 DirEntry::DirEntry(string fname,string asset, struct stat fattr) {
 	_name = fname;
