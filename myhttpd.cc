@@ -369,7 +369,7 @@ void processClient(int fd){
 void delegateRequest(int fd,HTTPResponse* httpRes, HTTPRequest* httpReq){
 	int * rawLength;
 	char* raw;
-	regex cgiPattern = regex("cgi-bin\/.+");
+	regex cgiPattern = regex("cgi-bin/.+");
 	regex statPattern = regex("stats.*");
 	rawLength = (int*) malloc(sizeof(int));
 	
@@ -386,7 +386,7 @@ void delegateRequest(int fd,HTTPResponse* httpRes, HTTPRequest* httpReq){
 		write(fd,raw,*rawLength);
 	}
 	else{
-		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxHeaderResponseSize);
+		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize);
 		*rawLength = httpRes->loadRaw(raw,!IS_CGI);
 		write(fd,raw,*rawLength);
 	}
