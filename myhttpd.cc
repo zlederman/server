@@ -362,6 +362,7 @@ void delegateRequest(int fd,HTTPResponse* httpRes, HTTPRequest* httpReq){
 		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize);
 		*rawLength = httpRes->loadRaw(raw,IS_CGI);
 		write(fd,raw,*rawLength);
+		handleCGI(fd,httpReq);
 	}
 	else if(regex_match(httpReq->_asset,statPattern)){
 		/* nothing rn */
