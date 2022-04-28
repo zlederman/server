@@ -26,7 +26,7 @@ void Logger::addTime(double cpuTime) {
 	if(_minTime - cpuTime > eps){
 		_minTime = cpuTime;
 	}
-	if(maxTime - cpuTime <  eps){
+	if(_maxTime - cpuTime <  eps){
 		_maxTime = cpuTime;
 	}
 }
