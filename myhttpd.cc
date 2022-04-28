@@ -15,8 +15,8 @@
 #include <errno.h>
 #include "myhttp.hh"
 #include "dirbrowser.hh"
-#define OK string("200 OK");
-#define errString string("/0");
+#define OK string("200 OK")
+#define errString string("/0")
 #define IS_CGI true
 using namespace std;
 
@@ -340,7 +340,7 @@ void processClient(int fd){
 			//handle unknown request type
 			break;
 	}
-	delegateRequest(int fd,httpRes,httpReq);
+	delegateRequest(fd,httpRes,httpReq);
 //	rawLength = (int*) malloc(sizeof(int));//mallocs space for size of raw res 
 //	if(httpReq->_asset.find(cgi) != string::npos && httpReq->_asset.back() != '/'){
 	//	raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize);
@@ -385,11 +385,11 @@ void delegateRequest(int fd,HTTPResponse* httpRes, HTTPRequest* httpReq){
 		write(fd,raw,*rawLength);
 	}
 	else{
-		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseSize);
+		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxHeaderResponseSize);
 		*rawLength = httpRes->loadRaw(raw,!IS_CGI);
 		write(fd,raw,*rawLength);
 	}
-	log(httpRes->_stats);
+	log(httpRes->_status);
 	free(raw);
 	free(rawLength);
 
