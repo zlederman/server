@@ -39,6 +39,7 @@ string Logger::assembleHTML(){
 	html << "<body>";
 	html << "<ul>";
 	html << "<li>Total Request Count: " << _requestCount << "</li>";
+	html << "<li>Shortest Time: " << to_string(_minTime) << "</li>";
 	html << "</ul>" << "</body>" << "</html>";
 	return html.str();
 }
