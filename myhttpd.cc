@@ -11,11 +11,13 @@
 #include <time.h>
 #include <sys/wait.h>
 #include <dirent.h>
+#include <regex>
 #include <errno.h>
 #include "myhttp.hh"
 #include "dirbrowser.hh"
-
+#define OK string("200 OK");
 #define errString string("/0");
+#define IS_CGI true;
 using namespace std;
 
 int QueueLength = 5;
@@ -27,6 +29,7 @@ DirBrowser* dirBrowser = new DirBrowser();
 string PASS = ": Basic cGFzc3dvcmQ6dXNlcm5hbWU="; //definitely not the smart thing to do
 extern "C" void quit(int sig);
 extern "C" void reap(int sig);
+
 void processClient( int socket );
 HTTPRequest* buildHTTPRequest(int fd);
 string getIP(struct in_addr ip_struct);
@@ -337,30 +340,59 @@ void processClient(int fd){
 			//handle unknown request type
 			break;
 	}
-
-	rawLength = (int*) malloc(sizeof(int));//mallocs space for size of raw res 
-	if(httpReq->_asset.find(cgi) != string::npos && httpReq->_asset.back() != '/'){
-		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize);
-		*rawLength = httpRes->loadRaw(raw,true);
-		write(fd,raw,*rawLength);
-		handleCGI(fd,httpReq);		
-	}
-	else if(httpRes->_status == string("200 OK")){	
-		raw = dispatchOK(httpRes,httpReq,rawLength); 
-		write(fd,raw,*rawLength); //writes to client
-	}
-	else{
-		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize); //allocates space for a raw res with no body
-		*rawLength = httpRes->loadRaw(raw,false);	//loads response into the char array
-		write(fd,raw,*rawLength); //writes to client
-	}
-	log(httpRes->_status);
+	delegateRequest(int fd,httpRes,httpReq);
+//	rawLength = (int*) malloc(sizeof(int));//mallocs space for size of raw res 
+//	if(httpReq->_asset.find(cgi) != string::npos && httpReq->_asset.back() != '/'){
+	//	raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize);
+//		*rawLength = httpRes->loadRaw(raw,true);
+	//	write(fd,raw,*rawLength);
+	//	handleCGI(fd,httpReq);		
+	//}
+//	else if(httpRes->_status == string("200 OK")){	
+	//	raw = dispatchOK(httpRes,httpReq,rawLength); 
+	//	write(fd,raw,*rawLength); //writes to client
+//	}
+//	else{
+//		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize); //allocates space for a raw res with no body
+	//	*rawLength = httpRes->loadRaw(raw,false);	//loads response into the char array
+//		write(fd,raw,*rawLength); //writes to client
+//	}
+//	log(httpRes->_status);
 
 	//cleanup 
 	delete httpReq;
 	delete httpRes;
-	free(rawLength);
+
+}
+
+void delegateRequest(int fd,HTTPResponse* httpRes, HTTPRequest* httpReq){
+	int * rawLength;
+	char* raw;
+	regex cgiPattern = regex("cgi-bin\/.+");
+	regex statPattern = regex("stats.*");
+	rawLength = (int*) malloc(sizeof(int));
+	
+	if(regex_match(httpReq->_asset,cgiPattern)){
+		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize);
+		*rawLength = httpRes->loadRaw(raw,IS_CGI);
+		write(fd,raw,*rawLength);
+	}
+	else if(regex_match(httpReq->_asset,statPattern)){
+		/* nothing rn */
+	}
+	else if(httpRes->_status == OK){
+		raw = dispatchOK(httpRes,httpReq, rawLength);
+		write(fd,raw,*rawLength);
+	}
+	else{
+		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseSize);
+		*rawLength = httpRes->loadRaw(raw,!IS_CGI);
+		write(fd,raw,*rawLength);
+	}
+	log(httpRes->_stats);
 	free(raw);
+	free(rawLength);
+
 
 }
 
@@ -495,6 +527,16 @@ char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
 	
 }
 
+
+void setEnvVars(HTTPRequest* httpReq){	
+	setenv("REQUEST_METHOD","GET",1);
+	if(httpReq->_queryParams.size() > 0){
+			envVars = httpReq->_queryParams.at(0);
+			setenv("QUERY_STRING",envVars.c_str(),1);
+		}
+
+}
+
 void handleCGI(int clientFd,HTTPRequest* httpReq){
 	int clientCopy;
 	int pid;
@@ -502,25 +544,16 @@ void handleCGI(int clientFd,HTTPRequest* httpReq){
 	string exeString;
 	string envVars;
 
-	setenv("REQUEST_METHOD","GET",1);
 	clientCopy = dup(clientFd);
+	
 	pid = fork();
-	char* raw = (char*) malloc(sizeof(char) * HTTPMessageFactory::maxResponseHeaderSize);
-
 	if(pid == 0){
-		
-
 		dup2(clientCopy,1);
+		setEnvVars(httpReq);
 		exeString += httpReq->_asset;
 		args.push_back(exeString.c_str());
-		if(httpReq->_queryParams.size() > 0){
-			envVars = httpReq->_queryParams.at(0);
-			args.push_back(envVars.c_str());
-			setenv("QUERY_STRING",envVars.c_str(),1);
-		}
 		args.push_back(NULL);
 		execvp(exeString.c_str(), const_cast<char* const*>(args.data()));
-
 	}
 	if(pid < 0){
 		perror("fork");
