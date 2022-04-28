@@ -9,5 +9,5 @@ using namespace std;
 
 Logger::Logger(string name) {
 	_requestCount = 0;
-	_name = name
+	_name = name;
 }	
