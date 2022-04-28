@@ -26,6 +26,7 @@ BoundedBuffer::BoundedBuffer(string logFile, int numThreads){
 void BoundedBuffer::enqueue(string request){
 	pthread_mutex_lock(&_mutex);
 	if(_tail == MAX - 1){
+		writeBuff();
 		pthread_mutex_unlock(&_mutex);
 		return;
 	}
