@@ -210,14 +210,15 @@ void iterativeServer(int serverSocket) {
 	int clientSocket;
 	clock_t start,end;
 	double cpuTime;
+	string lastURL;
 	while(1) {
 		clientSocket = initIncoming(serverSocket);
 		start = clock();
-		processClient(clientSocket);
+		lastURL = processClient(clientSocket);
 		close(clientSocket);
 		end = clock();
 		cpuTime = ((double) (end - start)) / CLOCKS_PER_SEC;
-		logger->addTime(cpuTime);
+		logger->addTime(cpuTime,lastURL);
 	}
 
 }
@@ -333,7 +334,8 @@ int initIncoming(int masterSocket) {
  * TOP LEVEL REQ/RES FUNCTION
  */
 
-void processClient(int fd){
+string processClient(int fd){
+	string lastURL;
 	char* raw;
 	int* rawLength;
 	HTTPRequest* httpReq;
@@ -351,9 +353,12 @@ void processClient(int fd){
 			//handle unknown request type
 			break;
 	}
+
 	delegateRequest(fd,httpRes,httpReq);
+	lastURL = httpRes->toString();
 	delete httpReq;
 	delete httpRes;
+	return lastURL;
 
 }
 

@@ -15,6 +15,8 @@ Logger::Logger(string name) {
 	_name = name;
 	_maxTime = 0.0;
 	_minTime = 1.79769e+308;
+	_minURL = string("");
+	_maxURL = string("");
 }	
 
 
@@ -22,12 +24,14 @@ void Logger::addRequest() {
 	_requestCount += 1;
 	
 }
-void Logger::addTime(double cpuTime) {
+void Logger::addTime(double cpuTime, string lastURL) {
 	if(_minTime - cpuTime > eps){
 		_minTime = cpuTime;
+		_minURL = lastURL;
 	}
 	if(_maxTime - cpuTime <  eps){
 		_maxTime = cpuTime;
+		_maxURL = lastURL;
 	}
 }
 
