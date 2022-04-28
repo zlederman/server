@@ -43,8 +43,8 @@ string Logger::assembleHTML(){
 	html << "<body>";
 	html << "<ul>";
 	html << "<li>Total Request Count: " << _requestCount << "</li>";
-	html << "<li>Shortest Time: " << to_string(_minTime) << "</li>";
-	html << "<li>Largest Time: " << to_string(_maxTime) << "</li>";
+	html << "<li>Shortest Time: " << to_string(_minTime) << _minURL <<"</li>";
+	html << "<li>Largest Time: " << to_string(_maxTime) << _maxURL <<"</li>";
 	html << "</ul>" << "</body>" << "</html>";
 	return html.str();
 }
