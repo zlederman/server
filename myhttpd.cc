@@ -345,25 +345,6 @@ void processClient(int fd){
 			break;
 	}
 	delegateRequest(fd,httpRes,httpReq);
-//	rawLength = (int*) malloc(sizeof(int));//mallocs space for size of raw res 
-//	if(httpReq->_asset.find(cgi) != string::npos && httpReq->_asset.back() != '/'){
-	//	raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize);
-//		*rawLength = httpRes->loadRaw(raw,true);
-	//	write(fd,raw,*rawLength);
-	//	handleCGI(fd,httpReq);		
-	//}
-//	else if(httpRes->_status == string("200 OK")){	
-	//	raw = dispatchOK(httpRes,httpReq,rawLength); 
-	//	write(fd,raw,*rawLength); //writes to client
-//	}
-//	else{
-//		raw = (char*) malloc(sizeof(char*) * HTTPMessageFactory::maxResponseHeaderSize); //allocates space for a raw res with no body
-	//	*rawLength = httpRes->loadRaw(raw,false);	//loads response into the char array
-//		write(fd,raw,*rawLength); //writes to client
-//	}
-//	log(httpRes->_status);
-
-	//cleanup 
 	delete httpReq;
 	delete httpRes;
 
