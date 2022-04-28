@@ -18,7 +18,6 @@ vector<string> splitRaw(string raw, string delimeter);
 requestType getType(string requestHead);
 string getAsset(string requestHead);
 
-
 // CONSTANTS LIKE HEADERS
 const string HTTPMessageFactory::version = "HTTP/1.0";
 const string HTTPMessageFactory::authHeader = string("WWW-Authenticate: Basic realm=\"ANTON\"");
@@ -123,6 +122,7 @@ string HTTPRequest::toString(){
 	rawAsset.erase(0,rootDir.length());
 	res += " ";
  	res += rawAsset;	
+	res += _ip
 	return res;
 }
 
@@ -225,4 +225,30 @@ vector<string> splitRaw(string raw, string delimeter){
 	}
 	return tokens;
 }
+string extractIP(int ipRaw){
+	string res;
+	res += to_string(ipRaw & (0xFF));
+	res += ".";
+	res += to_string((ipRaw & (0xFF << 8)) >> 8);
+	res += ".";
+	res += to_string((ipRaw & (0xFF << 16)) >> 16);
+	res += ".";
+	res += to_string((ipRaw & (0xFF << 24)) >> 24);
+	return res;
+}
+
+string HTTPMessageFactory::getIP(int fd){
+	struct sockaddr_in addr;
+	socklen_t addr_size = sizeof(sockaddr_in);
+	int res;
+
+	res = getpeername(fd,(struct sockaddr*) &addr,&addr_size);
+	return extractIp(res);	
+	
+}
+
+
+
+
+
 
