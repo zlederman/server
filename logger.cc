@@ -5,11 +5,53 @@
 #include <time.h>
 #include <unistd.h>
 #include <sstream>
+#include <semaphore.h>
+#include <fcntl.h>
 #include "logger.hh"
 
 #define eps 2.225e-308
 
 using namespace std;
+#define MAX 5
+BoundedBuffer::BoundedBuffer(string logFile, int numThreads){
+	_head = 0;
+	_tail = 0;
+	_logFile = logFile;
+	//sem_init(&_emptySem,0,0);
+	sem_init(&_fullSem,0,numThreads);
+	pthread_mutex_init(&_mutex,NULL);
+}
+
+void BoundedBuffer::enqueue(string request){
+	sem_wait(&_fullSem);
+	pthread_mutex_lock(&_mutex);
+	_queue[tail] = request;
+	_tail = (_tail+1)% MAX;
+	pthread_mutex_unlock(&_mutex);
+	//sem_post(&_emptySem);
+}
+void BoundedBuffer::write() {
+	//sem_wait(&_emptySem);
+	int fd;
+	pthread_mutex_lock(&_mutex);
+	if(tail != MAX - 1){
+		pthread_mutex_unlock(&_mutex);
+		return;
+	}
+	fd = open(_logFile.c_str(),O_CREAT | O_APPEND | O_WRONLY);
+	for(string req : _queue){
+		write(fd, req.c_str(), req.length() + 1);
+	}	
+	close(fd);
+	sem_post(&_fullSem);
+	sem_post(&_fullSem);
+	sem_post(&_fullSem);
+	sem_post(&_fullSem);
+	sem_post(&_fullSem);
+
+	pthread_mutex_unlock(&_mutex);
+}
+
 
 Logger::Logger(string name) {
 	_requestCount = 0;
@@ -69,4 +111,8 @@ void Logger::serveAsset(HTTPResponse* httpRes){
 	strcpy(httpRes->_body,html.c_str());
 
 }
+
+
+
+
 
