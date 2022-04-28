@@ -193,7 +193,7 @@ void loadDire(string asset,HTTPResponse* httpRes, vector<string> params){
 		path += fname;
 		stat(path.c_str(),&fattr);
 		path.erase(0,string("http-root-dir").length());
-		entries.push_back(new DirEntry(fname,path,fattr));
+		entries.push_back(new DirEntry(fname,asset,fattr));
 	}	
 	entries = sortBy(entries,params);	
 	rawHTML = assembleHTML(entries);
