@@ -288,6 +288,7 @@ void* iterativeServer_r(void* data){
 			lastURL = processClient(clientSocket);
 			close(clientSocket);
 			end = clock();
+			logger->dump();
 			cpuTime = ((double) (end - start)) / CLOCKS_PER_SEC;
 			logger->addTime(cpuTime,lastURL);
 	}
