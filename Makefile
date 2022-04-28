@@ -9,8 +9,11 @@ myhttp.o: myhttp.cc myhttp.hh
 dirbrowser.o: dirbrowser.cc dirbrowser.hh
 	$(CXX) -c dirbrowser.cc $(NETLIBS)
 
-myhttpd : myhttpd.o myhttp.o dirbrowser.o
-	$(CXX) -pthread -o $@ $@.o dirbrowser.o myhttp.o $(NETLIBS)
+logger.o: logger.cc logger.hh
+	$(CXX) -pthread -c logger.cc $(NETLIBS)
+
+myhttpd : myhttpd.o myhttp.o dirbrowser.o logger.o
+	$(CXX) -pthread -o $@ $@.o dirbrowser.o logger.o  myhttp.o $(NETLIBS)
 
 use-dlopen: use-dlopen.o
 	$(CXX) -o $@ $@.o $(NETLIBS) -ldl
