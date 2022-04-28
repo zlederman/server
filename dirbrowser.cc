@@ -134,6 +134,7 @@ void loadFile(string asset, HTTPResponse* httpRes){
 	httpRes->_body = new char[httpRes->_bodySize+1];
 	rewind(f);
 	fread(httpRes->_body, sizeof(char),httpRes->_bodySize,f);
+	fclose(f);
 }
 
 string assembleHTML(vector<DirEntry*> entries) {
