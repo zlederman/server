@@ -246,7 +246,7 @@ string HTTPMessageFactory::getIP(int fd){
 	int res;
 
 	res = getpeername(fd,(struct sockaddr*) &addr,&addr_size);
-	return extractIp(res);	
+	return extractIP(res);	
 	
 }
 
