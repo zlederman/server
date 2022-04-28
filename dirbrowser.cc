@@ -59,10 +59,21 @@ string getIcon(string fname, enum type _type){
 string getParent(string asset){
 	string res;
 	int indexDouble = 0;
+	int slashCnt = 0;
+	int idxParent = 0;
 	if((indexDouble = asset.find("//")) != string::npos){
 		asset.replace(indexDouble,2,"/");
 	}
-
+	for(size_t i = asset.length() - 1; i >= 0; i++){
+		if(asset.at(i) == '/'){
+			slashCnt ++;
+		}
+		if(slashCnt == 2){
+			idxParent = i;
+			break;
+		}		
+	}
+	return asset.substr(0,idxParent);
 }
 DirEntry::DirEntry(string fname,string asset, struct stat fattr) {
 	_name = fname;
