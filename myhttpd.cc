@@ -15,6 +15,8 @@
 #include <errno.h>
 #include "myhttp.hh"
 #include "dirbrowser.hh"
+#include "logger.hh"
+
 #define OK string("200 OK")
 #define errString string("/0")
 #define IS_CGI true
@@ -25,6 +27,7 @@ pthread_mutex_t lock;
 
 HTTPMessageFactory* httpFactory = new HTTPMessageFactory(); //initialize factory class
 DirBrowser* dirBrowser = new DirBrowser();
+Logger* logger = new Logger("Zachary Lederman");
 
 string PASS = ": Basic cGFzc3dvcmQ6dXNlcm5hbWU="; //definitely not the smart thing to do
 extern "C" void quit(int sig);
