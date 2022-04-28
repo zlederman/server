@@ -6,17 +6,29 @@
 #include <sstream>
 #include "logger.hh"
 
+#define eps 2.225e-308;
+
 using namespace std;
 
 Logger::Logger(string name) {
 	_requestCount = 0;
 	_name = name;
+	_maxTime = 0.0;
+	_minTIme = 1.79769e+308;
 }	
 
 
 void Logger::addRequest() {
 	_requestCount += 1;
 	
+}
+void Logger::addTime(double cpuTime) {
+	if(_minTime - cpuTime > eps){
+		_minTime = cpuTime;
+	}
+	if(maxTime - cpuTime <  eps){
+		_maxTime = cpuTime;
+	}
 }
 
 string Logger::assembleHTML(){

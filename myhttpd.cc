@@ -208,10 +208,16 @@ extern "C" void quit(int sig){
 
 void iterativeServer(int serverSocket) {
 	int clientSocket;
+	clock_t start,end;
+	double cpuTime;
 	while(1) {
 		clientSocket = initIncoming(serverSocket);
+		start = clock();
 		processClient(clientSocket);
 		close(clientSocket);
+		end = clock();
+		cpuTime = ((double) (end - start)) / CLOCKS_PER_SEC;
+		logger->addTime(cpuTime);
 	}
 
 }
