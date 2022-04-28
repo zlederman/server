@@ -43,7 +43,7 @@ void delegateRequest(int fd,HTTPResponse* httpRes, HTTPRequest* httpReq);
 HTTPResponse* initGetResponse(HTTPRequest* request);
 bool validate(string path);
 char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength);
-
+char* dispatchStat(HTTPResponse* httpRes, HTTPReq* httpReq, int* rawLength);
 int initIncoming(int masterSocket);
 int initIncoming_r(int masterSocket);
 
@@ -334,7 +334,7 @@ void processClient(int fd){
   HTTPResponse* httpRes;
 	string cgi = string("cgi-bin");
 	httpReq = buildHTTPRequest(fd); //reads and returns constructed request
-	logger.addRequest();
+	logger->addRequest();
 	switch(httpReq->_request){
 		case GET:
 			httpRes = initGetResponse(httpReq); //creates response from validation steps
@@ -525,7 +525,7 @@ char* dispatchStat(HTTPResponse* httpRes, HTTPReq* httpReq, int* rawLength){
 	contentLengthHeader = HTTPMessageFactory::contentLength;
 	contentLengthHeader += to_string(httpRes->_bodySize);
 	httpRes->insertHeader(contentLengthHeader);
-	raw = (char*) malloc(sizeof(char*) (HTTPMessageFactory::maxResponseSize + httpRes->_bodySize));
+	raw = (char*) malloc(sizeof(char)* (HTTPMessageFactory::maxResponseSize + httpRes->_bodySize));
 	*rawLength = httpRes->loadRaw(raw,!IS_CGI);
 	return raw;
 }
