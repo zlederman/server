@@ -15,6 +15,7 @@ using namespace std;
 #define MAX 5
 BoundedBuffer::BoundedBuffer(string logFile, int numThreads){
 	_head = 0;
+	_numThreads = numThreads;
 	_tail = 0;
 	_logFile = logFile;
 	//sem_init(&_emptySem,0,0);
@@ -43,11 +44,10 @@ void BoundedBuffer::writeBuff() {
 		write(fd, req.c_str(), req.length() + 1);
 	}	
 	close(fd);
-	sem_post(&_fullSem);
-	sem_post(&_fullSem);
-	sem_post(&_fullSem);
-	sem_post(&_fullSem);
-	sem_post(&_fullSem);
+	for(int i = 0 ; i < _numThreads; i++){
+		sem_post(&_fullSem);
+	}
+
 
 	pthread_mutex_unlock(&_mutex);
 }
