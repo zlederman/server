@@ -103,7 +103,7 @@ string Logger::assembleHTML(){
 	html << "<h1>" << _name << "</h1>" << "</head>";
 	html << "<body>";
 	html << "<ul>";
-	pthread_mutex_lock(&_requestLock);
+pthread_mutex_lock(&_requestLock);
 	html << "<li>Total Request Count: " << _requestCount << "</li>";
 	pthread_mutex_unlock(&_requestLock);
 	pthread_mutex_lock(&_timeLock);
@@ -113,7 +113,7 @@ string Logger::assembleHTML(){
 	html << "</ul>" << "</body>" << "</html>";
 	return html.str();
 }
-	
+
 
 void Logger::serveAsset(HTTPResponse* httpRes){
 	string html;

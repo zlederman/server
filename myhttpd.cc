@@ -383,10 +383,10 @@ string processClient(int fd){
 void delegateRequest(int fd,HTTPResponse* httpRes, HTTPRequest* httpReq){
 	int * rawLength;
 	char* raw;
+	regex statPattern = regex("stats.*");
 	regex cgiPattern ("cgi-bin/.+");
 	smatch cgiMatch;
 	smatch statMatch;
-	regex statPattern = regex("stats.*");
 	rawLength = (int*) malloc(sizeof(int));
 	
 	if(regex_search(httpReq->_asset,cgiMatch,cgiPattern)){
