@@ -411,6 +411,9 @@ bool authenticate(HTTPRequest* httpReq){
 
 bool validate(string path){
 	//checks if try to access parent
+	if(path == string("http-root-dir/stats")){
+			return true;
+	}
 	if(path.find("..") != string::npos){
 		return false;
 	}
