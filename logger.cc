@@ -60,7 +60,6 @@ Logger::Logger(string name) {
 	_minTime = 1.79769e+308;
 	_minURL = string("");
 	_maxURL = string("");
-	buff = new BoundedBuffer;
 	pthread_mutex_init(&_requestLock,NULL);
 	pthread_mutex_init(&_timeLock,NULL);
 }	
