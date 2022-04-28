@@ -279,7 +279,7 @@ void* iterativeServer_r(void* data){
 	int serverSocket = (size_t) data;
 	int clientSocket;
 	clock_t start,end;
-	double cpuTime
+	double cpuTime;
 	string lastURL;
 	while(1){
 			clientSocket = initIncoming(serverSocket);
