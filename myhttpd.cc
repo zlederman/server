@@ -325,7 +325,6 @@ int initIncoming_r(int masterSocket){
 	int slaveSocket = accept( masterSocket,
 									(struct sockaddr *)&clientIPAddress,
 									(socklen_t*)&alen);
-	log(getIP(clientIPAddress.sin_addr));
 	pthread_mutex_unlock(&lock);
 	if(slaveSocket < 0){
 		perror("accept");
@@ -341,7 +340,6 @@ int initIncoming(int masterSocket) {
 	int slaveSocket = accept( masterSocket,
 									(struct sockaddr *)&clientIPAddress,
 									(socklen_t*)&alen);
-	log(getIP(clientIPAddress.sin_addr));
 	if(slaveSocket < 0){
 		perror("accept");
 		exit(-1);
