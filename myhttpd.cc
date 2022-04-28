@@ -216,6 +216,7 @@ void iterativeServer(int serverSocket) {
 		start = clock();
 		lastURL = processClient(clientSocket);
 		close(clientSocket);
+		logger->dump();
 		end = clock();
 		cpuTime = ((double) (end - start)) / CLOCKS_PER_SEC;
 		logger->addTime(cpuTime,lastURL);

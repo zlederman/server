@@ -75,6 +75,10 @@ void Logger::addRequest() {
 void Logger::logRequest(string request){
 	buff->enqueue(request);
 }
+
+void Logger::dump(){
+	buff->writeBuff();
+}
 void Logger::addTime(double cpuTime, string lastURL) {
 	pthread_mutex_lock(&_timeLock);
 	if(_minTime - cpuTime > eps){
