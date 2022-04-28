@@ -33,7 +33,7 @@ string PASS = ": Basic cGFzc3dvcmQ6dXNlcm5hbWU="; //definitely not the smart thi
 extern "C" void quit(int sig);
 extern "C" void reap(int sig);
 
-void processClient( int socket );
+string processClient( int socket );
 HTTPRequest* buildHTTPRequest(int fd);
 string getIP(struct in_addr ip_struct);
 bool authenticate(HTTPRequest* httpReq);
@@ -355,7 +355,7 @@ string processClient(int fd){
 	}
 
 	delegateRequest(fd,httpRes,httpReq);
-	lastURL = httpRes->toString();
+	lastURL = httpReq->toString();
 	delete httpReq;
 	delete httpRes;
 	return lastURL;
