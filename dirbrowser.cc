@@ -185,14 +185,15 @@ void loadDire(string asset,HTTPResponse* httpRes, vector<string> params){
 		perror("opendir");
 		exit(-1);
 	}
-
+	
+	asset.erase(0,string("http-root-dir").length());
 	while((ent = readdir(dir)) != NULL){
 		path = asset;
 		path += "/";
 		fname = string(ent->d_name);
 		path += fname;
 		stat(path.c_str(),&fattr);
-		path.erase(0,string("http-root-dir").length());
+
 		entries.push_back(new DirEntry(fname,asset,fattr));
 	}	
 	entries = sortBy(entries,params);	
