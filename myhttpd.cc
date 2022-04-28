@@ -237,6 +237,7 @@ void poolThreadServer(int serverSocket){
 }
 
 void lazyThreadServer(int serverSocket){
+	
 	while(1){	
 		pthread_t thread;
 		int clientSocket = initIncoming(serverSocket);
@@ -277,18 +278,32 @@ void* iterativeServer_r(void* data){
 	//jsut contains lock for accept
 	int serverSocket = (size_t) data;
 	int clientSocket;
+	clock_t start,end;
+	double cpuTime
+	string lastURL;
 	while(1){
 			clientSocket = initIncoming(serverSocket);
-			processClient(clientSocket);
+			start = clock();
+			lastURL = processClient(clientSocket);
 			close(clientSocket);
+			end = clock();
+			cpuTime = ((double) (end - start)) / CLOCKS_PER_SEC;
+			logger->addTime(cpuTime,lastURL);
 	}
 }
 extern "C"
 void * processClientWrapper(void * data){
 	//wraps the process client function for threads
+	clock_t start, end;
+	string lastURL;
+	double cpuTime;
+	start = clock();
 	int clientSocket = (size_t) data;
-	processClient(clientSocket);
+	lastURL = processClient(clientSocket);
 	close(clientSocket);
+	end = clock();
+	cpuTime = ((double) (end - start)) / CLOCKS_PER_SEC;
+	logger->addTime(cpuTime,lastURL);
 	pthread_exit(NULL);
 	return NULL;
 }
