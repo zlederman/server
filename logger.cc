@@ -34,7 +34,7 @@ void BoundedBuffer::write() {
 	//sem_wait(&_emptySem);
 	int fd;
 	pthread_mutex_lock(&_mutex);
-	if(tail != MAX - 1){
+	if(_tail != MAX - 1){
 		pthread_mutex_unlock(&_mutex);
 		return;
 	}
