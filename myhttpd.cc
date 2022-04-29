@@ -28,7 +28,7 @@ pthread_mutex_t lock;
 HTTPMessageFactory* httpFactory = new HTTPMessageFactory(); //initialize factory class
 DirBrowser* dirBrowser = new DirBrowser();
 time_t timer;
-time(&timer)
+time(&timer);
 Logger* logger = new Logger(string("Zachary Lederman"),timer);
 
 string PASS = ": Basic cGFzc3dvcmQ6dXNlcm5hbWU="; //definitely not the smart thing to do
