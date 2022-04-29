@@ -103,7 +103,7 @@ string Logger::assembleHTML(){
 	html << "<h1>" << _name << "'s Server Stats</h1>" << "</head>";
 	html << "<body>";
 	html << "<ul>";
-	html << "<li>Uptime: " << to_string(difftime(_start,now)) << "</li>";   
+	html << "<li>Uptime: " << to_string(difftime(now,_start)) << "</li>";   
 	pthread_mutex_lock(&_requestLock);
 	html << "<li>Total Request Count: " << _requestCount << "</li>";
 	pthread_mutex_unlock(&_requestLock);
