@@ -53,7 +53,7 @@ void BoundedBuffer::writeBuff() {
 }
 
 
-Logger::Logger(string name, clock_t start) {
+Logger::Logger(string name, time_t start) {
 	_requestCount = 0;
 	_start = start;
 	_name = name;
@@ -96,13 +96,14 @@ void Logger::addTime(double cpuTime, string lastURL) {
 
 string Logger::assembleHTML(){
 	stringstream html;
-	clock_t now = clock();
+	time_t now;
+	time(&now);
 	html << "<!DOCTYPE html>";
 	html << "<html>" << "<head>";
 	html << "<h1>" << _name << "'s Server Stats</h1>" << "</head>";
 	html << "<body>";
 	html << "<ul>";
-	html << "<li>Uptime: " << ((double) (now - _start)) / CLOCKS_PER_SEC << "</li>";   
+	html << "<li>Uptime: " << to_string(difftime(_start,now)) << "</li>";   
 	pthread_mutex_lock(&_requestLock);
 	html << "<li>Total Request Count: " << _requestCount << "</li>";
 	pthread_mutex_unlock(&_requestLock);
