@@ -254,7 +254,7 @@ void forkServer(int serverSocket) {
 	int clientSocket;
 	int ret;
 	clock_t start;
-	clock_t end
+	clock_t end;
 	double cpuTime;
 	while(1) {
 		
