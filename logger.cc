@@ -45,7 +45,7 @@ void BoundedBuffer::writeBuff() {
 	}
 	fd = open(_logFile.c_str(),O_CREAT | O_APPEND | O_RDWR,  0777);
 	for(string req : _queue){
-		write(fd, req.c_str(), req.length() + 1);
+		write(fd, req.c_str(), req.length());
 	}	
 	close(fd);	
 	_tail = 0;
