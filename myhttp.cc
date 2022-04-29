@@ -161,7 +161,7 @@ HTTPRequest* HTTPMessageFactory::parseMessage(string raw){
 	rawAsset = getAsset(lines[0]);
 	idxQuery = rawAsset.find("?");
 	if(idxQuery != string::npos){
-		queryParams = splitRaw(rawAsset.substr(idxQuery+1,rawAsset.length()),string(";"));
+		queryParams = splitRaw(rawAsset.substr(idxQuery+1,rawAsset.length()),string(";")); //extracts query string
 		rawAsset = rawAsset.substr(0,idxQuery);
 	}
 	if(rawAsset == string("/")){
@@ -242,10 +242,11 @@ string extractIP(uint32_t ipRaw){
 }
 
 string HTTPMessageFactory::getIP(int fd){
+	//this emerged from over design :(
 	struct sockaddr_in addr;
 	socklen_t addr_size = sizeof(sockaddr_in);
 	int res;
-
+	//loads a sockaddr object from file descriptor
 	res = getpeername(fd,(struct sockaddr*) &addr,&addr_size);
 	return extractIP(addr.sin_addr.s_addr);	
 	

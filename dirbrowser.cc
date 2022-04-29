@@ -64,6 +64,8 @@ string getParent(string asset){
 	if((indexDouble = asset.find("//")) != string::npos){
 		asset.replace(indexDouble,2,"/");
 	}
+	//gets the directory above the dir entry's parent
+	//specificially for ..
 	for(size_t i = asset.length() - 1; i >= 0; i--){
 		if(asset.at(i) == '/'){
 			slashCnt ++;
@@ -82,6 +84,7 @@ DirEntry::DirEntry(string fname,string asset, struct stat fattr) {
 	_size = (long int) fattr.st_size;
 	_type = S_ISDIR(fattr.st_mode) ? dir : file;
 	_icon = getIcon(fname,_type);
+	//check if parent item
   if(asset.find(string("..")) != string::npos){
 		_path = getParent(asset);
 	}
@@ -89,7 +92,7 @@ DirEntry::DirEntry(string fname,string asset, struct stat fattr) {
 		_path = asset;
 	}
 }
-
+//comparators for sortings
 bool compTimeNeg(DirEntry* ent1, DirEntry* ent2){
 	return !(ent1->_modified < ent2->_modified);
 }
@@ -112,6 +115,7 @@ bool compDesc(DirEntry* ent1, DirEntry* ent2){
 	return ent1->_description < ent2->_description;
 }
 
+//html generation
 string DirEntry::toString(){
 	stringstream ss;
 	ss << "<tr><td valign=\"top\">";
@@ -126,6 +130,7 @@ string DirEntry::toString(){
 	return ss.str();
 
 }
+//loads a preverified file
 void loadFile(string asset, HTTPResponse* httpRes){
 	FILE* f;
 	f = fopen(asset.c_str(),"r");
@@ -136,7 +141,7 @@ void loadFile(string asset, HTTPResponse* httpRes){
 	fread(httpRes->_body, sizeof(char),httpRes->_bodySize,f);
 	fclose(f);
 }
-
+//constructs html from template + frees up entry objects
 string assembleHTML(vector<DirEntry*> entries) {
 	string templateHTML;
 	string entryHTML;
@@ -154,7 +159,7 @@ string assembleHTML(vector<DirEntry*> entries) {
 	templateHTML += bottomDirTemplate;
 	return templateHTML;
 }
-
+//determines how to be sorted from query params
 vector<DirEntry*> sortBy(vector<DirEntry*> entries,vector<string> params){
 	if(params.size() == 0){
 		sort(entries.begin(),entries.end(),compName);
@@ -209,12 +214,13 @@ void loadDire(string asset,HTTPResponse* httpRes, vector<string> params){
 		path += "/";
 		fname = string(ent->d_name);
 		path += fname;
-		stat(path.c_str(),&fattr);
-		path.erase(0,string("http-root-dir").length());
-		entries.push_back(new DirEntry(fname,path,fattr));
+		stat(path.c_str(),&fattr);//gets stat object for info ab file in folder
+		path.erase(0,string("http-root-dir").length());//removes root dir for computing the href in html
+		entries.push_back(new DirEntry(fname,path,fattr));//creates new dir entry
 	}	
 	entries = sortBy(entries,params);	
 	rawHTML = assembleHTML(entries);
+	//httpRes flow
 	httpRes->_bodySize = rawHTML.length(); 
 	httpRes->_body = new char[httpRes->_bodySize + 1];
 	strcpy(httpRes->_body,rawHTML.c_str());

@@ -14,49 +14,46 @@
 using namespace std;
 #define MAX 5
 BoundedBuffer::BoundedBuffer(string logFile, int numThreads){
-	_head = 0;
-	_numThreads = numThreads;
-	_tail = 0;
-	_logFile = logFile;
+	_head = 0; //read idx
+	_numThreads = numThreads; //number of threads deprecated
+	_tail = 0; //write idx
+	_logFile = logFile; //file to write too
 	//sem_init(&_emptySem,0,0);
-	sem_init(&_fullSem,0,numThreads);
-	pthread_mutex_init(&_mutex,NULL);
+	sem_init(&_fullSem,0,numThreads); // deprectated
+	pthread_mutex_init(&_mutex,NULL); //init mutex
 }
 
 void BoundedBuffer::enqueue(string request){
 	pthread_mutex_lock(&_mutex);
-	if(_tail == MAX - 1){
+	if(_tail == MAX - 1){ //if mutex is full write
 		writeBuff();
 		pthread_mutex_unlock(&_mutex);
 		return;
 	}
-	_queue[_tail] = request;
-	_tail = (_tail+1)% MAX;
-	pthread_mutex_unlock(&_mutex);
+	_queue[_tail] = request; // add to buff
+	_tail = (_tail+1)% MAX; //get next idx
+	pthread_mutex_unlock(&_mutex); 
 	//sem_post(&_emptySem);
 }
 void BoundedBuffer::writeBuff() {
 	//sem_wait(&_emptySem);
 	int fd;
-	if(_tail <  MAX - 1){
+	if(_tail <  MAX - 1){ //catch eroneous calls
 		return;
 	}
-	fd = open(_logFile.c_str(),O_CREAT | O_APPEND | O_RDWR,  0777);
+	fd = open(_logFile.c_str(),O_CREAT | O_APPEND | O_RDWR,  0777); //open file append
 	for(string req : _queue){
 		write(fd, req.c_str(), req.length()  );
-	}	
+	}	//write requests
 	close(fd);	
 	_tail = 0;
-	//for(int i = 0 ; i < _numThreads; i++){
-	//	sem_post(&_fullSem);
-//	}
 }
 
 
 Logger::Logger(string name, time_t start) {
-	_requestCount = 0;
-	_start = start;
-	_name = name;
+	_requestCount = 0; //locked value tp count requests
+	_start = start; //gets roughly the uptime of the program
+	_name = name; //name of server
 	_maxTime = 0.0;
 	_minTime = 1.79769e+308;
 	_minURL = string("");
@@ -75,7 +72,7 @@ void Logger::addRequest() {
 
 void Logger::logRequest(string request){
 	request += "\n";
-	buff->enqueue(request);
+	buff->enqueue(request); //add request to queue
 }
 
 void Logger::dump(){
@@ -83,11 +80,11 @@ void Logger::dump(){
 }
 void Logger::addTime(double cpuTime, string lastURL) {
 	pthread_mutex_lock(&_timeLock);
-	if(_minTime - cpuTime > eps){
+	if(_minTime - cpuTime > eps){ //check if cur time is less than min time
 		_minTime = cpuTime;
 		_minURL = lastURL;
 	}
-	if(_maxTime - cpuTime <  eps){
+	if(_maxTime - cpuTime <  eps){ //check if cur time is more than max
 		_maxTime = cpuTime;
 		_maxURL = lastURL;
 	}
@@ -97,16 +94,18 @@ void Logger::addTime(double cpuTime, string lastURL) {
 string Logger::assembleHTML(){
 	stringstream html;
 	time_t now;
-	time(&now);
+	time(&now); //get now
 	html << "<!DOCTYPE html>";
 	html << "<html>" << "<head>";
 	html << "<h1>" << _name << "'s Server Stats</h1>" << "</head>";
 	html << "<body>";
 	html << "<ul>";
 	html << "<li>Uptime: " << to_string(difftime(now,_start)) << "</li>";   
+	//lock calls to addReq bc we are reading
 	pthread_mutex_lock(&_requestLock);
 	html << "<li>Total Request Count: " << _requestCount << "</li>";
 	pthread_mutex_unlock(&_requestLock);
+	//lock calls to _mintime and max time
 	pthread_mutex_lock(&_timeLock);
 	html << "<li>Shortest Time: " << to_string(_minTime == 1.79769e308 ? 0 : _minTime) << "s " << _minURL <<"</li>";
 	html << "<li>Largest Time: " << to_string(_maxTime) << "s " <<_maxURL <<"</li>";
@@ -119,7 +118,8 @@ string Logger::assembleHTML(){
 void Logger::serveAsset(HTTPResponse* httpRes){
 	string html;
 	html = assembleHTML();
-	httpRes->_bodySize = html.length() ;
+	//httpRes flow
+	httpRes->_bodySize = html.length();
 	httpRes->_body = new char[httpRes->_bodySize + 1];
 	strcpy(httpRes->_body,html.c_str());
 
