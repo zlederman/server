@@ -38,9 +38,7 @@ void BoundedBuffer::enqueue(string request){
 void BoundedBuffer::writeBuff() {
 	//sem_wait(&_emptySem);
 	int fd;
-	pthread_mutex_lock(&_mutex);
-	if(_tail != MAX - 1){
-		pthread_mutex_unlock(&_mutex);
+	if(_tail <  MAX - 1){
 		return;
 	}
 	fd = open(_logFile.c_str(),O_CREAT | O_APPEND | O_RDWR,  0777);
@@ -52,7 +50,6 @@ void BoundedBuffer::writeBuff() {
 	//for(int i = 0 ; i < _numThreads; i++){
 	//	sem_post(&_fullSem);
 //	}
-	pthread_mutex_unlock(&_mutex);
 }
 
 
