@@ -576,7 +576,7 @@ void handleCGI(int clientFd,HTTPRequest* httpReq){
 	std::vector<const char*> args;
 	string exeString;
 	string envVars;
-	string ext  
+	string ext;  
 	ext = httpReq->_asset.substr(httpReq->_asset.length() - 4, httpReq->_asset.length(); 
 	clientCopy = dup(clientFd);
 	if(ext == string(".so")){
