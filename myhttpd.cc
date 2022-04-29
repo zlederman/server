@@ -276,6 +276,7 @@ void forkServer(int serverSocket) {
 		waitpid(-1,&end,WNOHANG);
 		cpuTime = ((double) (end - start)) / CLOCKS_PER_SEC;
 		logger->addTime(cpuTime,string(""));
+		logger->addRequest();
 	}
 }
 
