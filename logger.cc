@@ -53,8 +53,9 @@ void BoundedBuffer::writeBuff() {
 }
 
 
-Logger::Logger(string name) {
+Logger::Logger(string name, clock_t start) {
 	_requestCount = 0;
+	_start = start;
 	_name = name;
 	_maxTime = 0.0;
 	_minTime = 1.79769e+308;
@@ -97,10 +98,10 @@ string Logger::assembleHTML(){
 	stringstream html;
 	html << "<!DOCTYPE html>";
 	html << "<html>" << "<head>";
-	html << "<h1>" << _name << "</h1>" << "</head>";
+	html << "<h1>" << _name << "'s Server Stats</h1>" << "</head>";
 	html << "<body>";
 	html << "<ul>";
-pthread_mutex_lock(&_requestLock);
+	pthread_mutex_lock(&_requestLock);
 	html << "<li>Total Request Count: " << _requestCount << "</li>";
 	pthread_mutex_unlock(&_requestLock);
 	pthread_mutex_lock(&_timeLock);
