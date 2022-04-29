@@ -193,6 +193,7 @@ extern "C" void reap(int sig){
 		logStr += " exited.";
 		log(logStr);
 	}
+		
 
 }
 
@@ -252,8 +253,14 @@ void lazyThreadServer(int serverSocket){
 void forkServer(int serverSocket) {
 	int clientSocket;
 	int ret;
+	clock_t start;
+	clock_t end
+	double cpuTime;
 	while(1) {
+		
+		
 		clientSocket = initIncoming(serverSocket);
+		start = clock();
 		ret = fork();
 
 		if(ret == 0){
@@ -266,6 +273,9 @@ void forkServer(int serverSocket) {
 		}
 		close(clientSocket);
 		//collect processes
+		waitpid(-1,&end,WNOHANG);
+		cpuTime = ((double) (end - start)) / CLOCKS_PER_SEC;
+		logger->addTime(cpuTime,string(""));
 	}
 }
 
