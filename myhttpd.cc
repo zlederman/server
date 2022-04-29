@@ -215,10 +215,10 @@ void iterativeServer(int serverSocket) {
 	while(1) {
 		clientSocket = initIncoming(serverSocket);
 		start = clock();
-		lastURL = processClient(clientSocket);
+		lastURL = processClient(clientSocket);//returns req url
 		close(clientSocket);
 		end = clock();
-		cpuTime = ((double) (end - start)) / CLOCKS_PER_SEC;
+		cpuTime = ((double) (end - start)) / CLOCKS_PER_SEC; //calc time for request
 		logger->addTime(cpuTime,lastURL);
 	}
 
@@ -258,7 +258,7 @@ void forkServer(int serverSocket) {
 
 		if(ret == 0){
 			processClient(clientSocket);
-			exit(0);
+			exit(clock());
 		}
 		if(ret < 0){
 			perror("fork");
@@ -550,7 +550,7 @@ char* dispatchOK(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
 char* dispatchStat(HTTPResponse* httpRes, HTTPRequest* httpReq, int* rawLength){
 	char* raw;
 	string contentLengthHeader;
-	logger->serveAsset(httpRes);
+	logger->serveAsset(httpRes);//logger serves the html
 	httpRes->insertHeader(HTTPMessageFactory::contentTypeHTML);
 	contentLengthHeader = HTTPMessageFactory::contentLength;
 	contentLengthHeader += to_string(httpRes->_bodySize);
