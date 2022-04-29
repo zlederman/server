@@ -96,11 +96,13 @@ void Logger::addTime(double cpuTime, string lastURL) {
 
 string Logger::assembleHTML(){
 	stringstream html;
+	clock_t now = clock();
 	html << "<!DOCTYPE html>";
 	html << "<html>" << "<head>";
 	html << "<h1>" << _name << "'s Server Stats</h1>" << "</head>";
 	html << "<body>";
 	html << "<ul>";
+	html << "<li>Uptime: " << ((double) (now - _start)) / CLOCKS_PER_SEC << "</li>";   
 	pthread_mutex_lock(&_requestLock);
 	html << "<li>Total Request Count: " << _requestCount << "</li>";
 	pthread_mutex_unlock(&_requestLock);
