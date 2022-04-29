@@ -576,9 +576,12 @@ void handleCGI(int clientFd,HTTPRequest* httpReq){
 	std::vector<const char*> args;
 	string exeString;
 	string envVars;
-
+	string ext  
+	ext = httpReq->_asset.substr(httpReq->_asset.length() - 4, httpReq->_asset.length(); 
 	clientCopy = dup(clientFd);
-	
+	if(ext == string(".so")){
+		httpReq->_asset = string("use-dlopen");
+	}	
 	pid = fork();
 	if(pid == 0){
 		dup2(clientCopy,1);
