@@ -27,9 +27,7 @@ pthread_mutex_t lock;
 
 HTTPMessageFactory* httpFactory = new HTTPMessageFactory(); //initialize factory class
 DirBrowser* dirBrowser = new DirBrowser();
-time_t timer;
-time(&timer);
-Logger* logger = new Logger(string("Zachary Lederman"),timer);
+Logger* logger = new Logger(string("Zachary Lederman"),time(NULL));
 
 string PASS = ": Basic cGFzc3dvcmQ6dXNlcm5hbWU="; //definitely not the smart thing to do
 extern "C" void quit(int sig);
